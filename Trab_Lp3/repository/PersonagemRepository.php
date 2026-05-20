@@ -55,13 +55,13 @@ class PersonagemRepository {
         }
 
         $stmt = $this->pdo->prepare(
-            'INSERT INTO personagem (nome, classe, aspecto, usuario_id) VALUES (:nome, :classe, :aspecto, :uid)'
+            'INSERT INTO personagem (nome, classe, aspecto, usuario_id) VALUES (:nome, :classe, :aspecto, :id)'
         );
         $stmt->execute([
                 ':nome'    => $personagem->getNome(),
                 ':classe'  => $personagem->getClasse(),
                 ':aspecto' => $personagem->getAspecto(),
-                ':uid'      => $personagem->getId(),
+                ':id'      => $personagem->getId(),
         ]);
 
         $personagem->registrarIdGerado((int) $this->pdo->lastInsertId());
