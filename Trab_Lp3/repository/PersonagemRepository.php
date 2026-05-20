@@ -61,7 +61,7 @@ class PersonagemRepository {
                 ':nome'    => $personagem->getNome(),
                 ':classe'  => $personagem->getClasse(),
                 ':aspecto' => $personagem->getAspecto(),
-                ':id'      => $personagem->getId(),
+                ':uid'      => $personagem->getId(),
         ]);
 
         $personagem->registrarIdGerado((int) $this->pdo->lastInsertId());
