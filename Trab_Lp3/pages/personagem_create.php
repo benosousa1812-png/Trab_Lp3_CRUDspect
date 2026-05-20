@@ -19,8 +19,8 @@ $aspectos = ['Respiração', 'Sangue', 'Vida', 'Ruína', 'Luz', 'Vazio', 'Tempo'
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome  = trim($_POST['nome'] ?? '');
-    $classe  = trim($_POST['tipo'] ?? '');
-    $aspecto = trim($_POST['nivel'] ?? '');
+    $classe  = trim($_POST['classe'] ?? '');
+    $aspecto = trim($_POST['aspecto'] ?? '');
 
     try {
         $personagem = Personagem::novo($nome, $classe, $aspecto, $_SESSION['usuario_id']);
