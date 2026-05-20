@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 18/05/2026 às 23:47
+-- Tempo de geração: 20/05/2026 às 23:15
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -42,10 +42,8 @@ CREATE TABLE `personagem` (
 INSERT INTO `personagem` (`id`, `nome`, `classe`, `aspecto`, `usuario_id`) VALUES
 (1, 'John Egbert', 'Herdeiro(a)', 'Respiração', 1),
 (2, 'Jade Harley', 'Bruxo(a)', 'Espaço', 1),
-(3, 'Dave Strider', 'Cavaleiro(a)', 'Tempo', 1),
 (4, 'Jane Crocker', 'Herdeiro(a)', 'Respiração', 2),
-(5, 'Jake English', 'Bruxo(a)', 'Espaço', 2),
-(6, 'Dirk Strider', 'Cavaleiro(a)', 'Tempo', 2);
+(5, 'Jake English', 'Bruxo(a)', 'Espaço', 2);
 
 -- --------------------------------------------------------
 
@@ -66,8 +64,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`, `criado_em`) VALUES
-(1, 'Ash Ketchum', 'admin@email.com', 'beno', '2026-05-18 16:11:26'),
-(2, 'N', 'n@email.com', 'n', '2026-05-18 16:12:18');
+(1, 'Ash Ketchum', 'admin@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2026-05-18 16:11:26'),
+(2, 'N', 'n@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2026-05-18 16:12:18');
 
 --
 -- Índices para tabelas despejadas
@@ -95,7 +93,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `personagem`
 --
 ALTER TABLE `personagem`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
