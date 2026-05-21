@@ -22,4 +22,25 @@ class UsuarioRepository {
 
         return null;
     }
+      
+    public function inserir(string $nome, string $email, string $senhaHash): void {
+        $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM usuario WHERE email = :email');
+        $stmt->execute([':email' => $email]);
+        
+        if ($stmt->fetchColumn() > 0) {
+            throw new RuntimeException('E-mail já cadastrado.');
+        }
+
+        // Insere o novo usuário
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO usuario (nome, email, senha, criado_em) VALUES (:nome, :email, :senha, NOW())'
+        );
+        $stmt->execute([
+            ':nome'  => $nome,
+            ':email' => $email,
+            ':senha' => $senhaHash
+        ]);
+    }
+
+
 }
