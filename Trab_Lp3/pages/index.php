@@ -32,6 +32,14 @@ require_once __DIR__ . '/../includes/header.php';
         </tr>
       </thead>
       <tbody>
+
+
+
+
+
+
+
+
         <?php foreach ($personagens as $personagem): ?>
           <tr>
             <td><?= $personagem->getId() ?></td>

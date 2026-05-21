@@ -34,9 +34,10 @@ class Personagem {
     }
 
     public function alterarDados(string $nome, string $classe, string $aspecto): void {
-        $nome = trim($nome);
-        $classe = trim($classe);
-        $aspecto = trim($aspecto);
+        $nome       = trim($nome);
+        $classe     = trim($classe);
+        $aspecto    = trim($aspecto);
+         echo($nome . $classe . $aspecto);
 
         if ($nome === '' || $classe === '' || $aspecto === '') {
             throw new InvalidArgumentException('Nome, classe e aspecto são obrigatórios.');

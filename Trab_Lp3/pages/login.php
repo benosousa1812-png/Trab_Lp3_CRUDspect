@@ -1,8 +1,6 @@
 <?php
-
 session_start();
 
-// Se já estiver logado, vai direto para a página principal
 if (!empty($_SESSION['usuario_id'])) {
     header('Location: index.php');
     exit;
@@ -11,28 +9,39 @@ if (!empty($_SESSION['usuario_id'])) {
 require_once __DIR__ . '/../repository/UsuarioRepository.php';
 
 $erro = '';
-$emailFormulario = $_POST['email'] ?? '';
+$emailFormulario = '';
+
+// Verifica se veio um erro da sessão (após redirecionamento)
+if (isset($_SESSION['erro_login'])) {
+    $erro = $_SESSION['erro_login'];
+    $emailFormulario = $_SESSION['email_form'] ?? '';
+    unset($_SESSION['erro_login'], $_SESSION['email_form']);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $senha = $_POST['senha'] ?? '';
 
     if ($email === '' || $senha === '') {
-        $erro = 'Preencha todos os campos.';
+        $_SESSION['erro_login'] = 'Preencha todos os campos.';
+        $_SESSION['email_form'] = $email;
+        header('Location: login.php');
+        exit;
+    }
+
+    $repo = new UsuarioRepository();
+    $usuario = $repo->buscarPorEmail($email);
+
+    if ($usuario && hash('sha256', $senha) === $usuario->getSenha()) {
+        $_SESSION['usuario_id'] = $usuario->getId();
+        $_SESSION['usuario_nome'] = $usuario->getNome();
+        header('Location: index.php');
+        exit;
     } else {
-        $repo    = new UsuarioRepository();
-        $usuario = $repo->buscarPorEmail($email);
-
-        // Compara o hash SHA256 da senha digitada com o hash salvo no banco
-        if ($usuario && hash('sha256', $senha) === $usuario->getSenha()) {
-            $_SESSION['usuario_id']   = $usuario->getId();
-            $_SESSION['usuario_nome'] = $usuario->getNome();
-
-            header('Location: index.php');
-            exit;
-        } else {
-            $erro = 'E-mail ou senha inválidos.';
-        }
+        $_SESSION['erro_login'] = 'E-mail ou senha inválidos.';
+        $_SESSION['email_form'] = $email;
+        header('Location: login.php');
+        exit;
     }
 }
 ?>
@@ -47,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="login-body">
 
 <div class="login-card">
-  <div class="login-logo">PokéCRUD</div>
+  <div class="login-logo">CRUDspect</div>
   <h1 class="login-title">Entrar no sistema</h1>
 
   <?php if ($erro !== ''): ?>
@@ -79,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+    <a href="log_create.php" class="btn btn-secondary btn-full">Criar nova conta</a>
   </form>
 
 </div>
