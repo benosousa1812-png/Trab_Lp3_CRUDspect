@@ -583,5 +583,33 @@ a:hover {
   .btn-sm {
     width: 100%;
   }
+  .personagem-avatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--cream);
+}
+
+.personagem-avatar-placeholder {
+    width: 50px;
+    height: 50px;
+    background: var(--cream);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.imagem-preview {
+    max-width: 150px;
+    max-height: 150px;
+    border: 2px solid var(--ink);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
 
 }

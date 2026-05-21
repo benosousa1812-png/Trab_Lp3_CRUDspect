@@ -16,14 +16,26 @@ $classes = ['Cavaleiro(a)', 'Escudeiro(a)', 'Vidente', 'Mago(a)', 'Ladrão(a)',
 
 $aspectos = ['Respiração', 'Sangue', 'Vida', 'Ruína', 'Luz', 'Vazio', 'Tempo', 'Espaço', 'Mente', 'Coração', 'Odio', 'Esperança'];
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome  = trim($_POST['nome'] ?? '');
-    $classe  = trim($_POST['classe'] ?? '');
-    $aspecto = trim($_POST['aspecto'] ?? '');
+    $nome     = trim($_POST['nome'] ?? '');
+    $classe   = trim($_POST['classe'] ?? '');
+    $aspecto  = trim($_POST['aspecto'] ?? '');
+    $imagem   = null;
+    
+    // Processar upload da imagem
+    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
+        $tipo_arquivo = $_FILES['imagem']['type'];
+        $extensoes_permitidas = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        
+        if (in_array($tipo_arquivo, $extensoes_permitidas)) {
+            $imagem = file_get_contents($_FILES['imagem']['tmp_name']);
+        } else {
+            $erro = "Formato de imagem não permitido. Use JPG, PNG, GIF ou WEBP.";
+        }
+    }
 
     try {
-        $personagem = Personagem::novo($nome, $classe, $aspecto, $_SESSION['usuario_id']);
+        $personagem = Personagem::novo($nome, $classe, $aspecto, $_SESSION['usuario_id'], $imagem);
         $repo->salvar($personagem);
 
         header('Location: index.php');
@@ -46,8 +58,8 @@ require_once __DIR__ . '/../includes/header.php';
 <?php endif; ?>
 
 <div class="form-card">
-  <form method="POST" action="personagem_create.php">
-
+  <form method="POST" action="personagem_create.php" enctype="multipart/form-data">
+    
     <div class="form-group">
       <label for="nome">Nome do personagem</label>
       <input
@@ -78,8 +90,7 @@ require_once __DIR__ . '/../includes/header.php';
       </select>
     </div>
 
-
-        <div class="form-group">
+    <div class="form-group">
       <label for="aspecto">Aspecto</label>
       <select id="aspecto" name="aspecto" required>
         <option value="">Selecione o Aspecto...</option>
@@ -97,6 +108,18 @@ require_once __DIR__ . '/../includes/header.php';
       </select>
     </div>
 
+    <div class="form-group">
+      <label for="imagem">Foto do personagem (opcional)</label>
+      <input
+        type="file"
+        id="imagem"
+        name="imagem"
+        accept="image/jpeg,image/png,image/gif,image/webp"
+      />
+      <small style="display: block; margin-top: 5px; color: #666;">
+        Formatos aceitos: JPG, PNG, GIF, WEBP. Tamanho máximo: 5MB
+      </small>
+    </div>
 
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Cadastrar personagem</button>

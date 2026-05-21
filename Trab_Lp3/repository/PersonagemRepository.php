@@ -38,13 +38,15 @@ class PersonagemRepository {
 
     public function salvar(Personagem $personagem): void {
         if ($personagem->getId() > 0) {
+            // Update com imagem
             $stmt = $this->pdo->prepare(
-                'UPDATE personagem SET nome = :nome, classe = :classe, aspecto = :aspecto WHERE id = :id'
+                'UPDATE personagem SET nome = :nome, classe = :classe, aspecto = :aspecto, imagem = :imagem WHERE id = :id'
             );
             $stmt->execute([
                 ':nome'    => $personagem->getNome(),
                 ':classe'  => $personagem->getClasse(),
                 ':aspecto' => $personagem->getAspecto(),
+                ':imagem'  => $personagem->getImagem(),
                 ':id'      => $personagem->getId(),     
             ]);
             return;
@@ -54,32 +56,34 @@ class PersonagemRepository {
             throw new InvalidArgumentException('Usuário inválido.');
         }
 
+        // Insert com imagem
         $stmt = $this->pdo->prepare(
-            'INSERT INTO personagem (nome, classe, aspecto, usuario_id) VALUES (:nome, :classe, :aspecto, :uid)'
+            'INSERT INTO personagem (nome, classe, aspecto, usuario_id, imagem) VALUES (:nome, :classe, :aspecto, :uid, :imagem)'
         );
         $stmt->execute([
-                ':nome'    => $personagem->getNome(),
-                ':classe'  => $personagem->getClasse(),
-                ':aspecto' => $personagem->getAspecto(),
-                ':uid'      => $personagem->getUsuarioId(),
+            ':nome'    => $personagem->getNome(),
+            ':classe'  => $personagem->getClasse(),
+            ':aspecto' => $personagem->getAspecto(),
+            ':uid'     => $personagem->getUsuarioId(),
+            ':imagem'  => $personagem->getImagem(),
         ]);
 
         $personagem->registrarIdGerado((int) $this->pdo->lastInsertId());
     }
 
-    public function inserir(string $nome, string $classe, string $aspecto, int $usuarioId): void {
-        $personagem = Personagem::novo($nome, $classe, $aspecto, $usuarioId);
+    public function inserir(string $nome, string $classe, string $aspecto, int $usuarioId, ?string $imagem = null): void {
+        $personagem = Personagem::novo($nome, $classe, $aspecto, $usuarioId, $imagem);
         $this->salvar($personagem);
     }
 
-    public function atualizar(int $id, string $nome, string $classe, string $aspecto): void {
+    public function atualizar(int $id, string $nome, string $classe, string $aspecto, ?string $imagem = null): void {
         $personagem = $this->buscarPorId($id);
 
         if ($personagem === null) {
             throw new RuntimeException('personagem não encontrado.');
         }
 
-        $personagem->alterarDados($nome, $classe, $aspecto);
+        $personagem->alterarDados($nome, $classe, $aspecto, $imagem);
         $this->salvar($personagem);
     }
 
