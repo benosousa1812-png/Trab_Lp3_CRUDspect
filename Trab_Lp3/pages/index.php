@@ -35,17 +35,19 @@ require_once __DIR__ . '/../includes/header.php';
       <tbody>
         <?php foreach ($personagens as $personagem): ?>
           <tr>
-            <td style="text-align: center;">
-              <?php if ($personagem->getImagem()): ?>
-                <img src="data:image/jpeg;base64,<?= base64_encode($personagem->getImagem()) ?>" 
-                     alt="<?= htmlspecialchars($personagem->getNome()) ?>"
-                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 2px solid var(--ink);">
-              <?php else: ?>
-                <div style="width: 50px; height: 50px; background: var(--cream); border: 2px solid var(--ink); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;">
-                  🎭
-                </div>
-              <?php endif; ?>
-            </td>
+            <!-- Na tabela, onde exibe a foto, mude para: -->
+<td style="text-align: center; vertical-align: middle;">
+  <?php if ($personagem->getCaminhoImagem() && file_exists(__DIR__ . '/../' . $personagem->getCaminhoImagem())): ?>
+    <img src="/Trab_Lp3/<?= $personagem->getCaminhoImagem() ?>" 
+         alt="<?= htmlspecialchars($personagem->getNome()) ?>"
+         class="personagem-avatar"
+         style="width: 45px; height: 45px; object-fit: cover; border: 2px solid #1a1a1a;">
+  <?php else: ?>
+    <div class="personagem-avatar-placeholder" style="width: 45px; height: 45px; background: #d3d3d3; border: 2px solid #1a1a1a; display: inline-flex; align-items: center; justify-content: center;">
+      🎭
+    </div>
+  <?php endif; ?>
+</td>
             <td><?= $personagem->getId() ?></td>
             <td><strong><?= htmlspecialchars($personagem->getNome()) ?></strong></td>
             <td><span class="badge"><?= htmlspecialchars($personagem->getClasse()) ?></span></td>

@@ -35,7 +35,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome     = trim($_POST['nome'] ?? '');
     $classe   = trim($_POST['classe'] ?? '');
     $aspecto  = trim($_POST['aspecto'] ?? '');
-    $imagem   = null;
+    $caminhoImagem = $personagem->getCaminhoImagem(); // Mantém o caminho atual por padrão
+    
+    // Verificar se deve remover a imagem
+    if (isset($_POST['remover_imagem']) && $_POST['remover_imagem'] === '1') {
+        // Deletar o arquivo antigo
+        if ($personagem->getCaminhoImagem()) {
+            $caminho_antigo = __DIR__ . '/../' . $personagem->getCaminhoImagem();
+            if (file_exists($caminho_antigo)) {
+                unlink($caminho_antigo);
+            }
+        }
+        $caminhoImagem = null;
+    }
     
     // Processar upload da nova imagem
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
@@ -43,17 +55,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $extensoes_permitidas = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         
         if (in_array($tipo_arquivo, $extensoes_permitidas)) {
-            $imagem = file_get_contents($_FILES['imagem']['tmp_name']);
+            // Deletar imagem antiga se existir
+            if ($personagem->getCaminhoImagem()) {
+                $caminho_antigo = __DIR__ . '/../' . $personagem->getCaminhoImagem();
+                if (file_exists($caminho_antigo)) {
+                    unlink($caminho_antigo);
+                }
+            }
+            
+            // Criar nome único para o novo arquivo
+            $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
+            $nome_arquivo = uniqid() . '.' . $extensao;
+            $caminho_relativo = 'uploads/' . $nome_arquivo;
+            $caminho_absoluto = __DIR__ . '/../uploads/' . $nome_arquivo;
+            
+            // Mover o arquivo
+            if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminho_absoluto)) {
+                $caminhoImagem = $caminho_relativo;
+            } else {
+                $erro = "Erro ao salvar a imagem.";
+            }
         } else {
             $erro = "Formato de imagem não permitido. Use JPG, PNG, GIF ou WEBP.";
         }
-    } else if (isset($_POST['remover_imagem']) && $_POST['remover_imagem'] === '1') {
-        // Remover imagem existente
-        $imagem = null;
     }
 
     try {
-        $personagem->alterarDados($nome, $classe, $aspecto, $imagem);
+        $personagem->alterarDados($nome, $classe, $aspecto, $caminhoImagem);
         $repo->salvar($personagem);
 
         header('Location: index.php');
@@ -80,14 +108,7 @@ require_once __DIR__ . '/../includes/header.php';
 
     <div class="form-group">
       <label for="nome">Nome do Personagem</label>
-      <input
-        type="text"
-        id="nome"
-        name="nome"
-        placeholder="Ex: John Egbert"
-        value="<?= htmlspecialchars($nome) ?>"
-        required
-      />
+      <input type="text" id="nome" name="nome" placeholder="Ex: John Egbert" value="<?= htmlspecialchars($nome) ?>" required />
     </div>
 
     <div class="form-group">
@@ -95,15 +116,7 @@ require_once __DIR__ . '/../includes/header.php';
       <select id="classe" name="classe" required>
         <option value="">Selecione a classe...</option>
         <?php foreach ($classes as $t): ?>
-          <?php
-            $selecionado = '';
-            if ($classe === $t) {
-                $selecionado = 'selected';
-            }
-          ?>
-          <option value="<?= $t ?>" <?= $selecionado ?>>
-            <?= $t ?>
-          </option>
+          <option value="<?= $t ?>" <?= ($classe === $t) ? 'selected' : '' ?>><?= $t ?></option>
         <?php endforeach; ?>
       </select>
     </div>
@@ -113,26 +126,18 @@ require_once __DIR__ . '/../includes/header.php';
       <select id="aspecto" name="aspecto" required>
         <option value="">Selecione o aspecto...</option>
         <?php foreach ($aspectos as $t): ?>
-          <?php
-            $selecionado = '';
-            if ($aspecto === $t) {
-                $selecionado = 'selected';
-            }
-          ?>
-          <option value="<?= $t ?>" <?= $selecionado ?>>
-            <?= $t ?>
-          </option>
+          <option value="<?= $t ?>" <?= ($aspecto === $t) ? 'selected' : '' ?>><?= $t ?></option>
         <?php endforeach; ?>
       </select>
     </div>
 
     <div class="form-group">
       <label>Foto atual</label>
-      <?php if ($personagem->getImagem()): ?>
+      <?php if ($personagem->getCaminhoImagem() && file_exists(__DIR__ . '/../' . $personagem->getCaminhoImagem())): ?>
         <div style="margin-bottom: 10px;">
-          <img src="data:image/jpeg;base64,<?= base64_encode($personagem->getImagem()) ?>" 
+          <img src="/Trab_Lp3/<?= $personagem->getCaminhoImagem() ?>" 
                alt="Foto do personagem" 
-               style="max-width: 150px; max-height: 150px; border: 2px solid var(--ink); border-radius: 5px;">
+               style="max-width: 150px; max-height: 150px; border: 2px solid #1a1a1a;">
         </div>
         <div style="margin-bottom: 15px;">
           <label>
@@ -146,12 +151,7 @@ require_once __DIR__ . '/../includes/header.php';
 
     <div class="form-group">
       <label for="imagem">Nova foto (opcional)</label>
-      <input
-        type="file"
-        id="imagem"
-        name="imagem"
-        accept="image/jpeg,image/png,image/gif,image/webp"
-      />
+      <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp" />
       <small style="display: block; margin-top: 5px; color: #666;">
         Selecione uma nova imagem para substituir a atual
       </small>
@@ -164,5 +164,3 @@ require_once __DIR__ . '/../includes/header.php';
 
   </form>
 </div>
-
-<?php require_once __DIR__ . '/../includes/footer.php'; ?>

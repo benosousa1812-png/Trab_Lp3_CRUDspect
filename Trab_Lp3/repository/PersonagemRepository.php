@@ -38,7 +38,7 @@ class PersonagemRepository {
 
     public function salvar(Personagem $personagem): void {
         if ($personagem->getId() > 0) {
-            // Update com imagem
+            // Update
             $stmt = $this->pdo->prepare(
                 'UPDATE personagem SET nome = :nome, classe = :classe, aspecto = :aspecto, imagem = :imagem WHERE id = :id'
             );
@@ -46,7 +46,7 @@ class PersonagemRepository {
                 ':nome'    => $personagem->getNome(),
                 ':classe'  => $personagem->getClasse(),
                 ':aspecto' => $personagem->getAspecto(),
-                ':imagem'  => $personagem->getImagem(),
+                ':imagem'  => $personagem->getCaminhoImagem(),
                 ':id'      => $personagem->getId(),     
             ]);
             return;
@@ -56,7 +56,7 @@ class PersonagemRepository {
             throw new InvalidArgumentException('Usuário inválido.');
         }
 
-        // Insert com imagem
+        // Insert
         $stmt = $this->pdo->prepare(
             'INSERT INTO personagem (nome, classe, aspecto, usuario_id, imagem) VALUES (:nome, :classe, :aspecto, :uid, :imagem)'
         );
@@ -65,29 +65,38 @@ class PersonagemRepository {
             ':classe'  => $personagem->getClasse(),
             ':aspecto' => $personagem->getAspecto(),
             ':uid'     => $personagem->getUsuarioId(),
-            ':imagem'  => $personagem->getImagem(),
+            ':imagem'  => $personagem->getCaminhoImagem(),
         ]);
 
         $personagem->registrarIdGerado((int) $this->pdo->lastInsertId());
     }
 
-    public function inserir(string $nome, string $classe, string $aspecto, int $usuarioId, ?string $imagem = null): void {
-        $personagem = Personagem::novo($nome, $classe, $aspecto, $usuarioId, $imagem);
+    public function inserir(string $nome, string $classe, string $aspecto, int $usuarioId, ?string $caminhoImagem = null): void {
+        $personagem = Personagem::novo($nome, $classe, $aspecto, $usuarioId, $caminhoImagem);
         $this->salvar($personagem);
     }
 
-    public function atualizar(int $id, string $nome, string $classe, string $aspecto, ?string $imagem = null): void {
+    public function atualizar(int $id, string $nome, string $classe, string $aspecto, ?string $caminhoImagem = null): void {
         $personagem = $this->buscarPorId($id);
 
         if ($personagem === null) {
             throw new RuntimeException('personagem não encontrado.');
         }
 
-        $personagem->alterarDados($nome, $classe, $aspecto, $imagem);
+        $personagem->alterarDados($nome, $classe, $aspecto, $caminhoImagem);
         $this->salvar($personagem);
     }
 
     public function excluir(int $id): void {
+        // Buscar o personagem para deletar a imagem física
+        $personagem = $this->buscarPorId($id);
+        if ($personagem && $personagem->getCaminhoImagem()) {
+            $caminho = __DIR__ . '/../' . $personagem->getCaminhoImagem();
+            if (file_exists($caminho)) {
+                unlink($caminho);
+            }
+        }
+        
         $stmt = $this->pdo->prepare('DELETE FROM personagem WHERE id = :id');
         $stmt->execute([':id' => $id]);
     }

@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome     = trim($_POST['nome'] ?? '');
     $classe   = trim($_POST['classe'] ?? '');
     $aspecto  = trim($_POST['aspecto'] ?? '');
-    $imagem   = null;
+    $caminhoImagem = null;
     
     // Processar upload da imagem
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
@@ -28,14 +28,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $extensoes_permitidas = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         
         if (in_array($tipo_arquivo, $extensoes_permitidas)) {
-            $imagem = file_get_contents($_FILES['imagem']['tmp_name']);
+            // Criar nome único para o arquivo
+            $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
+            $nome_arquivo = uniqid() . '.' . $extensao;
+            $caminho_relativo = 'uploads/' . $nome_arquivo;
+            $caminho_absoluto = __DIR__ . '/../uploads/' . $nome_arquivo;
+            
+            // Mover o arquivo para a pasta uploads
+            if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminho_absoluto)) {
+                $caminhoImagem = $caminho_relativo;
+            } else {
+                $erro = "Erro ao salvar a imagem.";
+            }
         } else {
             $erro = "Formato de imagem não permitido. Use JPG, PNG, GIF ou WEBP.";
         }
     }
 
     try {
-        $personagem = Personagem::novo($nome, $classe, $aspecto, $_SESSION['usuario_id'], $imagem);
+        $personagem = Personagem::novo($nome, $classe, $aspecto, $_SESSION['usuario_id'], $caminhoImagem);
         $repo->salvar($personagem);
 
         header('Location: index.php');
@@ -48,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
+<!-- O HTML continua IGUAL, só muda a linha do "Tamanho máximo" -->
 <div class="page-header">
   <h2>Novo personagem</h2>
   <a href="index.php" class="btn btn-ghost">← Voltar</a>
@@ -62,14 +74,7 @@ require_once __DIR__ . '/../includes/header.php';
     
     <div class="form-group">
       <label for="nome">Nome do personagem</label>
-      <input
-        type="text"
-        id="nome"
-        name="nome"
-        placeholder="Ex: John Egbert"
-        value="<?= htmlspecialchars($nome) ?>"
-        required
-      />
+      <input type="text" id="nome" name="nome" placeholder="Ex: John Egbert" value="<?= htmlspecialchars($nome) ?>" required />
     </div>
 
     <div class="form-group">
@@ -77,15 +82,7 @@ require_once __DIR__ . '/../includes/header.php';
       <select id="classe" name="classe" required>
         <option value="">Selecione a Classe...</option>
         <?php foreach ($classes as $t): ?>
-          <?php
-            $selecionado = '';
-            if ($classe === $t) {
-                $selecionado = 'selected';
-            }
-          ?>
-          <option value="<?= $t ?>" <?= $selecionado ?>>
-            <?= $t ?>
-          </option>
+          <option value="<?= $t ?>" <?= ($classe === $t) ? 'selected' : '' ?>><?= $t ?></option>
         <?php endforeach; ?>
       </select>
     </div>
@@ -95,27 +92,14 @@ require_once __DIR__ . '/../includes/header.php';
       <select id="aspecto" name="aspecto" required>
         <option value="">Selecione o Aspecto...</option>
         <?php foreach ($aspectos as $t): ?>
-          <?php
-            $selecionado = '';
-            if ($aspecto === $t) {
-                $selecionado = 'selected';
-            }
-          ?>
-          <option value="<?= $t ?>" <?= $selecionado ?>>
-            <?= $t ?>
-          </option>
+          <option value="<?= $t ?>" <?= ($aspecto === $t) ? 'selected' : '' ?>><?= $t ?></option>
         <?php endforeach; ?>
       </select>
     </div>
 
     <div class="form-group">
       <label for="imagem">Foto do personagem (opcional)</label>
-      <input
-        type="file"
-        id="imagem"
-        name="imagem"
-        accept="image/jpeg,image/png,image/gif,image/webp"
-      />
+      <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp" />
       <small style="display: block; margin-top: 5px; color: #666;">
         Formatos aceitos: JPG, PNG, GIF, WEBP. Tamanho máximo: 5MB
       </small>
