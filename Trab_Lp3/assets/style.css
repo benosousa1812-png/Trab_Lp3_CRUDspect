@@ -1,6 +1,7 @@
 /* -------------------------------------------------
-   HOMESTUCK CLASSIPECT THEME
+   HOMESTUCK CLASSIPECT THEME - GREEN VERSION
    Estilo inspirado em MSPA / Homestuck
+   Cor principal: Verde (Doom Aspect)
 ------------------------------------------------- */
 
 *, *::before, *::after {
@@ -10,15 +11,22 @@
 }
 
 :root {
-  /* Cores principais do Homestuck */
+  /* Cores principais do Homestuck - Versão Verde */
   --homestuck-blue: #0715cd;
   --homestuck-red: #e00707;
   --homestuck-green: #2b7a3e;
+  --homestuck-green-light: #3c9e4c;
+  --homestuck-green-dark: #1e5a2a;
   --homestuck-yellow: #e8e507;
   --homestuck-white: #f2f2f2;
   --homestuck-black: #1a1a1a;
   --homestuck-gray: #626262;
   --homestuck-lightgray: #d3d3d3;
+  
+  /* Cores principais - VERDE é a cor principal agora */
+  --primary: var(--homestuck-green);
+  --primary-dark: var(--homestuck-green-dark);
+  --primary-light: var(--homestuck-green-light);
   
   /* Aspect colors */
   --breath: #0715cd;
@@ -40,7 +48,6 @@
   --border-thin: 2px solid var(--homestuck-black);
   --shadow-retro: 6px 6px 0 rgba(0, 0, 0, 0.2);
   --shadow-retro-sm: 3px 3px 0 rgba(0, 0, 0, 0.15);
-  --pixel-corners: 0px;
 }
 
 html {
@@ -55,14 +62,11 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--homestuck-white);
-  background-image: 
-    repeating-linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0.02) 0px,
-      rgba(0, 0, 0, 0.02) 2px,
-      transparent 2px,
-      transparent 8px
-    );
+  background-image: url('../assets/tezh0y7brzn31.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   font-family: 'Courier New', 'Courier', monospace;
   font-weight: bold;
   font-size: 15px;
@@ -90,7 +94,7 @@ body::before {
 }
 
 a {
-  color: var(--homestuck-blue);
+  color: var(--primary);
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
@@ -110,12 +114,12 @@ a:hover {
   color: var(--homestuck-black);
 }
 
-/* Header - Estilo Homestuck */
+/* Header - Estilo Homestuck (Verde) */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--homestuck-blue);
+  background: var(--primary);
   border-bottom: var(--border-thick);
   border-top: var(--border-thick);
   background-image: repeating-linear-gradient(
@@ -128,7 +132,7 @@ a:hover {
 }
 
 .site-header::after {
-  content: "==> [S]";
+  content: "==> [S] MS PAINT ADVENTURE";
   display: block;
   height: auto;
   background: var(--homestuck-black);
@@ -138,7 +142,7 @@ a:hover {
   font-size: 11px;
   padding: 4px 12px;
   letter-spacing: 2px;
-  border-top: 2px solid var(--homestuck-white);
+  border-top: 2px solid var(--primary-light);
 }
 
 .header-inner {
@@ -163,18 +167,16 @@ a:hover {
   text-transform: uppercase;
   text-shadow: 3px 3px 0 var(--homestuck-black);
   background: none;
-  -webkit-background-clip: unset;
-  background-clip: unset;
   color: var(--homestuck-yellow);
 }
 
 .logo::before {
-  content: "☠ ";
+  content: "♠ ";
   font-size: 1.2rem;
 }
 
 .logo::after {
-  content: " ☠";
+  content: " ♠";
   font-size: 1.2rem;
 }
 
@@ -210,7 +212,7 @@ a:hover {
   background: var(--homestuck-yellow);
   color: var(--homestuck-black);
   border-color: var(--homestuck-black);
-  transform: scale(0.98);
+  
 }
 
 .header-user {
@@ -260,12 +262,12 @@ a:hover {
 
 .footer-inner::before {
   content: "> ";
-  color: var(--homestuck-green);
+  color: var(--primary);
 }
 
 .footer-inner::after {
   content: " <";
-  color: var(--homestuck-green);
+  color: var(--primary);
 }
 
 /* Page header */
@@ -293,7 +295,7 @@ a:hover {
 
 .page-header h2::before {
   content: "> ";
-  color: var(--homestuck-blue);
+  color: var(--primary);
   font-weight: bold;
 }
 
@@ -320,23 +322,23 @@ a:hover {
 }
 
 .btn:hover {
-  transform: translate(2px, 2px);
+  
   box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .btn:active {
-  transform: translate(4px, 4px);
+  
   box-shadow: none;
 }
 
 .btn-primary {
-  background: var(--homestuck-blue);
+  background: var(--primary);
   color: var(--homestuck-white);
   border-color: var(--homestuck-white);
 }
 
 .btn-primary:hover {
-  background: var(--homestuck-green);
+  background: var(--primary-light);
   color: var(--homestuck-white);
 }
 
@@ -402,12 +404,12 @@ a:hover {
 }
 
 .alert-sucesso {
-  background: var(--homestuck-green);
+  background: var(--primary);
   color: var(--homestuck-white);
   border-color: var(--homestuck-black);
 }
 
-/* Tables estilo terminal */
+/* TABELA CORRIGIDA - COM ALINHAMENTO PERFEITO */
 .table-wrapper {
   background: var(--homestuck-white);
   border: var(--border-thick);
@@ -417,25 +419,67 @@ a:hover {
 
 .data-table {
   width: 100%;
-  min-width: 720px;
   border-collapse: collapse;
   font-family: 'Courier New', monospace;
+  table-layout: fixed;
+}
+
+/* LARGURAS FIXAS PARA CADA COLUNA */
+.data-table th:nth-child(1),
+.data-table td:nth-child(1) {
+  width: 70px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+  width: 60px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+  width: auto;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.data-table th:nth-child(4),
+.data-table td:nth-child(4) {
+  width: 140px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+  width: 140px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+  width: 170px;
+  text-align: left;
+  vertical-align: middle;
 }
 
 .data-table th {
-  padding: 12px 16px;
+  padding: 12px 8px;
   background: var(--homestuck-black);
   color: var(--homestuck-white);
   border-bottom: var(--border-thin);
   font-size: 0.7rem;
   font-weight: bold;
-  text-align: left;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .data-table td {
-  padding: 14px 16px;
+  padding: 12px 8px;
   border-bottom: 1px solid var(--homestuck-lightgray);
   color: var(--homestuck-black);
   background: var(--homestuck-white);
@@ -447,22 +491,23 @@ a:hover {
 
 .data-table strong {
   font-weight: bold;
-  color: var(--homestuck-blue);
+  color: var(--primary-dark);
   text-transform: uppercase;
 }
 
+/* AÇÕES ALINHADAS */
 .acoes {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 /* Badge estilo Homestuck */
 .badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  padding: 2px 10px;
+  display: inline-block;
+  padding: 4px 10px;
   border: var(--border-thin);
   font-size: 0.7rem;
   font-weight: bold;
@@ -471,6 +516,7 @@ a:hover {
   background: var(--homestuck-white);
   color: var(--homestuck-black);
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 /* Empty state */
@@ -530,7 +576,7 @@ a:hover {
 
 .form-group label::before {
   content: "> ";
-  color: var(--homestuck-blue);
+  color: var(--primary);
 }
 
 .form-group input[type="text"],
@@ -556,8 +602,8 @@ a:hover {
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: var(--homestuck-blue);
-  background: var(--homestuck-yellow);
+  border-color: var(--primary);
+  background: var(--homestuck-white);
   box-shadow: 2px 2px 0 var(--homestuck-black);
 }
 
@@ -566,7 +612,7 @@ a:hover {
   width: 100%;
   min-height: 100px;
   padding: 16px;
-  border: 3px dashed var(--homestuck-blue);
+  border: 3px dashed var(--primary);
   background: var(--homestuck-lightgray);
   cursor: pointer;
   transition: all 0.05s linear;
@@ -579,7 +625,7 @@ a:hover {
 }
 
 .form-group input[type="file"]::file-selector-button {
-  background: var(--homestuck-black);
+  background: var(--primary-dark);
   color: var(--homestuck-white);
   padding: 8px 16px;
   border: var(--border-thin);
@@ -593,12 +639,12 @@ a:hover {
 }
 
 .form-group input[type="file"]::file-selector-button:hover {
-  background: var(--homestuck-blue);
-  transform: scale(0.98);
+  background: var(--primary);
+  
 }
 
 .form-group input[type="file"]::-webkit-file-upload-button {
-  background: var(--homestuck-black);
+  background: var(--primary-dark);
   color: var(--homestuck-white);
   padding: 8px 16px;
   border: var(--border-thin);
@@ -612,8 +658,8 @@ a:hover {
 }
 
 .form-group input[type="file"]::-webkit-file-upload-button:hover {
-  background: var(--homestuck-blue);
-  transform: scale(0.98);
+  background: var(--primary);
+  
 }
 
 .form-actions {
@@ -678,16 +724,9 @@ a:hover {
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
-  color: var(--homestuck-blue);
+  color: var(--primary);
 }
 
-.login-logo::before {
-  content: "< ";
-}
-
-.login-logo::after {
-  content: " >";
-}
 
 .login-title {
   margin-bottom: 30px;
@@ -704,89 +743,42 @@ a:hover {
   text-align: center;
 }
 
-/* Responsive */
-@media (max-width: 760px) {
-  .header-inner {
-    min-height: auto;
-    padding: 16px 18px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-  }
 
-  .nav {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-
-  .header-user {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .container {
-    padding: 28px 16px 48px;
-  }
-
-  .page-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .form-card,
-  .confirm-card,
-  .login-card {
-    padding: 24px 20px;
-  }
-
-  .form-actions,
-  .acoes {
-    flex-direction: column;
-  }
-
-  .btn,
-  .btn-sm {
-    width: 100%;
-  }
-  
-  .form-group input[type="file"] {
-    min-height: 80px;
-    padding: 12px;
-  }
-}
 
 /* Avatar Styles estilo Homestuck */
 .personagem-avatar {
-  width: 48px;
-  height: 48px;
+  width: 45px;
+  height: 45px;
   object-fit: cover;
   border: var(--border-thin);
   image-rendering: pixelated;
-  image-rendering: crisp-edges;
   transition: all 0.05s linear;
+  display: block;
+  margin: 0 auto;
 }
 
 .personagem-avatar:hover {
-  transform: scale(1.05);
+  
   border-color: var(--homestuck-yellow);
   filter: brightness(1.1);
 }
 
 .personagem-avatar-placeholder {
-  width: 48px;
-  height: 48px;
+  width: 45px;
+  height: 45px;
   background: var(--homestuck-lightgray);
   border: var(--border-thin);
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
+  margin: 0 auto;
   transition: all 0.05s linear;
 }
 
 .personagem-avatar-placeholder:hover {
   background: var(--homestuck-yellow);
-  transform: scale(1.02);
+  
 }
 
 .imagem-preview {
@@ -809,22 +801,23 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--homestuck-blue);
+  background: var(--primary);
   border: 1px solid var(--homestuck-black);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--homestuck-green);
+  background: var(--primary-light);
+}
+.btn {
+  transform: none !important;
+  transition: none !important;
 }
 
-/* SGA (Sburb GUI Animation) - pequenos detalhes */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+.btn:hover {
+  transform: none !important;
+  margin: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15) !important;
 }
 
-.loading::after {
-  content: "_";
-  animation: blink 1s infinite;
-  display: inline-block;
-}
