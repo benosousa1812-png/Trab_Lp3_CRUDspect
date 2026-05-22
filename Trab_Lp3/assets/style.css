@@ -1,6 +1,8 @@
 /* -------------------------------------------------
-   PokéCRUD - editorial library theme
+   HOMESTUCK CLASSIPECT THEME
+   Estilo inspirado em MSPA / Homestuck
 ------------------------------------------------- */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -8,91 +10,140 @@
 }
 
 :root {
-  --paper: #f4efe8;
-  --paper-soft: #fffaf1;
-  --ink: #191512;
-  --ink-soft: #4b433b;
-  --line: #1f1b16;
-  --muted: #776f63;
-  --orange: #c4572b;
-  --orange-dark: #8f3425;
-  --green: #69785a;
-  --green-dark: #3f4c36;
-  --yellow: #f0bd2f;
-  --yellow-soft: #f7dfa0;
-  --red: #b9332e;
-  --red-dark: #7e211d;
-  --red-soft: #f0d4c9;
-  --cream: #ede0cf;
-  --radius: 2px;
-  --shadow: 8px 8px 0 var(--ink);
-  --shadow-sm: 4px 4px 0 var(--ink);
+  /* Cores principais do Homestuck */
+  --homestuck-blue: #0715cd;
+  --homestuck-red: #e00707;
+  --homestuck-green: #2b7a3e;
+  --homestuck-yellow: #e8e507;
+  --homestuck-white: #f2f2f2;
+  --homestuck-black: #1a1a1a;
+  --homestuck-gray: #626262;
+  --homestuck-lightgray: #d3d3d3;
+  
+  /* Aspect colors */
+  --breath: #0715cd;
+  --blood: #e00707;
+  --life: #e85e07;
+  --doom: #2b7a3e;
+  --light: #e8e507;
+  --void: #4a4a4a;
+  --time: #626262;
+  --space: #8a2be2;
+  --mind: #ff69b4;
+  --heart: #ff1493;
+  --rage: #8b0000;
+  --hope: #ffd700;
+  
+  /* Variáveis de design retro */
+  --border-thick: 4px solid var(--homestuck-black);
+  --border-med: 3px solid var(--homestuck-black);
+  --border-thin: 2px solid var(--homestuck-black);
+  --shadow-retro: 6px 6px 0 rgba(0, 0, 0, 0.2);
+  --shadow-retro-sm: 3px 3px 0 rgba(0, 0, 0, 0.15);
+  --pixel-corners: 0px;
 }
 
 html {
   min-height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 body {
   position: relative;
-  isolation: isolate;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  color: var(--ink);
-  background:
-    linear-gradient(90deg, rgba(24,23,20,.05) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(24,23,20,.04) 1px, transparent 1px),
-    var(--paper);
-  background-size: 44px 44px, 44px 44px, auto;
-  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  background: var(--homestuck-white);
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.02) 0px,
+      rgba(0, 0, 0, 0.02) 2px,
+      transparent 2px,
+      transparent 8px
+    );
+  font-family: 'Courier New', 'Courier', monospace;
+  font-weight: bold;
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.4;
+  color: var(--homestuck-black);
+}
+
+/* Efeito CRT scanline */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.05) 0px,
+    rgba(0, 0, 0, 0.05) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  z-index: 9999;
 }
 
 a {
-  color: var(--ink);
-  text-decoration-color: var(--red);
+  color: var(--homestuck-blue);
+  text-decoration: underline;
   text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
+  text-underline-offset: 4px;
+  font-weight: bold;
+  transition: all 0.05s linear;
 }
 
 a:hover {
-  color: var(--red-dark);
+  color: var(--homestuck-red);
+  text-decoration: none;
+  background: var(--homestuck-yellow);
+  padding: 0 2px;
 }
 
 ::selection {
-  background: var(--yellow);
-  color: var(--ink);
+  background: var(--homestuck-yellow);
+  color: var(--homestuck-black);
 }
 
-/* Header */
+/* Header - Estilo Homestuck */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  color: var(--paper-soft);
-  background: var(--red);
-  border-bottom: 4px solid var(--ink);
+  background: var(--homestuck-blue);
+  border-bottom: var(--border-thick);
+  border-top: var(--border-thick);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0px,
+    rgba(255, 255, 255, 0.1) 2px,
+    transparent 2px,
+    transparent 8px
+  );
 }
 
 .site-header::after {
-  content: "";
+  content: "==> [S]";
   display: block;
-  height: 8px;
-  background:
-    linear-gradient(90deg,
-      var(--paper-soft) 0 22%,
-      var(--ink) 22% 28%,
-      var(--red-dark) 28% 54%,
-      var(--yellow) 54% 78%,
-      var(--ink) 78% 100%);
-  border-top: 2px solid var(--ink);
+  height: auto;
+  background: var(--homestuck-black);
+  color: var(--homestuck-white);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 4px 12px;
+  letter-spacing: 2px;
+  border-top: 2px solid var(--homestuck-white);
 }
 
 .header-inner {
   max-width: 1120px;
-  min-height: 74px;
+  min-height: 80px;
   margin: 0 auto;
   padding: 0 24px;
   display: flex;
@@ -103,27 +154,34 @@ a:hover {
 .logo {
   position: relative;
   flex-shrink: 0;
-  color: var(--paper-soft);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: .02em;
+  color: var(--homestuck-white);
+  font-family: 'Courier New', monospace;
+  font-size: 1.3rem;
+  font-weight: bold;
+  letter-spacing: -1px;
   text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: 3px 3px 0 var(--homestuck-black);
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--homestuck-yellow);
+}
+
+.logo::before {
+  content: "☠ ";
+  font-size: 1.2rem;
 }
 
 .logo::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -7px;
-  height: 2px;
-  background: var(--paper-soft);
+  content: " ☠";
+  font-size: 1.2rem;
 }
 
 .logo:hover {
-  color: var(--yellow-soft);
+  color: var(--homestuck-white);
   text-decoration: none;
+  text-shadow: 2px 2px 0 var(--homestuck-black);
 }
 
 .nav {
@@ -135,23 +193,24 @@ a:hover {
 
 .nav a,
 .btn-logout {
-  color: var(--paper-soft);
-  border: 1px solid rgba(244,239,230,.38);
+  color: var(--homestuck-white);
+  border: 2px solid var(--homestuck-white);
   background: transparent;
   text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: .08em;
-  font-size: .72rem;
-  font-weight: 800;
-  padding: 8px 11px;
-  transition: background .15s ease, color .15s ease, border-color .15s ease;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 6px 12px;
+  transition: all 0.05s linear;
+  font-family: 'Courier New', monospace;
 }
 
 .nav a:hover,
 .btn-logout:hover {
-  color: var(--ink);
-  background: var(--paper-soft);
-  border-color: var(--paper-soft);
+  background: var(--homestuck-yellow);
+  color: var(--homestuck-black);
+  border-color: var(--homestuck-black);
+  transform: scale(0.98);
 }
 
 .header-user {
@@ -162,11 +221,13 @@ a:hover {
 }
 
 .user-name {
-  color: var(--paper-soft);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: .95rem;
-  font-weight: 700;
-  line-height: 1;
+  color: var(--homestuck-white);
+  font-weight: bold;
+  font-size: 0.85rem;
+  background: var(--homestuck-black);
+  padding: 4px 10px;
+  border: 2px solid var(--homestuck-white);
+  text-transform: uppercase;
 }
 
 /* Layout */
@@ -181,9 +242,10 @@ a:hover {
 
 .site-footer {
   margin-top: auto;
-  color: var(--paper-soft);
-  background: var(--red-dark);
-  border-top: 4px solid var(--ink);
+  background: var(--homestuck-black);
+  border-top: var(--border-thick);
+  border-bottom: var(--border-thick);
+  color: var(--homestuck-white);
 }
 
 .footer-inner {
@@ -191,58 +253,75 @@ a:hover {
   margin: 0 auto;
   padding: 20px 24px;
   text-align: center;
-  color: rgba(244,239,230,.76);
-  font-size: .8rem;
-  letter-spacing: .04em;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.footer-inner::before {
+  content: "> ";
+  color: var(--homestuck-green);
+}
+
+.footer-inner::after {
+  content: " <";
+  color: var(--homestuck-green);
 }
 
 /* Page header */
 .page-header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 18px;
-  margin-bottom: 26px;
-  padding-bottom: 16px;
-  border-bottom: 3px solid var(--ink);
+  margin-bottom: 32px;
+  padding: 12px 16px;
+  background: var(--homestuck-lightgray);
+  border: var(--border-med);
+  box-shadow: var(--shadow-retro-sm);
 }
 
 .page-header h2 {
   position: relative;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.9rem, 3vw, 2.6rem);
-  line-height: 1;
-  font-weight: 700;
-  letter-spacing: 0;
+  font-family: 'Courier New', monospace;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.2;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--homestuck-black);
 }
 
-/* Buttons */
+.page-header h2::before {
+  content: "> ";
+  color: var(--homestuck-blue);
+  font-weight: bold;
+}
+
+/* Buttons estilo pixel art */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 40px;
-  padding: 9px 16px;
-  border: 2px solid var(--ink);
-  border-radius: var(--radius);
-  color: var(--ink);
-  background: var(--paper-soft);
-  box-shadow: var(--shadow-sm);
-  font-size: .82rem;
-  font-weight: 900;
-  letter-spacing: .04em;
+  min-height: 38px;
+  padding: 8px 18px;
+  border: var(--border-thin);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.75rem;
   text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
   text-decoration: none;
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  transition: all 0.05s linear;
+  background: var(--homestuck-white);
+  color: var(--homestuck-black);
+  box-shadow: var(--shadow-retro-sm);
 }
 
 .btn:hover {
-  color: var(--ink);
-  text-decoration: none;
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 var(--ink);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .btn:active {
@@ -251,140 +330,147 @@ a:hover {
 }
 
 .btn-primary {
-  background: var(--red);
-  color: var(--paper-soft);
+  background: var(--homestuck-blue);
+  color: var(--homestuck-white);
+  border-color: var(--homestuck-white);
 }
 
 .btn-primary:hover {
-  background: var(--yellow);
-  color: var(--ink);
+  background: var(--homestuck-green);
+  color: var(--homestuck-white);
 }
 
 .btn-editar {
-  background: var(--yellow);
-  color: var(--ink);
+  background: var(--homestuck-yellow);
+  color: var(--homestuck-black);
+  border-color: var(--homestuck-black);
 }
 
 .btn-editar:hover {
-  background: var(--paper-soft);
-  color: var(--ink);
+  background: var(--homestuck-white);
+  color: var(--homestuck-black);
 }
 
 .btn-excluir {
-  background: var(--ink);
-  color: var(--paper-soft);
+  background: var(--homestuck-red);
+  color: var(--homestuck-white);
+  border-color: var(--homestuck-white);
 }
 
 .btn-excluir:hover {
-  background: var(--red);
-  color: var(--paper-soft);
+  background: var(--homestuck-black);
+  color: var(--homestuck-white);
 }
 
 .btn-ghost {
-  background: var(--paper);
+  background: var(--homestuck-lightgray);
+  color: var(--homestuck-black);
+  border-color: var(--homestuck-black);
 }
 
-.btn-full {
-  width: 100%;
+.btn-ghost:hover {
+  background: var(--homestuck-white);
 }
 
 .btn-sm {
-  min-height: 34px;
-  padding: 6px 10px;
-  box-shadow: 3px 3px 0 var(--ink);
-  font-size: .72rem;
+  min-height: 32px;
+  padding: 4px 12px;
+  font-size: 0.65rem;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 
 /* Alerts */
 .alert {
   position: relative;
-  padding: 13px 16px;
-  margin-bottom: 20px;
-  border: 2px solid var(--ink);
-  box-shadow: var(--shadow-sm);
-  font-weight: 800;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  border: var(--border-med);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: 'Courier New', monospace;
+}
+
+.alert::before {
+  content: "> ";
+  font-weight: bold;
 }
 
 .alert-erro {
-  color: var(--ink);
-  background: var(--red-soft);
+  background: var(--homestuck-red);
+  color: var(--homestuck-white);
+  border-color: var(--homestuck-black);
 }
 
 .alert-sucesso {
-  color: var(--ink);
-  background: var(--yellow-soft);
+  background: var(--homestuck-green);
+  color: var(--homestuck-white);
+  border-color: var(--homestuck-black);
 }
 
-/* Tables */
+/* Tables estilo terminal */
 .table-wrapper {
-  background: var(--paper-soft);
-  border: 2px solid var(--ink);
-  box-shadow: var(--shadow);
+  background: var(--homestuck-white);
+  border: var(--border-thick);
   overflow-x: auto;
+  box-shadow: var(--shadow-retro);
 }
 
 .data-table {
   width: 100%;
   min-width: 720px;
   border-collapse: collapse;
+  font-family: 'Courier New', monospace;
 }
 
 .data-table th {
-  padding: 13px 16px;
-  color: var(--paper-soft);
-  background: var(--red-dark);
-  border-bottom: 2px solid var(--ink);
-  font-size: .72rem;
-  font-weight: 900;
+  padding: 12px 16px;
+  background: var(--homestuck-black);
+  color: var(--homestuck-white);
+  border-bottom: var(--border-thin);
+  font-size: 0.7rem;
+  font-weight: bold;
   text-align: left;
   text-transform: uppercase;
-  letter-spacing: .09em;
+  letter-spacing: 1px;
 }
 
 .data-table td {
-  padding: 15px 16px;
-  border-bottom: 2px solid rgba(24,23,20,.16);
-  color: var(--ink);
-  background: rgba(251,247,239,.78);
-}
-
-.data-table tr:nth-child(even) td {
-  background: rgba(237,227,211,.64);
-}
-
-.data-table tr:last-child td {
-  border-bottom: none;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--homestuck-lightgray);
+  color: var(--homestuck-black);
+  background: var(--homestuck-white);
 }
 
 .data-table tr:hover td {
-  background: rgba(240,189,47,.2);
+  background: var(--homestuck-yellow);
 }
 
 .data-table strong {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.05rem;
+  font-weight: bold;
+  color: var(--homestuck-blue);
+  text-transform: uppercase;
 }
 
 .acoes {
   display: flex;
-  gap: 9px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
-/* Badge */
+/* Badge estilo Homestuck */
 .badge {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 4px 10px;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  color: var(--ink);
-  background: var(--yellow-soft);
-  font-size: .74rem;
-  font-weight: 900;
-  letter-spacing: .04em;
+  min-height: 26px;
+  padding: 2px 10px;
+  border: var(--border-thin);
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 1px;
   text-transform: uppercase;
+  background: var(--homestuck-white);
+  color: var(--homestuck-black);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* Empty state */
@@ -392,48 +478,59 @@ a:hover {
   position: relative;
   max-width: 620px;
   padding: 56px 32px;
-  color: var(--ink);
-  background: var(--paper-soft);
-  border: 2px dashed var(--ink);
-  box-shadow: var(--shadow);
+  background: var(--homestuck-lightgray);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-retro);
   text-align: center;
 }
 
 .empty-state p {
   max-width: 360px;
   margin: 0 auto 22px;
-  color: var(--ink-soft);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  text-transform: uppercase;
 }
 
-/* Forms */
+.empty-state::before {
+  content: "> EMPTY";
+  display: block;
+  font-size: 0.7rem;
+  color: var(--homestuck-gray);
+  margin-bottom: 16px;
+}
+
+/* Forms estilo terminal */
 .form-card,
 .confirm-card,
 .login-card {
   position: relative;
-  background: var(--paper-soft);
-  border: 2px solid var(--ink);
-  box-shadow: var(--shadow);
+  background: var(--homestuck-white);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-retro);
 }
 
 .form-card {
   max-width: 640px;
-  padding: 34px;
+  padding: 32px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 7px;
-  color: var(--ink);
-  font-size: .76rem;
-  font-weight: 900;
-  letter-spacing: .08em;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 1px;
   text-transform: uppercase;
+  color: var(--homestuck-black);
+}
+
+.form-group label::before {
+  content: "> ";
+  color: var(--homestuck-blue);
 }
 
 .form-group input[type="text"],
@@ -442,15 +539,14 @@ a:hover {
 .form-group input[type="number"],
 .form-group select {
   width: 100%;
-  min-height: 44px;
-  padding: 10px 13px;
-  border: 2px solid var(--ink);
-  border-radius: var(--radius);
-  outline: none;
-  color: var(--ink);
-  background: #fffdf7;
-  font: inherit;
-  transition: box-shadow .15s ease, background .15s ease, transform .15s ease;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: var(--border-thin);
+  background: var(--homestuck-white);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.85rem;
+  transition: all 0.05s linear;
 }
 
 .form-group select {
@@ -459,8 +555,65 @@ a:hover {
 
 .form-group input:focus,
 .form-group select:focus {
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(240,189,47,.42);
+  outline: none;
+  border-color: var(--homestuck-blue);
+  background: var(--homestuck-yellow);
+  box-shadow: 2px 2px 0 var(--homestuck-black);
+}
+
+/* Estilo especial para input de arquivo */
+.form-group input[type="file"] {
+  width: 100%;
+  min-height: 100px;
+  padding: 16px;
+  border: 3px dashed var(--homestuck-blue);
+  background: var(--homestuck-lightgray);
+  cursor: pointer;
+  transition: all 0.05s linear;
+  font-family: 'Courier New', monospace;
+}
+
+.form-group input[type="file"]:hover {
+  background: var(--homestuck-yellow);
+  border-color: var(--homestuck-black);
+}
+
+.form-group input[type="file"]::file-selector-button {
+  background: var(--homestuck-black);
+  color: var(--homestuck-white);
+  padding: 8px 16px;
+  border: var(--border-thin);
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-right: 12px;
+  transition: all 0.05s linear;
+}
+
+.form-group input[type="file"]::file-selector-button:hover {
+  background: var(--homestuck-blue);
+  transform: scale(0.98);
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button {
+  background: var(--homestuck-black);
+  color: var(--homestuck-white);
+  padding: 8px 16px;
+  border: var(--border-thin);
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-right: 12px;
+  transition: all 0.05s linear;
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button:hover {
+  background: var(--homestuck-blue);
+  transform: scale(0.98);
 }
 
 .form-actions {
@@ -470,27 +623,29 @@ a:hover {
   margin-top: 10px;
 }
 
-/* Delete confirmation */
+/* Confirmação de exclusão */
 .confirm-card {
   max-width: 560px;
-  padding: 42px 34px;
+  padding: 40px 32px;
   text-align: center;
 }
 
 .confirm-card h3 {
-  margin-bottom: 10px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.55rem;
+  margin-bottom: 12px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.confirm-card h3::before {
+  content: "? ";
+  color: var(--homestuck-red);
 }
 
 .confirm-card p {
   max-width: 440px;
   margin: 0 auto 28px;
-  color: var(--ink-soft);
-}
-
-.confirm-card .form-actions {
-  justify-content: center;
+  font-size: 0.85rem;
 }
 
 /* Login */
@@ -500,45 +655,56 @@ a:hover {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background:
-    linear-gradient(90deg, rgba(24,23,20,.05) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(24,23,20,.04) 1px, transparent 1px),
-    var(--paper);
-  background-size: 44px 44px, 44px 44px, auto;
+  background: var(--homestuck-white);
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.03) 0px,
+      rgba(0, 0, 0, 0.03) 2px,
+      transparent 2px,
+      transparent 8px
+    );
 }
 
 .login-card {
   width: 100%;
   max-width: 430px;
-  padding: 42px 36px 36px;
+  padding: 40px 34px 34px;
 }
 
 .login-logo {
-  margin-bottom: 6px;
-  color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 2rem;
-  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 1.8rem;
+  font-weight: bold;
   text-align: center;
+  text-transform: uppercase;
+  color: var(--homestuck-blue);
+}
+
+.login-logo::before {
+  content: "< ";
+}
+
+.login-logo::after {
+  content: " >";
 }
 
 .login-title {
   margin-bottom: 30px;
-  color: var(--muted);
-  font-size: .78rem;
-  font-weight: 900;
-  letter-spacing: .12em;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 2px;
   text-align: center;
   text-transform: uppercase;
 }
 
 .login-hint {
   margin-top: 20px;
-  color: var(--muted);
-  font-size: .78rem;
+  font-size: 0.7rem;
   text-align: center;
 }
 
+/* Responsive */
 @media (max-width: 760px) {
   .header-inner {
     min-height: auto;
@@ -570,8 +736,7 @@ a:hover {
   .form-card,
   .confirm-card,
   .login-card {
-    padding: 28px 22px;
-    box-shadow: 5px 5px 0 var(--ink);
+    padding: 24px 20px;
   }
 
   .form-actions,
@@ -583,33 +748,83 @@ a:hover {
   .btn-sm {
     width: 100%;
   }
-  .personagem-avatar {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid var(--ink);
-    background: var(--cream);
+  
+  .form-group input[type="file"] {
+    min-height: 80px;
+    padding: 12px;
+  }
+}
+
+/* Avatar Styles estilo Homestuck */
+.personagem-avatar {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border: var(--border-thin);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  transition: all 0.05s linear;
+}
+
+.personagem-avatar:hover {
+  transform: scale(1.05);
+  border-color: var(--homestuck-yellow);
+  filter: brightness(1.1);
 }
 
 .personagem-avatar-placeholder {
-    width: 50px;
-    height: 50px;
-    background: var(--cream);
-    border: 2px solid var(--ink);
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
+  width: 48px;
+  height: 48px;
+  background: var(--homestuck-lightgray);
+  border: var(--border-thin);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.05s linear;
+}
+
+.personagem-avatar-placeholder:hover {
+  background: var(--homestuck-yellow);
+  transform: scale(1.02);
 }
 
 .imagem-preview {
-    max-width: 150px;
-    max-height: 150px;
-    border: 2px solid var(--ink);
-    border-radius: 5px;
-    margin-bottom: 10px;
+  max-width: 150px;
+  max-height: 150px;
+  border: var(--border-med);
+  margin-bottom: 12px;
+  image-rendering: pixelated;
 }
 
+/* Scrollbar estilo retro */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--homestuck-lightgray);
+  border: 1px solid var(--homestuck-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--homestuck-blue);
+  border: 1px solid var(--homestuck-black);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--homestuck-green);
+}
+
+/* SGA (Sburb GUI Animation) - pequenos detalhes */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.loading::after {
+  content: "_";
+  animation: blink 1s infinite;
+  display: inline-block;
 }
