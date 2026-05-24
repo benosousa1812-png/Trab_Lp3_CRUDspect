@@ -25,7 +25,7 @@ require_once __DIR__ . '/../includes/header.php';
       <thead>
         <tr>
           <th>Foto</th>
-          <th>#</th>
+          <th></th>
           <th>Nome</th>
           <th>Classe</th>
           <th>Aspecto</th>
@@ -48,7 +48,7 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
   <?php endif; ?>
 </td>
-            <td><?= $personagem->getId() ?></td>
+            <td><?= '' ?></td>
             <td><strong><?= htmlspecialchars($personagem->getNome()) ?></strong></td>
             <td><span class="badge"><?= htmlspecialchars($personagem->getClasse()) ?></span></td>
             <td><span class="badge"><?= htmlspecialchars($personagem->getAspecto()) ?></span></td>
