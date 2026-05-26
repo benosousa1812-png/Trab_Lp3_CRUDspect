@@ -24,6 +24,18 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `partida`
+--
+
+CREATE TABLE `partida` (
+  `ID_partida` int(11) NOT NULL,
+  `perso_ID` int(11) NOT NULL,
+  `dif` varchar(50) DEFAULT NULL,
+  `local` varchar(70) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `personagem`
 --
 
