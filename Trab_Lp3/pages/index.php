@@ -12,6 +12,12 @@ require_once __DIR__ . '/../includes/header.php';
 <div class="page-header">
   <h2>Meus Personagens god tier</h2>
   <a href="personagem_create.php" class="btn btn-primary">+ Novo personagem</a>
+  
+   <?php if (!empty($personagens)): ?>
+    <a href="partida_create.php" class="btn btn-success">
+      Iniciar Partida
+    </a>
+  <?php endif; ?>
 </div>
 
 <?php if (empty($personagens)): ?>
