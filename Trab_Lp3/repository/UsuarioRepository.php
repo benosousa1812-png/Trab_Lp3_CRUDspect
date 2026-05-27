@@ -43,7 +43,6 @@ class UsuarioRepository {
             throw new RuntimeException('E-mail já cadastrado.');
         }
 
-        // Insere o novo usuário
         $stmt = $this->pdo->prepare(
             'INSERT INTO usuario (nome, email, senha, criado_em) VALUES (:nome, :email, :senha, NOW())'
         );
@@ -66,44 +65,6 @@ class UsuarioRepository {
             ':foto_perfil' => $usuario->getFotoPerfil(),
             ':id'          => $usuario->getId()
         ]);
-    }
-
-    /**
-     * Atualiza apenas a foto de perfil
-     */
-    public function atualizarFotoPerfil(int $userId, ?string $caminhoFoto): void {
-        $stmt = $this->pdo->prepare(
-            'UPDATE usuario SET foto_perfil = :foto_perfil WHERE id = :id'
-        );
-        $stmt->execute([
-            ':foto_perfil' => $caminhoFoto,
-            ':id'          => $userId
-        ]);
-    }
-
-    /**
-     * Atualiza apenas a biografia
-     */
-    public function atualizarBiografia(int $userId, ?string $biografia): void {
-        $stmt = $this->pdo->prepare(
-            'UPDATE usuario SET biografia = :biografia WHERE id = :id'
-        );
-        $stmt->execute([
-            ':biografia' => $biografia,
-            ':id'        => $userId
-        ]);
-    }
-
-    /**
-     * Busca todos os usuários (para admin)
-     */
-    public function listarTodos(): array {
-        $stmt = $this->pdo->query('SELECT * FROM usuario ORDER BY nome ASC');
-        $usuarios = [];
-        foreach ($stmt->fetchAll() as $dados) {
-            $usuarios[] = new Usuario($dados);
-        }
-        return $usuarios;
     }
 
     /**
@@ -134,6 +95,44 @@ class UsuarioRepository {
     }
 
     /**
+     * Atualiza apenas a foto de perfil
+     */
+    public function atualizarFotoPerfil(int $userId, ?string $caminhoFoto): void {
+        $stmt = $this->pdo->prepare(
+            'UPDATE usuario SET foto_perfil = :foto_perfil WHERE id = :id'
+        );
+        $stmt->execute([
+            ':foto_perfil' => $caminhoFoto,
+            ':id'          => $userId
+        ]);
+    }
+
+    /**
+     * Atualiza apenas a biografia
+     */
+    public function atualizarBiografia(int $userId, ?string $biografia): void {
+        $stmt = $this->pdo->prepare(
+            'UPDATE usuario SET biografia = :biografia WHERE id = :id'
+        );
+        $stmt->execute([
+            ':biografia' => $biografia,
+            ':id'        => $userId
+        ]);
+    }
+
+    /**
+     * Busca todos os usuários
+     */
+    public function listarTodos(): array {
+        $stmt = $this->pdo->query('SELECT * FROM usuario ORDER BY nome ASC');
+        $usuarios = [];
+        foreach ($stmt->fetchAll() as $dados) {
+            $usuarios[] = new Usuario($dados);
+        }
+        return $usuarios;
+    }
+
+    /**
      * Conta quantos personagens um usuário tem
      */
     public function contarPersonagens(int $usuarioId): int {
@@ -141,4 +140,4 @@ class UsuarioRepository {
         $stmt->execute([':uid' => $usuarioId]);
         return (int) $stmt->fetchColumn();
     }
-}
+} 
