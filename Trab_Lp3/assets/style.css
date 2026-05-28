@@ -1282,3 +1282,332 @@ header .foto-perfil-placeholder {
     font-size: 0.6rem;
   }
 }
+
+/* ============================================
+   BARRA DE PESQUISA 2 - HOMESTUCK STYLE
+============================================ */
+
+.search-bar-container2{
+  margin-bottom: 25px;
+  background: #f2f2f2;
+
+  border: 3px solid #1a1a1a;
+
+  padding: 15px;
+
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.12);
+}
+
+.search-wrapper2{
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon2{
+  position: absolute;
+  left: 12px;
+
+  font-size: 18px;
+  color: #626262;
+
+  pointer-events: none;
+}
+
+#searchInput2{
+  width: 100%;
+
+  padding: 12px 42px 12px 42px;
+
+  background: #f2f2f2;
+
+  border: 2px solid #1a1a1a;
+
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.9rem;
+
+  color: #1a1a1a;
+
+  outline: none;
+
+  transition: all 0.05s linear;
+}
+
+#searchInput2:focus{
+  background: #ffffff;
+  border-color: #7c3aed;
+}
+
+#searchInput2::placeholder{
+  color: #777;
+}
+
+.clear-search2{
+  position: absolute;
+  right: 10px;
+
+  background: none;
+  border: none;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  color: #626262;
+
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+
+  padding: 5px 8px;
+
+  border-radius: 50%;
+
+  transition: all 0.05s linear;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-search2:hover{
+  background: #e00707;
+  color: white;
+}
+
+.search-result-count2{
+  margin-top: 10px;
+
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+
+  font-size: 0.7rem;
+  text-transform: uppercase;
+
+  color: #626262;
+
+  padding-top: 8px;
+
+  text-align: right;
+
+  border-top: 1px dashed #c9c9c9;
+}
+
+
+
+/* ============================================
+   RESPONSIVO
+============================================ */
+
+@media (max-width: 760px){
+
+  .search-bar-container2{
+    padding: 10px;
+  }
+
+  #searchInput2{
+    padding: 10px 35px;
+    font-size: 0.8rem;
+  }
+
+  .search-icon2{
+    left: 10px;
+    font-size: 15px;
+  }
+
+  .search-result-count2{
+    font-size: 0.6rem;
+  }
+
+}
+/* ============================================
+   TABELA DE SELEÇÃO - MESMO ESTILO
+============================================ */
+
+.table-wrapper2{
+    margin-top: 20px;
+
+    background: #f2f2f2;
+
+    border: 3px solid #1a1a1a;
+
+    padding: 15px;
+
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.12);
+}
+
+.data-table2{
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-family: 'Courier New', monospace;
+}
+
+.data-table2 th{
+    background: #d3d3d3;
+
+    border-bottom: 2px solid #1a1a1a;
+
+    padding: 10px;
+
+    text-transform: uppercase;
+
+    font-size: 0.75rem;
+
+    text-align: left;
+}
+
+.data-table2 td{
+    padding: 10px;
+
+    border-bottom: 1px dashed #bdbdbd;
+
+    vertical-align: middle;
+}
+
+.data-table2 tr:hover{
+    background: rgba(0,0,0,0.04);
+}
+
+
+
+/* CHECKBOX */
+
+.select-personagem{
+    width: 16px;
+    height: 16px;
+
+    cursor: pointer;
+}
+
+
+
+/* FOTO */
+
+.personagem-avatar2{
+    width: 45px;
+    height: 45px;
+
+    object-fit: cover;
+
+    border: 2px solid #1a1a1a;
+}
+
+
+
+/* NOME */
+
+.nome-personagem{
+    font-weight: bold;
+
+    text-transform: uppercase;
+}
+
+
+
+/* CLASSE */
+
+.badge2{
+    display: inline-block;
+
+    padding: 4px 10px;
+
+    border: 2px solid #1a1a1a;
+
+    background: white;
+
+    font-size: 0.7rem;
+
+    text-transform: uppercase;
+
+    font-weight: bold;
+}
+/* ===================================
+   AREA DOS SELECIONADOS
+=================================== */
+
+.selected-area2{
+    margin-top: 25px;
+
+    background: #f2f2f2;
+
+    border: 3px solid #1a1a1a;
+
+    padding: 15px;
+
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.12);
+}
+
+
+
+/* TITULO */
+
+.selected-area2 h2{
+    font-family: 'Courier New', monospace;
+
+    font-size: 0.85rem;
+
+    text-transform: uppercase;
+
+    margin-bottom: 15px;
+}
+
+
+
+/* GRID */
+
+.selected-grid2{
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+}
+
+
+
+/* CARD */
+
+.selected-character-card2{
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: 180px;
+
+    padding: 10px;
+
+    background: white;
+
+    border: 2px solid #1a1a1a;
+}
+
+
+
+/* FOTO */
+
+.selected-character-card2 img{
+    width: 45px;
+    height: 45px;
+
+    object-fit: cover;
+
+    border: 2px solid #1a1a1a;
+}
+
+
+
+/* TEXTO */
+
+.selected-character-card2 span{
+    font-family: 'Courier New', monospace;
+
+    font-size: 0.8rem;
+
+    font-weight: bold;
+
+    text-transform: uppercase;
+}
