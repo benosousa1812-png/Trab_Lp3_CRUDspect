@@ -69,8 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login — PokéCRUD</title>
+  <title>Login — CRUDspect</title>
   <link rel="stylesheet" href="../assets/style.css" />
+  <link rel="icon" type="image/x-icon" href="../assets/gate.ico">
 </head>
 <body class="login-body">
 

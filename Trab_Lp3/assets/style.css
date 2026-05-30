@@ -1611,3 +1611,145 @@ header .foto-perfil-placeholder {
 
     text-transform: uppercase;
 }
+/* ============================================
+   PLAYER DE MÚSICA NO HEADER
+   ============================================ */
+
+.audio-player {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #f2f2f2;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 0 15px;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-btn {
+  background: #2b7a3e;
+  color: #f2f2f2;
+  border: 2px solid #f2f2f2;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.05s linear;
+}
+
+.player-btn:hover {
+  background: #e8e507;
+  color: #1a1a1a;
+  border-color: #1a1a1a;
+  transform: none;
+}
+
+.audio-status {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.65rem;
+  color: #f2f2f2;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 8px;
+  border-radius: 3px;
+  margin-left: 5px;
+}
+
+/* Ajuste do header-inner para acomodar o player */
+.header-inner {
+  max-width: 1120px;
+  min-height: 80px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .audio-player {
+    justify-content: center;
+    margin: 5px 0;
+  }
+  
+  .player-controls {
+    justify-content: center;
+  }
+}
+/* Player com playlist */
+.audio-player {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #f2f2f2;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 0 15px;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.player-btn {
+  background: #2b7a3e;
+  color: #f2f2f2;
+  border: 2px solid #f2f2f2;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.05s linear;
+}
+
+.player-btn:hover {
+  background: #e8e507;
+  color: #1a1a1a;
+  border-color: #1a1a1a;
+  transform: none;
+}
+
+.audio-status {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.6rem;
+  color: #f2f2f2;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 3px 8px;
+  border-radius: 3px;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .audio-status {
+    max-width: 120px;
+    font-size: 0.55rem;
+  }
+  
+  .player-btn {
+    padding: 3px 8px;
+    font-size: 0.65rem;
+  }
+}
