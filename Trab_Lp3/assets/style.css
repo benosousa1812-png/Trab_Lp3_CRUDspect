@@ -4,6 +4,13 @@
    Cor principal: Verde (Doom Aspect)
 ------------------------------------------------- */
 
+
+
+@font-face {
+  font-family:'HomestuckFonte';
+  src: url('Fontstuck.ttf');
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -67,7 +74,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  font-family: 'Courier New', 'Courier', monospace;
+  font-family: 'HomestuckFonte';
   font-weight: bold;
   font-size: 15px;
   line-height: 1.4;
@@ -137,7 +144,7 @@ a:hover {
   height: auto;
   background: var(--homestuck-black);
   color: var(--homestuck-white);
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   font-weight: bold;
   font-size: 11px;
   padding: 4px 12px;
@@ -159,7 +166,7 @@ a:hover {
   position: relative;
   flex-shrink: 0;
   color: var(--homestuck-white);
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   font-size: 1.3rem;
   font-weight: bold;
   letter-spacing: -1px;
@@ -285,7 +292,7 @@ a:hover {
 
 .page-header h2 {
   position: relative;
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   font-size: clamp(1.5rem, 3vw, 2rem);
   line-height: 1.2;
   font-weight: bold;
@@ -308,7 +315,7 @@ a:hover {
   min-height: 38px;
   padding: 8px 18px;
   border: var(--border-thin);
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   font-weight: bold;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -389,7 +396,7 @@ a:hover {
   border: var(--border-med);
   font-weight: bold;
   text-transform: uppercase;
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
 }
 
 .alert::before {
@@ -420,7 +427,7 @@ a:hover {
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   table-layout: fixed;
 }
 
@@ -589,7 +596,7 @@ a:hover {
   padding: 8px 12px;
   border: var(--border-thin);
   background: var(--homestuck-white);
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   font-weight: bold;
   font-size: 0.85rem;
   transition: all 0.05s linear;
@@ -616,7 +623,7 @@ a:hover {
   background: var(--homestuck-lightgray);
   cursor: pointer;
   transition: all 0.05s linear;
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
 }
 
 .form-group input[type="file"]:hover {
@@ -630,7 +637,7 @@ a:hover {
   padding: 8px 16px;
   border: var(--border-thin);
   cursor: pointer;
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   font-weight: bold;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -649,7 +656,7 @@ a:hover {
   padding: 8px 16px;
   border: var(--border-thin);
   cursor: pointer;
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   font-weight: bold;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -925,7 +932,7 @@ a:hover {
   font-size: 0.7rem;
   font-weight: bold;
   padding: 6px 12px;
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
 }
 
 .btn-logout:hover {
@@ -1093,7 +1100,7 @@ header .foto-perfil-placeholder {
   background: #d3d3d3;
   text-decoration: none;
   color: #1a1a1a;
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   font-weight: bold;
   text-transform: uppercase;
   font-size: 0.75rem;
@@ -1213,7 +1220,7 @@ header .foto-perfil-placeholder {
   padding: 12px 40px 12px 40px;
   background: #f2f2f2;
   border: 2px solid #1a1a1a;
-  font-family: 'Courier New', monospace;
+  font-family: 'HomestuckFonte', monospace;
   font-weight: bold;
   font-size: 0.9rem;
   color: #1a1a1a;
@@ -1752,4 +1759,89 @@ header .foto-perfil-placeholder {
     padding: 3px 8px;
     font-size: 0.65rem;
   }
+}
+/* ============================================
+   PRÉVIA DE IMAGEM
+   ============================================ */
+
+.preview-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.preview-image-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.foto-preview {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 4px solid #2b7a3e;
+  border-radius: 10px;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.foto-preview-placeholder {
+  width: 150px;
+  height: 150px;
+  background: #d3d3d3;
+  border: 4px solid #2b7a3e;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.foto-preview-round {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 4px solid #2b7a3e;
+  border-radius: 50%;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.foto-preview-placeholder-round {
+  width: 150px;
+  height: 150px;
+  background: #d3d3d3;
+  border: 4px solid #2b7a3e;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.preview-new {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+/* ============================================
+   CAIXA DE BIOGRAFIA
+   ============================================ */
+
+textarea#biografia {
+  width: 100%;
+  min-height: 200px;
+  padding: 12px;
+  border: 2px solid #1a1a1a;
+  background: #f2f2f2;
+  font-family: 'HomestuckFonte', 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+textarea#biografia:focus {
+  outline: none;
+  border-color: #2b7a3e;
+  background: #ffffff;
 }

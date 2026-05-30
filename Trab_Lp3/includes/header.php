@@ -20,7 +20,7 @@
 
     <!-- Player com playlist -->
     <div class="audio-player">
-      <audio id="bgAudio" preload="auto">
+      <audio id="bgAudio" preload="auto" loop>
         <source src="" type="audio/mpeg">
       </audio>
       <div class="player-controls">

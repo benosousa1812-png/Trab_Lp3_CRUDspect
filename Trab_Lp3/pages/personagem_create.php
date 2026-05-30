@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../repository/PersonagemRepository.php';
 
@@ -22,19 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $aspecto  = trim($_POST['aspecto'] ?? '');
     $caminhoImagem = null;
     
-    // Processar upload da imagem
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
         $tipo_arquivo = $_FILES['imagem']['type'];
         $extensoes_permitidas = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         
         if (in_array($tipo_arquivo, $extensoes_permitidas)) {
-            // Criar nome único para o arquivo
             $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
             $nome_arquivo = uniqid() . '.' . $extensao;
             $caminho_relativo = 'uploads/' . $nome_arquivo;
             $caminho_absoluto = __DIR__ . '/../uploads/' . $nome_arquivo;
             
-            // Mover o arquivo para a pasta uploads
             if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminho_absoluto)) {
                 $caminhoImagem = $caminho_relativo;
             } else {
@@ -48,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $personagem = Personagem::novo($nome, $classe, $aspecto, $_SESSION['usuario_id'], $caminhoImagem);
         $repo->salvar($personagem);
-
         header('Location: index.php');
         exit;
     } catch (InvalidArgumentException $e) {
@@ -59,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<!-- O HTML continua IGUAL, só muda a linha do "Tamanho máximo" -->
 <div class="page-header">
   <h2>Novo personagem</h2>
   <a href="index.php" class="btn btn-ghost">← Voltar</a>
@@ -70,7 +64,7 @@ require_once __DIR__ . '/../includes/header.php';
 <?php endif; ?>
 
 <div class="form-card">
-  <form method="POST" action="personagem_create.php" enctype="multipart/form-data">
+  <form method="POST" action="personagem_create.php" enctype="multipart/form-data" id="formPersonagem">
     
     <div class="form-group">
       <label for="nome">Nome do personagem</label>
@@ -99,10 +93,11 @@ require_once __DIR__ . '/../includes/header.php';
 
     <div class="form-group">
       <label for="imagem">Foto do personagem (opcional)</label>
-      <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp" />
-      <small style="display: block; margin-top: 5px; color: #666;">
-        Formatos aceitos: JPG, PNG, GIF, WEBP. Tamanho máximo: 5MB
-      </small>
+      <div id="novaFotoPreview" class="preview-new" style="display: none;">
+        <img id="newImagePreview" class="foto-preview">
+      </div>
+      <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp" onchange="previewImage(this)">
+      <small>Formatos aceitos: JPG, PNG, GIF, WEBP. Máximo: 5MB</small>
     </div>
 
     <div class="form-actions">
@@ -112,5 +107,24 @@ require_once __DIR__ . '/../includes/header.php';
 
   </form>
 </div>
+
+<script>
+function previewImage(input) {
+    const previewDiv = document.getElementById('novaFotoPreview');
+    const previewImg = document.getElementById('newImagePreview');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            previewDiv.style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        previewDiv.style.display = 'none';
+        previewImg.src = '';
+    }
+}
+</script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

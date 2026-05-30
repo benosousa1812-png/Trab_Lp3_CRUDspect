@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../repository/PersonagemRepository.php';
 
@@ -35,11 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome     = trim($_POST['nome'] ?? '');
     $classe   = trim($_POST['classe'] ?? '');
     $aspecto  = trim($_POST['aspecto'] ?? '');
-    $caminhoImagem = $personagem->getCaminhoImagem(); // Mantém o caminho atual por padrão
+    $caminhoImagem = $personagem->getCaminhoImagem();
     
-    // Verificar se deve remover a imagem
     if (isset($_POST['remover_imagem']) && $_POST['remover_imagem'] === '1') {
-        // Deletar o arquivo antigo
         if ($personagem->getCaminhoImagem()) {
             $caminho_antigo = __DIR__ . '/../' . $personagem->getCaminhoImagem();
             if (file_exists($caminho_antigo)) {
@@ -49,13 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $caminhoImagem = null;
     }
     
-    // Processar upload da nova imagem
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
         $tipo_arquivo = $_FILES['imagem']['type'];
         $extensoes_permitidas = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         
         if (in_array($tipo_arquivo, $extensoes_permitidas)) {
-            // Deletar imagem antiga se existir
             if ($personagem->getCaminhoImagem()) {
                 $caminho_antigo = __DIR__ . '/../' . $personagem->getCaminhoImagem();
                 if (file_exists($caminho_antigo)) {
@@ -63,13 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             
-            // Criar nome único para o novo arquivo
             $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
             $nome_arquivo = uniqid() . '.' . $extensao;
             $caminho_relativo = 'uploads/' . $nome_arquivo;
             $caminho_absoluto = __DIR__ . '/../uploads/' . $nome_arquivo;
             
-            // Mover o arquivo
             if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminho_absoluto)) {
                 $caminhoImagem = $caminho_relativo;
             } else {
@@ -83,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $personagem->alterarDados($nome, $classe, $aspecto, $caminhoImagem);
         $repo->salvar($personagem);
-
         header('Location: index.php');
         exit;
     } catch (InvalidArgumentException $e) {
@@ -104,7 +96,7 @@ require_once __DIR__ . '/../includes/header.php';
 <?php endif; ?>
 
 <div class="form-card">
-  <form method="POST" action="personagem_edit.php?id=<?= $personagem->getId() ?>" enctype="multipart/form-data">
+  <form method="POST" action="personagem_edit.php?id=<?= $personagem->getId() ?>" enctype="multipart/form-data" id="formPersonagem">
 
     <div class="form-group">
       <label for="nome">Nome do Personagem</label>
@@ -133,28 +125,32 @@ require_once __DIR__ . '/../includes/header.php';
 
     <div class="form-group">
       <label>Foto atual</label>
-      <?php if ($personagem->getCaminhoImagem() && file_exists(__DIR__ . '/../' . $personagem->getCaminhoImagem())): ?>
-        <div style="margin-bottom: 10px;">
-          <img src="/Trab_Lp3/<?= $personagem->getCaminhoImagem() ?>" 
-               alt="Foto do personagem" 
-               style="max-width: 150px; max-height: 150px; border: 2px solid #1a1a1a;">
+      <div class="preview-container">
+        <div class="preview-image-wrapper">
+          <?php if ($personagem->getCaminhoImagem() && file_exists(__DIR__ . '/../' . $personagem->getCaminhoImagem())): ?>
+            <img id="currentImagePreview" src="/Trab_Lp3/<?= $personagem->getCaminhoImagem() ?>" class="foto-preview">
+          <?php else: ?>
+            <div id="currentImagePreview" class="foto-preview-placeholder">🎭</div>
+          <?php endif; ?>
         </div>
-        <div style="margin-bottom: 15px;">
+      </div>
+      
+      <?php if ($personagem->getCaminhoImagem() && file_exists(__DIR__ . '/../' . $personagem->getCaminhoImagem())): ?>
+        <div class="form-group">
           <label>
-            <input type="checkbox" name="remover_imagem" value="1"> Remover foto atual
+            <input type="checkbox" name="remover_imagem" value="1" id="removerImagemCheckbox"> Remover foto atual
           </label>
         </div>
-      <?php else: ?>
-        <p style="margin-bottom: 15px; color: #666;">Nenhuma foto cadastrada</p>
       <?php endif; ?>
     </div>
 
     <div class="form-group">
       <label for="imagem">Nova foto (opcional)</label>
-      <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp" />
-      <small style="display: block; margin-top: 5px; color: #666;">
-        Selecione uma nova imagem para substituir a atual
-      </small>
+      <div id="novaFotoPreview" class="preview-new" style="display: none;">
+        <img id="newImagePreview" class="foto-preview">
+      </div>
+      <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp" onchange="previewImage(this)">
+      <small>Selecione uma nova imagem para substituir a atual</small>
     </div>
 
     <div class="form-actions">
@@ -164,3 +160,37 @@ require_once __DIR__ . '/../includes/header.php';
 
   </form>
 </div>
+
+<script>
+function previewImage(input) {
+    const previewDiv = document.getElementById('novaFotoPreview');
+    const previewImg = document.getElementById('newImagePreview');
+    const removerCheckbox = document.getElementById('removerImagemCheckbox');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            previewDiv.style.display = 'block';
+            if (removerCheckbox) removerCheckbox.checked = false;
+        }
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        previewDiv.style.display = 'none';
+        previewImg.src = '';
+    }
+}
+
+if (document.getElementById('removerImagemCheckbox')) {
+    document.getElementById('removerImagemCheckbox').addEventListener('change', function() {
+        const novaPreview = document.getElementById('novaFotoPreview');
+        const fileInput = document.getElementById('imagem');
+        if (this.checked) {
+            novaPreview.style.display = 'none';
+            fileInput.value = '';
+        }
+    });
+}
+</script>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

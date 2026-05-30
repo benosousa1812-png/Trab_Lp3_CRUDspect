@@ -12,14 +12,24 @@ if (!$usuario) {
 
 $erro = '';
 $sucesso = '';
-$aba_ativa = $_GET['aba'] ?? 'perfil'; // perfil, conta ou senha
+$aba_ativa = $_GET['aba'] ?? 'perfil';
 
 // Processar atualização do perfil (biografia e foto)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'perfil') {
     $biografia = trim($_POST['biografia'] ?? '');
     $foto_path = $usuario->getFotoPerfil();
     
-    if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
+    // VERIFICAR SE DEVE REMOVER A FOTO
+    if (isset($_POST['remover_imagem']) && $_POST['remover_imagem'] === '1') {
+        if ($usuario->getFotoPerfil() && file_exists(__DIR__ . '/../' . $usuario->getFotoPerfil())) {
+            unlink(__DIR__ . '/../' . $usuario->getFotoPerfil());
+        }
+        $foto_path = null;
+        $sucesso = "Foto removida com sucesso!";
+    }
+    
+    // Processar upload da nova imagem (só se não tiver removido)
+    if (!isset($_POST['remover_imagem']) && isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
         $tipo_arquivo = $_FILES['foto_perfil']['type'];
         $extensoes_permitidas = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         
@@ -58,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['ac
             $usuario->setBiografia($biografia);
             $usuario->setFotoPerfil($foto_path);
             $repo->atualizarPerfil($usuario);
-            if (empty($sucesso)) {
+            if (empty($sucesso) && empty($erro)) {
                 $sucesso = "Perfil atualizado com sucesso!";
             }
         } catch (Exception $e) {
@@ -78,7 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['ac
         $erro = "Email inválido.";
     } else {
         try {
-            // Verificar se email já existe para outro usuário
             $usuarioExistente = $repo->buscarPorEmail($email);
             if ($usuarioExistente && $usuarioExistente->getId() !== $usuario->getId()) {
                 $erro = "Este email já está cadastrado por outro usuário.";
@@ -108,7 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['ac
     } elseif (strlen($nova_senha) < 6) {
         $erro = "A nova senha deve ter pelo menos 6 caracteres.";
     } else {
-        // Verificar senha atual
         $senha_hash = hash('sha256', $senha_atual);
         if ($senha_hash !== $usuario->getSenha()) {
             $erro = "Senha atual incorreta.";
@@ -140,52 +148,104 @@ require_once __DIR__ . '/../includes/header.php';
   <div class="alert alert-sucesso"><?= htmlspecialchars($sucesso) ?></div>
 <?php endif; ?>
 
-<!-- Abas de navegação -->
 <div class="profile-tabs">
   <a href="?aba=perfil" class="tab <?= $aba_ativa === 'perfil' ? 'tab-ativa' : '' ?>">📸 Perfil</a>
   <a href="?aba=conta" class="tab <?= $aba_ativa === 'conta' ? 'tab-ativa' : '' ?>">👤 Dados da Conta</a>
   <a href="?aba=senha" class="tab <?= $aba_ativa === 'senha' ? 'tab-ativa' : '' ?>">🔒 Alterar Senha</a>
 </div>
 
-<!-- ABA 1: PERFIL (Foto e Biografia) -->
 <?php if ($aba_ativa === 'perfil'): ?>
 <div class="form-card">
-  <form method="POST" action="usuario_perfil.php?aba=perfil" enctype="multipart/form-data">
+  <form method="POST" action="usuario_perfil.php?aba=perfil" enctype="multipart/form-data" id="formPerfil">
     <input type="hidden" name="acao" value="perfil">
     
-    <div class="perfil-foto-container" style="text-align: center; margin-bottom: 30px;">
-      <?php if ($usuario->getFotoPerfil() && file_exists(__DIR__ . '/../' . $usuario->getFotoPerfil())): ?>
-        <img src="/Trab_Lp3/<?= $usuario->getFotoPerfil() ?>" 
-             alt="Foto de perfil" 
-             class="foto-perfil-grande">
-      <?php else: ?>
-        <div class="foto-perfil-grande-placeholder">
-          🎭
+    <div class="perfil-foto-container">
+      <label>Foto atual</label>
+      <div class="preview-container">
+        <div class="preview-image-wrapper">
+          <?php if ($usuario->getFotoPerfil() && file_exists(__DIR__ . '/../' . $usuario->getFotoPerfil())): ?>
+            <img id="currentImagePreview" src="/Trab_Lp3/<?= $usuario->getFotoPerfil() ?>" class="foto-preview-round">
+          <?php else: ?>
+            <div id="currentImagePreview" class="foto-preview-placeholder-round">🎭</div>
+          <?php endif; ?>
         </div>
-      <?php endif; ?>
+      </div>
       
-      <div class="form-group" style="margin-top: 20px;">
-        <label for="foto_perfil">Alterar foto de perfil</label>
-        <input type="file" id="foto_perfil" name="foto_perfil" accept="image/jpeg,image/png,image/gif,image/webp">
-        <small style="display: block; margin-top: 5px; color: #666;">
-          Formatos: JPG, PNG, GIF, WEBP. Máximo: 5MB
-        </small>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" name="remover_imagem" value="1" id="removerImagemCheckbox" 
+            <?php if (!$usuario->getFotoPerfil() || !file_exists(__DIR__ . '/../' . $usuario->getFotoPerfil())) echo 'disabled'; ?>>
+          Remover foto atual
+        </label>
       </div>
     </div>
 
     <div class="form-group">
+      <label for="foto_perfil">Nova foto (opcional)</label>
+      <div id="novaFotoPreview" class="preview-new" style="display: none;">
+        <img id="newImagePreview" class="foto-preview-round">
+      </div>
+      <input type="file" id="foto_perfil" name="foto_perfil" accept="image/jpeg,image/png,image/gif,image/webp" onchange="previewImage(this)">
+      <small>Formatos: JPG, PNG, GIF, WEBP. Máximo: 5MB</small>
+    </div>
+
+    <div class="form-group">
       <label for="biografia">Biografia</label>
-      <textarea id="biografia" name="biografia" rows="5" style="width: 100%; padding: 10px; border: 2px solid #1a1a1a; font-family: 'Courier New', monospace;"><?= htmlspecialchars($usuario->getBiografia() ?? '') ?></textarea>
+      <textarea id="biografia" name="biografia" rows="5"><?= htmlspecialchars($usuario->getBiografia() ?? '') ?></textarea>
     </div>
 
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Salvar Perfil</button>
+      <a href="index.php" class="btn btn-ghost">Cancelar</a>
     </div>
   </form>
 </div>
+
+<script>
+function previewImage(input) {
+    const previewDiv = document.getElementById('novaFotoPreview');
+    const previewImg = document.getElementById('newImagePreview');
+    const removerCheckbox = document.getElementById('removerImagemCheckbox');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            previewDiv.style.display = 'block';
+            if (removerCheckbox) {
+                removerCheckbox.checked = false;
+            }
+        }
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        previewDiv.style.display = 'none';
+        previewImg.src = '';
+    }
+}
+
+const removerCheckbox = document.getElementById('removerImagemCheckbox');
+if (removerCheckbox) {
+    removerCheckbox.addEventListener('change', function() {
+        const novaPreview = document.getElementById('novaFotoPreview');
+        const fileInput = document.getElementById('foto_perfil');
+        const currentPreview = document.getElementById('currentImagePreview');
+        
+        if (this.checked) {
+            novaPreview.style.display = 'none';
+            fileInput.value = '';
+            if (currentPreview) {
+                currentPreview.style.opacity = '0.5';
+            }
+        } else {
+            if (currentPreview) {
+                currentPreview.style.opacity = '1';
+            }
+        }
+    });
+}
+</script>
 <?php endif; ?>
 
-<!-- ABA 2: DADOS DA CONTA (Nome e Email) -->
 <?php if ($aba_ativa === 'conta'): ?>
 <div class="form-card">
   <form method="POST" action="usuario_perfil.php?aba=conta">
@@ -193,27 +253,27 @@ require_once __DIR__ . '/../includes/header.php';
     
     <div class="form-group">
       <label for="nome">Nome de usuário</label>
-      <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($usuario->getNome()) ?>" required style="width: 100%; padding: 10px; border: 2px solid #1a1a1a; font-family: 'Courier New', monospace;">
+      <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($usuario->getNome()) ?>" required>
     </div>
 
     <div class="form-group">
       <label for="email">E-mail</label>
-      <input type="email" id="email" name="email" value="<?= htmlspecialchars($usuario->getEmail()) ?>" required style="width: 100%; padding: 10px; border: 2px solid #1a1a1a; font-family: 'Courier New', monospace;">
+      <input type="email" id="email" name="email" value="<?= htmlspecialchars($usuario->getEmail()) ?>" required>
     </div>
 
     <div class="form-group">
       <label>Data de cadastro</label>
-      <input type="text" value="<?= date('d/m/Y H:i', strtotime($usuario->getCriadoEm())) ?>" disabled style="width: 100%; padding: 10px; background: #e0e0e0; border: 2px solid #1a1a1a; font-family: 'Courier New', monospace;">
+      <input type="text" value="<?= date('d/m/Y H:i', strtotime($usuario->getCriadoEm())) ?>" disabled>
     </div>
 
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Salvar Dados</button>
+      <a href="index.php" class="btn btn-ghost">Cancelar</a>
     </div>
   </form>
 </div>
 <?php endif; ?>
 
-<!-- ABA 3: ALTERAR SENHA -->
 <?php if ($aba_ativa === 'senha'): ?>
 <div class="form-card">
   <form method="POST" action="usuario_perfil.php?aba=senha">
@@ -221,25 +281,25 @@ require_once __DIR__ . '/../includes/header.php';
     
     <div class="form-group">
       <label for="senha_atual">Senha atual</label>
-      <input type="password" id="senha_atual" name="senha_atual" required style="width: 100%; padding: 10px; border: 2px solid #1a1a1a; font-family: 'Courier New', monospace;">
+      <input type="password" id="senha_atual" name="senha_atual" required>
     </div>
 
     <div class="form-group">
       <label for="nova_senha">Nova senha</label>
-      <input type="password" id="nova_senha" name="nova_senha" required style="width: 100%; padding: 10px; border: 2px solid #1a1a1a; font-family: 'Courier New', monospace;">
+      <input type="password" id="nova_senha" name="nova_senha" required>
       <small>Mínimo de 6 caracteres</small>
     </div>
 
     <div class="form-group">
       <label for="confirmar_senha">Confirmar nova senha</label>
-      <input type="password" id="confirmar_senha" name="confirmar_senha" required style="width: 100%; padding: 10px; border: 2px solid #1a1a1a; font-family: 'Courier New', monospace;">
+      <input type="password" id="confirmar_senha" name="confirmar_senha" required>
     </div>
 
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Alterar Senha</button>
+      <a href="index.php" class="btn btn-ghost">Cancelar</a>
     </div>
   </form>
 </div>
 <?php endif; ?>
 
-<?php require_once __DIR__ . '/../includes/footer.php'; ?>
