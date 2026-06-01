@@ -43,18 +43,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erro = 'Este e-mail já está cadastrado. <a href="login.php">Faça login</a>';
         } else {
             try {
-                // Cria hash da senha (SHA256)
-                $senhaHash = hash('sha256', $senha);
-                
-                // Usando o método inserir
-                $repo->inserir($nome, $email, $senhaHash);
-                
-                $sucesso = 'Conta criada com sucesso! <a href="login.php">Faça login agora</a>';
-                $nomeForm = '';
-                $emailForm = '';
-            } catch (Exception $e) {
-                $erro = 'Erro ao criar conta: ' . $e->getMessage();
-            }
+    $senhaHash = hash('sha256', $senha);
+
+    $codigo = random_int(100000, 999999);
+
+    $_SESSION['cadastro_temp'] = [
+        'nome' => $nome,
+        'email' => $email,
+        'senha' => $senhaHash
+    ];
+
+    $_SESSION['codigo_confirmacao'] = $codigo;
+
+    header('Location: confirmar_codigo.php');
+    exit;
+
+} catch (Exception $e) {
+    $erro = 'Erro ao criar conta: ' . $e->getMessage();
+}
         }
     }
 }
