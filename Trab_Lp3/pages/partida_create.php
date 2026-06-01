@@ -156,8 +156,8 @@ searchInput2.addEventListener('input', () => {
 
     resultCount2.innerText =
         visibleCount + ' personagem(ns) encontrado(s)';
-
-
+        
+    
 
     /* BOTÃO LIMPAR */
 
@@ -253,6 +253,66 @@ function updateSelectedCharacters(){
 
     });
 
+}
+
+</script>
+
+<!-- esconder tabela e barra de pesquisa (segunda parte da crição de partida) -->
+  
+
+<div class="but-escolher-dif">
+    <button onclick="segunda_parte()" class="btn-escolher-dif">
+        Próximo
+    </button>
+</div>
+<script>
+    function segunda_parte() {
+       document.querySelector('.search-bar-container2').style.display = 'none';
+       document.querySelector('.table-wrapper2').style.display = 'none';
+       document.querySelector('.but-escolher-dif').style.display = 'none';
+         document.querySelector('.escolha-dificuldade').style.display = 'block';
+
+    }
+</script>
+<!-- escolher dificuldade -->
+
+<div class="escolha-dificuldade" style="display: none;">
+    <h2>ESCOLHA A DIFICULDADE</h2>
+    <div class="botoes-dificuldade">
+        <button onclick="selecionarDificuldade('Fácil')" class="btn-dificuldade">Fácil</button>
+        <button onclick="selecionarDificuldade('Médio')" class="btn-dificuldade">Médio</button>
+        <button onclick="selecionarDificuldade('Difícil')" class="btn-dificuldade">Difícil</button>
+    </div>
+    <h2>ESCOLHA O LOCAL DA PARTIDA</h2>
+    <div class="Local-partida">
+        <button onclick="selecionarLocal('deserto')" class="btn-local">Deserto</button>
+        <button onclick="selecionarLocal('floresta')" class="btn-local">Floresta</button>
+        <button onclick="selecionarLocal('montanha')" class="btn-local">Montanha</button>
+    </div>
+    <p style="color: white; font-size: 18px; margin-top: 20px;" class="mostrar_pred_part"> dificuldade: <span id="dificuldade-selecionada">Nenhuma</span> local: <span id="local-selecionado">Nenhum</span></p>
+    <button onclick="createPartida()" class="btn-create" style="display: none;">criar partida</button>
+</div>
+<script>
+    let verlocal = 0;
+    let verdif = 0;
+function selecionarDificuldade(dificuldade) {
+    verdif = 1;
+    document.getElementById('dificuldade-selecionada').innerText = dificuldade;
+    if(verlocal==1&&verdif==1){
+        document.querySelector('.btn-create').style.display = 'block';
+    }
+}
+function createPartida() {    
+    document.querySelector('.escolha-dificuldade').style.display = 'none';
+    document.querySelector('.selected-area2').style.display = 'none';
+     
+}
+function selecionarLocal(local) {
+    verlocal = 1;
+    document.getElementById('local-selecionado').innerText = local;
+    if(verlocal==1&&verdif==1) { 
+        document.querySelector('.btn-create').style.display = 'block';
+    }
 }
 
 </script>

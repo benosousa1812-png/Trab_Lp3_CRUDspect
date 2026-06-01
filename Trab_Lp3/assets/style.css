@@ -1260,3 +1260,96 @@ textarea#biografia:focus {
   background: transparent !important;
   background-color: transparent !important;
 }
+
+
+.but-escolher-dif{
+  margin-top: 20px;
+  display: inline-block;
+  padding: 4px 10px;
+  border: 2px solid #1a1a1a;
+  background: #f2f2f2;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.btn-escolher-dif {
+  background: #e9e507;
+  color: #1a1a1a;
+  border-color: #080808;
+}
+.but-escolher-dif:hover {
+  background: #e8e507;
+  color: #1a1a1a;
+  border-color: #1a1a1a;
+}
+.escolha-dificuldade {
+  margin-top: 20px;
+  background: #f2f2f2;
+  border: 3px solid #1a1a1a;
+  padding: 15px;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+}
+.escolha-dificuldade h2 {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+.botoes-dificuldade{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-dificuldade {
+  margin-bottom: 20px;
+  display: inline-block;
+  padding: 4px 10px;
+  border: 2px solid #1a1a1a;
+  background: #f2f2f2;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.btn-dificuldade:hover {
+  background: #e8e507;
+  color: #1a1a1a;
+  border-color: #1a1a1a;
+}
+.btn-create {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 4px 10px;
+  border: 2px solid #1a1a1a;
+  background: #f2f2f2;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.btn-create:hover {
+  background: #e8e507;
+  color: #1a1a1a;
+  border-color: #1a1a1a;
+}
+.btn-local {
+  margin-top: 5px;
+  margin-bottom: 20px;
+  display: inline-block;
+  padding: 4px 10px;
+  border: 2px solid #1a1a1a;
+  background: #f2f2f2;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.btn-local:hover {
+  background: #e8e507;
+  color: #1a1a1a;
+  border-color: #1a1a1a;
+}
+.mostrar_pred_part {
+  margin-top: 20px;
+  background: #000000;
+  border: 3px solid #1a1a1a;
+  padding: 15px;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+}
