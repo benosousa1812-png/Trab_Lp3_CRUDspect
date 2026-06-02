@@ -54,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     $_SESSION['codigo_confirmacao'] = $codigo;
-
+    echo $_SESSION['codigo_confirmacao'];
+    exit;
     header('Location: confirmar_codigo.php');
     exit;
 
