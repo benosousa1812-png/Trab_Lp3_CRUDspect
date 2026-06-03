@@ -11,6 +11,7 @@ $erro = '';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $codigoDigitado = trim($_POST['codigo']);
+
     if((string)$codigoDigitado === (string)$_SESSION['codigo_confirmacao']){
         echo "Código Correto";
         $dados = $_SESSION['cadastro_temp'];

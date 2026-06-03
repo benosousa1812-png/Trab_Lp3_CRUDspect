@@ -12,6 +12,12 @@ header('Pragma: no-cache');
 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
 require_once __DIR__ . '/../repository/UsuarioRepository.php';
+require_once __DIR__ . '/../phpmailer/PHPMailer.php';
+require_once __DIR__ . '/../phpmailer/SMTP.php';
+require_once __DIR__ . '/../phpmailer/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 $erro = '';
 $sucesso = '';
@@ -36,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $repo = new UsuarioRepository();
         
-        // Verifica se e-mail já está cadastrado
         $usuarioExistente = $repo->buscarPorEmail($email);
         
         if ($usuarioExistente) {
@@ -48,16 +53,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $codigo = random_int(100000, 999999);
 
     $_SESSION['cadastro_temp'] = [
-        'nome' => $nome,
-        'email' => $email,
-        'senha' => $senhaHash
-    ];
+    'nome' => $nome,
+    'email' => $email,
+    'senha' => $senhaHash
+];
 
-    $_SESSION['codigo_confirmacao'] = $codigo;
-    echo $_SESSION['codigo_confirmacao'];
-    exit;
+$_SESSION['codigo_confirmacao'] = $codigo;
+
+$mail = new PHPMailer(true);
+
+try {
+
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+
+    $mail->Username = 'heitorlamimleone2@gmail.com';
+    $mail->Password = 'zclo vwof xrzs iypf';
+
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
+
+    $mail->setFrom('heitorlamimleone2@gmail.com', 'CRUDspect');
+    $mail->addAddress($email, $nome);
+
+    $mail->isHTML(true);
+    $mail->CharSet = 'UTF-8';
+
+    $mail->Subject = 'Código de confirmação';
+
+    $mail->Body = "
+        <h2>Confirmação de Cadastro</h2>
+        <p>Olá, {$nome}, falta pouco para concluir seu cadastro.</p>
+        <p>Seu código de confirmação é:</p>
+        <h1>{$codigo}</h1>
+    ";
+
+    $mail->send();
+
     header('Location: confirmar_codigo.php');
     exit;
+
+} catch (Exception $e) {
+
+    unset($_SESSION['cadastro_temp']);
+    unset($_SESSION['codigo_confirmacao']);
+
+    $erro = 'Não foi possível enviar o e-mail de confirmação.';
+}
 
 } catch (Exception $e) {
     $erro = 'Erro ao criar conta: ' . $e->getMessage();
