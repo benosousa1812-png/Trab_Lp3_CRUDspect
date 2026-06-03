@@ -32,31 +32,54 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmar Código</title>
+    <title>Confirmar Cadastro</title>
+
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" type="image/x-icon" href="../assets/gate.ico">
 </head>
-<body>
-    <h1>Confirmar Cadastro</h1>
+<body class="login-body">
 
- <?php
-if ($erro !== '') {
-    echo "<p>$erro</p>";
-}
-?>
+<div class="login-card">
 
-<form method="POST">
-    <input
-    type="text"
-    id="codigo"
-    name="codigo"
-    placeholder="Digite o código recebido"
-    required
->
-<button type ="submit"> Confirmar</button>
-</form>
+    <div class="login-logo">CRUDspect</div>
+
+    <h1 class="login-title">Confirmar Cadastro</h1>
+
+    <p style="text-align:center; margin-bottom:20px;">
+        Digite o código enviado para o seu e-mail.
+    </p>
+
+    <?php if ($erro !== ''): ?>
+        <div class="alert alert-erro">
+            <?= $erro ?>
+        </div>
+    <?php endif; ?>
+
+    <form method="POST">
+
+        <div class="form-group">
+            <label for="codigo">Código de confirmação</label>
+
+            <input
+                type="text"
+                id="codigo"
+                name="codigo"
+                placeholder="Digite o código recebido"
+                required
+            >
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full">
+            Confirmar Cadastro
+        </button>
+
+    </form>
+
+</div>
 
 </body>
 </html>
