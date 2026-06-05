@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../repository/PersonagemRepository.php';
+require_once __DIR__ . '/../repository/Habilidades.php';
+
 
 $repo = new PersonagemRepository();
 
@@ -44,6 +46,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $personagem = Personagem::novo($nome, $classe, $aspecto, $_SESSION['usuario_id'], $caminhoImagem);
         $repo->salvar($personagem);
+        $habilidadesRepo = new Habilidades();
+        $habilidadeClasse =
+        $habilidadesRepo->buscarPorOrigem($classe);
+        $habilidadeAspecto =
+        $habilidadesRepo->buscarPorOrigem($aspecto);
+        $todashabilidade = array_merge($habilidadeClasse, $habilidadeAspecto);
+        shuffle($todashabilidade);
+
+        $habilidadesSelecionadas = array_slice($todashabilidade, 0, 3);
+        foreach ($habilidadesSelecionadas as $habilidade) {
+
+    $habilidadesRepo->associarAoPersonagem(
+        $personagem->getId(),
+        $habilidade['id']
+    );
+
+}
         header('Location: index.php');
         exit;
     } catch (InvalidArgumentException $e) {
@@ -126,5 +145,10 @@ function previewImage(input) {
     }
 }
 </script>
+
+
+
+
+
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

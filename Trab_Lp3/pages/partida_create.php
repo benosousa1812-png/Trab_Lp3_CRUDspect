@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../repository/PersonagemRepository.php';
 
+
 $repo = new PersonagemRepository();
 $personagens = $repo->listarPorUsuario($_SESSION['usuario_id']);
 
