@@ -7,7 +7,15 @@ $repo = new PersonagemRepository();
 $personagens = $repo->listarPorUsuario($_SESSION['usuario_id']);
 
 require_once __DIR__ . '/../includes/header.php';
+
 ?>
+<script>
+    let partida = {
+    personagens: [],
+    dificuldade: null,
+    local: null
+};
+</script>
 
 <div class="search-bar-container2">
   <div class="search-wrapper2">
@@ -204,14 +212,23 @@ clearSearch2.addEventListener('click', () => {
    SELECIONAR PERSONAGENS
 =================================== */
 
-checkboxes.forEach((checkbox) => {
+const maxSelecionados = 3;
 
-    checkbox.addEventListener('change', () => {
+checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', (e) => {
+
+        const selecionados =
+            document.querySelectorAll('.select-personagem:checked');
+
+        // SE tentou marcar mais de 3
+        if (selecionados.length > maxSelecionados) {
+            e.target.checked = false;
+            alert('Você só pode selecionar até 3 personagens.');
+            return;
+        }
 
         updateSelectedCharacters();
-
     });
-
 });
 
 
@@ -220,30 +237,30 @@ function updateSelectedCharacters(){
 
     selectedContainer.innerHTML = '';
 
+    partida.personagens = []; // limpa e refaz tudo
+
     const selectedRows =
-        document.querySelectorAll(
-            '.select-personagem:checked'
-        );
+        document.querySelectorAll('.select-personagem:checked');
 
     selectedRows.forEach((checkbox) => {
 
-        const row =
-            checkbox.closest('tr');
+        const row = checkbox.closest('tr');
 
         const nome =
-            row.querySelector(
-                '.nome-personagem'
-            ).innerText;
+            row.querySelector('.nome-personagem').innerText;
 
         const imagem =
             row.querySelector('img').src;
 
-        const card =
-            document.createElement('div');
+        
+        partida.personagens.push({
+            nome: nome,
+            imagem: imagem
+        });
 
-        card.classList.add(
-            'selected-character-card2'
-        );
+        const card = document.createElement('div');
+
+        card.classList.add('selected-character-card2');
 
         card.innerHTML = `
             <img src="${imagem}">
@@ -251,9 +268,9 @@ function updateSelectedCharacters(){
         `;
 
         selectedContainer.appendChild(card);
-
     });
 
+    
 }
 
 </script>
@@ -299,21 +316,28 @@ function updateSelectedCharacters(){
 function selecionarDificuldade(dificuldade) {
     verdif = 1;
     document.getElementById('dificuldade-selecionada').innerText = dificuldade;
+    partida.dificuldade = dificuldade;
     if(verlocal==1&&verdif==1){
         document.querySelector('.btn-create').style.display = 'block';
     }
 }
-function createPartida() {    
-    document.querySelector('.escolha-dificuldade').style.display = 'none';
-    document.querySelector('.selected-area2').style.display = 'none';
-     
-}
 function selecionarLocal(local) {
     verlocal = 1;
     document.getElementById('local-selecionado').innerText = local;
+    partida.local = local;
     if(verlocal==1&&verdif==1) { 
         document.querySelector('.btn-create').style.display = 'block';
     }
+}
+function createPartida() {    
+
+    console.log("OBJETO:", partida);
+
+    localStorage.setItem("partida", JSON.stringify(partida));
+
+    alert("redirecionando para a página da partida...");
+
+    window.location.href = "partida.php";
 }
 
 </script>
