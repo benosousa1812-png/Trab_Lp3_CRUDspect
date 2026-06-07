@@ -1353,3 +1353,52 @@ textarea#biografia:focus {
   padding: 15px;
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
 }
+/* Geral */
+body.partida_pag {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Container de personagens */
+#info {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Bloco de personagem */
+.personagem {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Imagem do personagem */
+.personagem img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 10px;
+}
+body.deserto {
+    background-image: url("../assets/img/wall_deserto.png");
+    background-size: cover;
+    background-position: center;
+}
+
+/* Fundo floresta */
+body.floresta {
+    background-image: url("../assets/img/wall_floresta.png");
+    background-size: cover;
+    background-position: center;
+}
+
+/* Fundo montanha */
+body.montanha {
+    background-image: url("../assets/img/wall_montanha.png");
+    background-size: cover;
+    background-position: center;
+}

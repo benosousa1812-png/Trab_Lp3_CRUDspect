@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< Updated upstream
 -- Tempo de geração: 07/06/2026 às 19:54
+=======
+-- Tempo de geração: 08/06/2026 às 01:28
+>>>>>>> Stashed changes
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -130,11 +134,136 @@ INSERT INTO `habilidades` (`id`, `nome`, `origem`, `tipo`, `descricao`, `dano`, 
 
 CREATE TABLE `partida` (
   `ID_partida` int(11) NOT NULL,
-  `perso_ID` int(11) NOT NULL,
   `dif` varchar(50) DEFAULT NULL,
   `local` varchar(70) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+<<<<<<< Updated upstream
+=======
+--
+-- Despejando dados para a tabela `partida`
+--
+
+INSERT INTO `partida` (`ID_partida`, `dif`, `local`) VALUES
+(10, 'Médio', 'deserto'),
+(11, 'Difícil', 'deserto'),
+(12, 'Difícil', 'deserto'),
+(13, 'Difícil', 'deserto'),
+(14, 'Fácil', 'montanha'),
+(15, 'Médio', 'deserto'),
+(16, 'Difícil', 'montanha'),
+(17, 'Médio', 'floresta'),
+(18, 'Médio', 'montanha'),
+(19, 'Difícil', 'deserto'),
+(20, 'Difícil', 'floresta'),
+(21, 'Difícil', 'montanha'),
+(22, 'Difícil', 'deserto'),
+(23, 'Médio', 'montanha'),
+(24, 'Fácil', 'montanha'),
+(25, 'Fácil', 'montanha'),
+(26, 'Difícil', 'montanha'),
+(27, 'Difícil', 'montanha'),
+(28, 'Médio', 'deserto'),
+(29, 'Difícil', 'montanha'),
+(30, 'Difícil', 'montanha'),
+(31, 'Difícil', 'montanha'),
+(32, 'Difícil', 'montanha'),
+(33, 'Difícil', 'montanha'),
+(34, 'Difícil', 'montanha');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `partida_personagem`
+--
+
+CREATE TABLE `partida_personagem` (
+  `ID_partida` int(11) NOT NULL,
+  `ID_personagem` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `partida_personagem`
+--
+
+INSERT INTO `partida_personagem` (`ID_partida`, `ID_personagem`) VALUES
+(10, 30),
+(10, 31),
+(10, 33),
+(11, 30),
+(11, 31),
+(11, 32),
+(12, 30),
+(12, 32),
+(12, 33),
+(13, 30),
+(13, 32),
+(13, 33),
+(14, 30),
+(14, 32),
+(14, 33),
+(15, 30),
+(15, 32),
+(15, 33),
+(16, 30),
+(16, 32),
+(16, 33),
+(17, 30),
+(17, 32),
+(17, 33),
+(18, 30),
+(18, 32),
+(18, 33),
+(19, 30),
+(19, 31),
+(19, 32),
+(20, 30),
+(20, 32),
+(20, 33),
+(21, 30),
+(21, 32),
+(21, 33),
+(22, 30),
+(22, 32),
+(22, 33),
+(23, 30),
+(23, 32),
+(23, 33),
+(24, 30),
+(24, 31),
+(24, 32),
+(25, 30),
+(25, 32),
+(25, 33),
+(26, 30),
+(26, 32),
+(26, 33),
+(27, 30),
+(27, 32),
+(27, 33),
+(28, 30),
+(28, 32),
+(28, 33),
+(29, 30),
+(29, 32),
+(29, 33),
+(30, 30),
+(30, 32),
+(30, 33),
+(31, 30),
+(31, 32),
+(31, 33),
+(32, 30),
+(32, 32),
+(32, 33),
+(33, 30),
+(33, 31),
+(33, 34),
+(34, 30),
+(34, 31),
+(34, 34);
+
+>>>>>>> Stashed changes
 -- --------------------------------------------------------
 
 --
@@ -158,7 +287,12 @@ INSERT INTO `personagem` (`id`, `nome`, `classe`, `aspecto`, `usuario_id`, `imag
 (30, 'Lohan Leonardo monteiro ramos', 'Cavaleiro(a)', 'Respiração', 1, 'uploads/6a231ef225a42.webp'),
 (31, 'pedrin', 'Escudeiro(a)', 'Luz', 1, 'uploads/6a259c89628f4.webp'),
 (32, 'joao', 'Bruxo(a)', 'Respiração', 1, 'uploads/6a259c9c61dbd.png'),
+<<<<<<< Updated upstream
 (33, 'dwadwad', 'Escudeiro(a)', 'Respiração', 1, 'uploads/6a259caaed974.webp');
+=======
+(33, 'dwadwad', 'Escudeiro(a)', 'Respiração', 1, 'uploads/6a259caaed974.webp'),
+(34, 'pedrinooo', 'Cavaleiro(a)', 'Sangue', 1, 'uploads/6a25faee39f1d.jpg');
+>>>>>>> Stashed changes
 
 -- --------------------------------------------------------
 
@@ -188,7 +322,14 @@ INSERT INTO `personagem_habilidade` (`id`, `personagem_id`, `habilidade_id`) VAL
 (9, 32, 45),
 (10, 33, 44),
 (11, 33, 5),
+<<<<<<< Updated upstream
 (12, 33, 43);
+=======
+(12, 33, 43),
+(13, 34, 3),
+(14, 34, 2),
+(15, 34, 1);
+>>>>>>> Stashed changes
 
 -- --------------------------------------------------------
 
@@ -228,6 +369,22 @@ ALTER TABLE `habilidades`
   ADD PRIMARY KEY (`id`);
 
 --
+<<<<<<< Updated upstream
+=======
+-- Índices de tabela `partida`
+--
+ALTER TABLE `partida`
+  ADD PRIMARY KEY (`ID_partida`);
+
+--
+-- Índices de tabela `partida_personagem`
+--
+ALTER TABLE `partida_personagem`
+  ADD PRIMARY KEY (`ID_partida`,`ID_personagem`),
+  ADD KEY `ID_personagem` (`ID_personagem`);
+
+--
+>>>>>>> Stashed changes
 -- Índices de tabela `personagem`
 --
 ALTER TABLE `personagem`
@@ -260,16 +417,33 @@ ALTER TABLE `habilidades`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
+<<<<<<< Updated upstream
 -- AUTO_INCREMENT de tabela `personagem`
 --
 ALTER TABLE `personagem`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+=======
+-- AUTO_INCREMENT de tabela `partida`
+--
+ALTER TABLE `partida`
+  MODIFY `ID_partida` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT de tabela `personagem`
+--
+ALTER TABLE `personagem`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+>>>>>>> Stashed changes
 
 --
 -- AUTO_INCREMENT de tabela `personagem_habilidade`
 --
 ALTER TABLE `personagem_habilidade`
+<<<<<<< Updated upstream
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+>>>>>>> Stashed changes
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
@@ -280,6 +454,13 @@ ALTER TABLE `usuario`
 --
 -- Restrições para tabelas despejadas
 --
+
+--
+-- Restrições para tabelas `partida_personagem`
+--
+ALTER TABLE `partida_personagem`
+  ADD CONSTRAINT `partida_personagem_ibfk_1` FOREIGN KEY (`ID_partida`) REFERENCES `partida` (`ID_partida`) ON DELETE CASCADE,
+  ADD CONSTRAINT `partida_personagem_ibfk_2` FOREIGN KEY (`ID_personagem`) REFERENCES `personagem` (`id`) ON DELETE CASCADE;
 
 --
 -- Restrições para tabelas `personagem`

@@ -58,6 +58,7 @@ require_once __DIR__ . '/../includes/header.php';
           <input 
             type="checkbox"
             class="select-personagem"
+            data-id="<?= $personagem->getId() ?>"
           >
         </td>
 
@@ -233,17 +234,26 @@ checkboxes.forEach((checkbox) => {
 
 
 
-function updateSelectedCharacters(){
+function updateSelectedCharacters() {
 
     selectedContainer.innerHTML = '';
 
+<<<<<<< Updated upstream
     partida.personagens = []; // limpa e refaz tudo
+=======
+    partida.personagens = [];
+>>>>>>> Stashed changes
 
     const selectedRows =
         document.querySelectorAll('.select-personagem:checked');
 
     selectedRows.forEach((checkbox) => {
 
+<<<<<<< Updated upstream
+=======
+        const id = checkbox.getAttribute('data-id');
+
+>>>>>>> Stashed changes
         const row = checkbox.closest('tr');
 
         const nome =
@@ -252,11 +262,15 @@ function updateSelectedCharacters(){
         const imagem =
             row.querySelector('img').src;
 
+<<<<<<< Updated upstream
         
         partida.personagens.push({
             nome: nome,
             imagem: imagem
         });
+=======
+        partida.personagens.push(id);
+>>>>>>> Stashed changes
 
         const card = document.createElement('div');
 
@@ -269,8 +283,12 @@ function updateSelectedCharacters(){
 
         selectedContainer.appendChild(card);
     });
+<<<<<<< Updated upstream
 
     
+=======
+ console.log(partida);
+>>>>>>> Stashed changes
 }
 
 </script>
@@ -329,6 +347,7 @@ function selecionarLocal(local) {
         document.querySelector('.btn-create').style.display = 'block';
     }
 }
+<<<<<<< Updated upstream
 function createPartida() {    
 
     console.log("OBJETO:", partida);
@@ -338,6 +357,33 @@ function createPartida() {
     alert("redirecionando para a página da partida...");
 
     window.location.href = "partida.php";
+=======
+function createPartida() {
+
+    console.log("OBJETO:", partida);
+    
+    localStorage.setItem("partida", JSON.stringify(partida));
+
+    fetch("partida_salvar.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(partida)
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        console.log(data);
+
+        alert("Partida salva!");
+
+        window.location.href = "partida.php";
+    })
+    .catch(error => {
+        console.error("Erro:", error);
+    });
+>>>>>>> Stashed changes
 }
 
 </script>
