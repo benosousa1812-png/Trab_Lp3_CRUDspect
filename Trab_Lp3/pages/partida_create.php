@@ -2,11 +2,20 @@
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../repository/PersonagemRepository.php';
 
+
 $repo = new PersonagemRepository();
 $personagens = $repo->listarPorUsuario($_SESSION['usuario_id']);
 
 require_once __DIR__ . '/../includes/header.php';
+
 ?>
+<script>
+    let partida = {
+    personagens: [],
+    dificuldade: null,
+    local: null
+};
+</script>
 
 <div class="search-bar-container2">
   <div class="search-wrapper2">
@@ -49,6 +58,7 @@ require_once __DIR__ . '/../includes/header.php';
           <input 
             type="checkbox"
             class="select-personagem"
+            data-id="<?= $personagem->getId() ?>"
           >
         </td>
 
@@ -203,46 +213,53 @@ clearSearch2.addEventListener('click', () => {
    SELECIONAR PERSONAGENS
 =================================== */
 
-checkboxes.forEach((checkbox) => {
+const maxSelecionados = 3;
 
-    checkbox.addEventListener('change', () => {
+checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', (e) => {
+
+        const selecionados =
+            document.querySelectorAll('.select-personagem:checked');
+
+        // SE tentou marcar mais de 3
+        if (selecionados.length > maxSelecionados) {
+            e.target.checked = false;
+            alert('Você só pode selecionar até 3 personagens.');
+            return;
+        }
 
         updateSelectedCharacters();
-
     });
-
 });
 
 
 
-function updateSelectedCharacters(){
+function updateSelectedCharacters() {
 
     selectedContainer.innerHTML = '';
 
+    partida.personagens = [];
+
     const selectedRows =
-        document.querySelectorAll(
-            '.select-personagem:checked'
-        );
+        document.querySelectorAll('.select-personagem:checked');
 
     selectedRows.forEach((checkbox) => {
 
-        const row =
-            checkbox.closest('tr');
+        const id = checkbox.getAttribute('data-id');
+
+        const row = checkbox.closest('tr');
 
         const nome =
-            row.querySelector(
-                '.nome-personagem'
-            ).innerText;
+            row.querySelector('.nome-personagem').innerText;
 
         const imagem =
             row.querySelector('img').src;
 
-        const card =
-            document.createElement('div');
+        partida.personagens.push(id);
 
-        card.classList.add(
-            'selected-character-card2'
-        );
+        const card = document.createElement('div');
+
+        card.classList.add('selected-character-card2');
 
         card.innerHTML = `
             <img src="${imagem}">
@@ -250,9 +267,8 @@ function updateSelectedCharacters(){
         `;
 
         selectedContainer.appendChild(card);
-
     });
-
+ console.log(partida);
 }
 
 </script>
@@ -298,21 +314,44 @@ function updateSelectedCharacters(){
 function selecionarDificuldade(dificuldade) {
     verdif = 1;
     document.getElementById('dificuldade-selecionada').innerText = dificuldade;
+    partida.dificuldade = dificuldade;
     if(verlocal==1&&verdif==1){
         document.querySelector('.btn-create').style.display = 'block';
     }
 }
-function createPartida() {    
-    document.querySelector('.escolha-dificuldade').style.display = 'none';
-    document.querySelector('.selected-area2').style.display = 'none';
-     
-}
 function selecionarLocal(local) {
     verlocal = 1;
     document.getElementById('local-selecionado').innerText = local;
+    partida.local = local;
     if(verlocal==1&&verdif==1) { 
         document.querySelector('.btn-create').style.display = 'block';
     }
+}
+function createPartida() {
+
+    console.log("OBJETO:", partida);
+    
+    localStorage.setItem("partida", JSON.stringify(partida));
+
+    fetch("partida_salvar.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(partida)
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        console.log(data);
+
+        alert("Partida salva!");
+
+        window.location.href = "partida.php";
+    })
+    .catch(error => {
+        console.error("Erro:", error);
+    });
 }
 
 </script>

@@ -1353,3 +1353,111 @@ textarea#biografia:focus {
   padding: 15px;
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
 }
+/* Geral */
+body.partida_pag {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Container de personagens */
+#info {
+    display: flex;
+    flex-direction: column; /* empilha um embaixo do outro */
+    align-items: flex-start; /* alinha à esquerda */
+    gap: 15px; /* espaço entre personagens */
+    padding: 20px;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+/* Bloco de personagem */
+.personagem {
+    width: 200px;
+    background: rgba(255,255,255,0.8);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efeito hover individual */
+.personagem:hover {
+    transform: translateX(10px) translateY(-5px) rotate(-3deg)  scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+/* Imagem do personagem */
+.personagem img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 10px;
+}
+body.deserto {
+    background-image: url("../assets/img/wall_deserto.png");
+    background-size: cover;
+    background-position: center;
+}
+
+/* Fundo floresta */
+body.floresta {
+    background-image: url("../assets/img/wall_floresta.png");
+    background-size: cover;
+    background-position: center;
+}
+
+/* Fundo montanha */
+body.montanha {
+    background-image: url("../assets/img/wall_montanha.png");
+    background-size: cover;
+    background-position: center;
+}
+/* Container fixo na parte inferior */
+#habilidades-container {
+    position: fixed;
+    bottom: 20px; /* distância do rodapé */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%; /* largura total menos margens */
+    max-width: 1200px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 15px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    color: #fff;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+}
+
+/* Cada habilidade dentro do container */
+#habilidades-list {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 20px;
+}
+
+#habilidades-list li {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    flex: 1; /* Cada li ocupa espaço igual */
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Efeito hover */
+#habilidades-list li:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
