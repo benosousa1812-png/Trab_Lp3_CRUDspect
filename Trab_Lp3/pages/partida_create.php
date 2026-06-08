@@ -238,31 +238,15 @@ function updateSelectedCharacters() {
 
     selectedContainer.innerHTML = '';
 
-<<<<<<< HEAD
     partida.personagens = [];
-=======
-<<<<<<< Updated upstream
-    partida.personagens = []; // limpa e refaz tudo
-=======
-    partida.personagens = [];
->>>>>>> Stashed changes
->>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 
     const selectedRows =
         document.querySelectorAll('.select-personagem:checked');
 
     selectedRows.forEach((checkbox) => {
 
-<<<<<<< HEAD
         const id = checkbox.getAttribute('data-id');
 
-=======
-<<<<<<< Updated upstream
-=======
-        const id = checkbox.getAttribute('data-id');
-
->>>>>>> Stashed changes
->>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
         const row = checkbox.closest('tr');
 
         const nome =
@@ -271,19 +255,7 @@ function updateSelectedCharacters() {
         const imagem =
             row.querySelector('img').src;
 
-<<<<<<< HEAD
         partida.personagens.push(id);
-=======
-<<<<<<< Updated upstream
-        
-        partida.personagens.push({
-            nome: nome,
-            imagem: imagem
-        });
-=======
-        partida.personagens.push(id);
->>>>>>> Stashed changes
->>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 
         const card = document.createElement('div');
 
@@ -296,16 +268,7 @@ function updateSelectedCharacters() {
 
         selectedContainer.appendChild(card);
     });
-<<<<<<< HEAD
  console.log(partida);
-=======
-<<<<<<< Updated upstream
-
-    
-=======
- console.log(partida);
->>>>>>> Stashed changes
->>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 }
 
 </script>
@@ -364,20 +327,6 @@ function selecionarLocal(local) {
         document.querySelector('.btn-create').style.display = 'block';
     }
 }
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-function createPartida() {    
-
-    console.log("OBJETO:", partida);
-
-    localStorage.setItem("partida", JSON.stringify(partida));
-
-    alert("redirecionando para a página da partida...");
-
-    window.location.href = "partida.php";
-=======
->>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 function createPartida() {
 
     console.log("OBJETO:", partida);
@@ -403,10 +352,6 @@ function createPartida() {
     .catch(error => {
         console.error("Erro:", error);
     });
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 }
 
 </script>

@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-<div id="info"></div>
-
-<script>
-const partida = JSON.parse(localStorage.getItem("partida"));
-
-
-
-document.getElementById("info").innerHTML = `
-    <h2>Dificuldade: ${partida.dificuldade}</h2>
-    <h2>Local: ${partida.local}</h2>
-    <h3>Personagens:</h3>
-    ${partida.personagens.map(p => `
-        <p>${p.nome}</p>
-    `).join("")}
-`;
-</script>
-=======
->>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 
 <!DOCTYPE html>
 <html lang="en">
@@ -92,7 +71,3 @@ iniciarPartida();
 </html>
 
 
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
