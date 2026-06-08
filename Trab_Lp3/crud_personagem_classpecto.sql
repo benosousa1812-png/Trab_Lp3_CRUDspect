@@ -3,7 +3,15 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Tempo de geração: 08/06/2026 às 01:28
+=======
+<<<<<<< Updated upstream
+-- Tempo de geração: 07/06/2026 às 19:54
+=======
+-- Tempo de geração: 08/06/2026 às 01:28
+>>>>>>> Stashed changes
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -134,6 +142,11 @@ CREATE TABLE `partida` (
   `local` varchar(70) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 --
 -- Despejando dados para a tabela `partida`
 --
@@ -257,6 +270,10 @@ INSERT INTO `partida_personagem` (`ID_partida`, `ID_personagem`) VALUES
 (34, 31),
 (34, 34);
 
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 -- --------------------------------------------------------
 
 --
@@ -280,8 +297,17 @@ INSERT INTO `personagem` (`id`, `nome`, `classe`, `aspecto`, `usuario_id`, `imag
 (30, 'Lohan Leonardo monteiro ramos', 'Cavaleiro(a)', 'Respiração', 1, 'uploads/6a231ef225a42.webp'),
 (31, 'pedrin', 'Escudeiro(a)', 'Luz', 1, 'uploads/6a259c89628f4.webp'),
 (32, 'joao', 'Bruxo(a)', 'Respiração', 1, 'uploads/6a259c9c61dbd.png'),
+<<<<<<< HEAD
 (33, 'dwadwad', 'Escudeiro(a)', 'Respiração', 1, 'uploads/6a259caaed974.webp'),
 (34, 'pedrinooo', 'Cavaleiro(a)', 'Sangue', 1, 'uploads/6a25faee39f1d.jpg');
+=======
+<<<<<<< Updated upstream
+(33, 'dwadwad', 'Escudeiro(a)', 'Respiração', 1, 'uploads/6a259caaed974.webp');
+=======
+(33, 'dwadwad', 'Escudeiro(a)', 'Respiração', 1, 'uploads/6a259caaed974.webp'),
+(34, 'pedrinooo', 'Cavaleiro(a)', 'Sangue', 1, 'uploads/6a25faee39f1d.jpg');
+>>>>>>> Stashed changes
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 
 -- --------------------------------------------------------
 
@@ -311,10 +337,20 @@ INSERT INTO `personagem_habilidade` (`id`, `personagem_id`, `habilidade_id`) VAL
 (9, 32, 45),
 (10, 33, 44),
 (11, 33, 5),
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+(12, 33, 43);
+=======
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 (12, 33, 43),
 (13, 34, 3),
 (14, 34, 2),
 (15, 34, 1);
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 
 -- --------------------------------------------------------
 
@@ -354,6 +390,11 @@ ALTER TABLE `habilidades`
   ADD PRIMARY KEY (`id`);
 
 --
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 -- Índices de tabela `partida`
 --
 ALTER TABLE `partida`
@@ -367,6 +408,10 @@ ALTER TABLE `partida_personagem`
   ADD KEY `ID_personagem` (`ID_personagem`);
 
 --
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 -- Índices de tabela `personagem`
 --
 ALTER TABLE `personagem`
@@ -399,6 +444,7 @@ ALTER TABLE `habilidades`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
+<<<<<<< HEAD
 -- AUTO_INCREMENT de tabela `partida`
 --
 ALTER TABLE `partida`
@@ -409,12 +455,39 @@ ALTER TABLE `partida`
 --
 ALTER TABLE `personagem`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+=======
+<<<<<<< Updated upstream
+-- AUTO_INCREMENT de tabela `personagem`
+--
+ALTER TABLE `personagem`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+=======
+-- AUTO_INCREMENT de tabela `partida`
+--
+ALTER TABLE `partida`
+  MODIFY `ID_partida` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT de tabela `personagem`
+--
+ALTER TABLE `personagem`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+>>>>>>> Stashed changes
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 
 --
 -- AUTO_INCREMENT de tabela `personagem_habilidade`
 --
 ALTER TABLE `personagem_habilidade`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+=======
+<<<<<<< Updated upstream
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+>>>>>>> Stashed changes
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 
 --
 -- AUTO_INCREMENT de tabela `usuario`

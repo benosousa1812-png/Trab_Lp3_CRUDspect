@@ -1363,16 +1363,22 @@ body.partida_pag {
 /* Container de personagens */
 #info {
     display: flex;
+<<<<<<< HEAD
     flex-direction: column; /* empilha um embaixo do outro */
     align-items: flex-start; /* alinha à esquerda */
     gap: 15px; /* espaço entre personagens */
     padding: 20px;
 
     transition: transform 0.3s ease, box-shadow 0.3s ease; 
+=======
+    gap: 20px;
+    padding: 20px;
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 }
 
 /* Bloco de personagem */
 .personagem {
+<<<<<<< HEAD
     width: 200px;
     background: rgba(255,255,255,0.8);
     padding: 10px;
@@ -1386,6 +1392,14 @@ body.partida_pag {
     transform: translateX(10px) translateY(-5px) rotate(-3deg)  scale(1.05);
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
+=======
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 /* Imagem do personagem */
 .personagem img {
     width: 100px;
@@ -1412,6 +1426,7 @@ body.montanha {
     background-image: url("../assets/img/wall_montanha.png");
     background-size: cover;
     background-position: center;
+<<<<<<< HEAD
 }
 /* Container fixo na parte inferior */
 #habilidades-container {
@@ -1460,4 +1475,6 @@ body.montanha {
 #habilidades-list li:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-5px);
+=======
+>>>>>>> 4111768c526cbcd4ff47f00e6eca45ecdf9b07da
 }
