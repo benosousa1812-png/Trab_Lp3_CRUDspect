@@ -17,9 +17,15 @@ if (!empty($ids)) {
     $stmt->execute($ids);
     $personagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+<<<<<<< Updated upstream
     // 2️⃣ Busca habilidades
     $sql2 = "
         SELECT ph.personagem_id, h.id AS habilidade_id, h.nome, h.dano
+=======
+    // 2️⃣ Busca habilidades (com DANO e CURA)
+    $sql2 = "
+        SELECT ph.personagem_id, h.id AS habilidade_id, h.nome, h.dano, h.cura, h.tipo
+>>>>>>> Stashed changes
         FROM personagem_habilidade ph
         JOIN habilidades h ON ph.habilidade_id = h.id
         WHERE ph.personagem_id IN ($placeholders)
