@@ -1373,15 +1373,9 @@ body.partida_pag {
 
 /* Bloco de personagem */
 .personagem {
-<<<<<<< Updated upstream
     width: 200px;
     background: rgba(255,255,255,0.8);
     padding: 10px;
-=======
-    width: 250px;
-    background: rgba(255,255,255,0.8);
-    padding: 20px;
->>>>>>> Stashed changes
     border-radius: 8px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -1399,10 +1393,6 @@ body.partida_pag {
     object-fit: cover;
     display: block;
     margin-bottom: 10px;
-<<<<<<< Updated upstream
-=======
-    
->>>>>>> Stashed changes
 }
 body.deserto {
     background-image: url("../assets/img/wall_deserto.png");
