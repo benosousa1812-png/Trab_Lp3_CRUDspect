@@ -1,73 +1,80 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Partida RPG</title>
     <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body class="partida_pag">
 
-<div id="info"></div>
+    <!-- PERSONAGENS -->
+    <div id="info"></div>
 
-<script>
-async function iniciarPartida() {
-    const partida = JSON.parse(localStorage.getItem("partida"));
+    <!-- HABILIDADES FIXAS -->
+    <div id="habilidades-container">
+        <ul id="habilidades-list"></ul>
+    </div>
 
-    if (!partida) {
-        alert("Partida não encontrada!");
-        return;
-    }
+    <script>
+        async function iniciarPartida() {
+            const partida = JSON.parse(localStorage.getItem("partida"));
 
-    // Fundo
-    const fundos = {
-        deserto: "../assets/img/wall_deserto.png",
-        floresta: "../assets/img/wall_floresta.png",
-        montanha: "../assets/img/wall_montanha.png"
-    };
+            if (!partida) {
+                alert("Partida não encontrada!");
+                return;
+            }
 
-    document.body.classList.add(partida.local);
+            // Aplica classe de fundo
+            document.body.classList.add(partida.local);
 
-    // Busca personagens via API
-    try {
-        const response = await fetch("partida_perso_pegar.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ personagens: partida.personagens })
-        });
+            try {
+                // Busca personagens via API
+                const response = await fetch("partida_perso_pegar.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ personagens: partida.personagens })
+                });
 
-        if (!response.ok) throw new Error("Erro ao buscar personagens da partida");
+                if (!response.ok) throw new Error("Erro ao buscar personagens da partida");
 
-        const personagens = await response.json();
-        const container = document.getElementById("info");
-        container.innerHTML = "";
+                const personagens = await response.json();
 
-        personagens.forEach(p => {
-            const div = document.createElement("div");
-            div.className = "personagem";
-            div.innerHTML = `
-                <img src="../assets/img2/${p.imagem}" alt="${p.nome}">
-                <strong>${p.nome}</strong>
-                <ul>
-                    ${p.habilidades.map(h => `<li>${h.nome} - Dano: ${h.dano}</li>`).join("")}
-                </ul>
-            `;
-            container.appendChild(div);
-        });
+                const containerPersonagens = document.getElementById("info");
+                const containerHabilidades = document.getElementById("habilidades-list");
 
-    } catch (err) {
-        console.error(err);
-        document.getElementById("info").innerHTML = "Erro ao carregar personagens da partida.";
-    }
-}
+                containerPersonagens.innerHTML = "";
+                containerHabilidades.innerHTML = "";
 
-// Executa a função
-iniciarPartida();
-</script>
+                personagens.forEach(p => {
+                    const div = document.createElement("div");
+                    div.className = "personagem";
 
+                    div.innerHTML = `
+                        <img src="../${p.imagem}" alt="${p.nome}">
+                        <strong>${p.nome}</strong>
+                    `;
 
+                    // Ao clicar no personagem, mostra suas habilidades com dano e cura
+                    div.addEventListener("click", () => {
+                    containerHabilidades.innerHTML = "";
+                    p.habilidades.forEach(h => {
+                    const li = document.createElement("li");
+                    li.textContent = `${h.nome} - Tipo: ${h.tipo} - Dano: ${h.dano} - Cura: ${h.cura ?? 0}`;
+                    containerHabilidades.appendChild(li);
+                        });
+                    });
+
+                    containerPersonagens.appendChild(div);
+                });
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById("info").innerHTML = "Erro ao carregar personagens da partida.";
+            }
+        }
+
+        iniciarPartida();
+    </script>
 </body>
 </html>
-
-
