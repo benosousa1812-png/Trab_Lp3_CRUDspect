@@ -22,7 +22,6 @@ require_once __DIR__ . '/../includes/header.php';
 <!-- Barra de pesquisa -->
 <div class="search-bar-container">
   <div class="search-wrapper">
-    <span class="search-icon">🔍</span>
     <input 
       type="text" 
       id="searchInput" 
@@ -63,7 +62,7 @@ require_once __DIR__ . '/../includes/header.php';
                      style="width: 45px; height: 45px; object-fit: cover; border: 2px solid #1a1a1a;">
               <?php else: ?>
                 <div class="personagem-avatar-placeholder" style="width: 45px; height: 45px; background: #d3d3d3; border: 2px solid #1a1a1a; display: inline-flex; align-items: center; justify-content: center;">
-                  🎭
+                  
                 </div>
               <?php endif; ?>
             </td>
@@ -113,15 +112,15 @@ function filterTable() {
     // Mostrar/esconder botão de limpar
     if (searchTerm !== '') {
         clearBtn.style.display = 'flex';
-        resultCount.innerHTML = `📊 ${visibleCount} personagem(ns) encontrado(s)`;
+        resultCount.innerHTML = ` ${visibleCount} personagem(ns) encontrado(s)`;
     } else {
         clearBtn.style.display = 'none';
-        resultCount.innerHTML = `📊 Total: ${rows.length} personagem(ns)`;
+        resultCount.innerHTML = ` Total: ${rows.length} personagem(ns)`;
     }
     
     // Mostrar mensagem se nenhum resultado
     if (visibleCount === 0 && searchTerm !== '') {
-        resultCount.innerHTML = `❌ Nenhum personagem encontrado para "${searchTerm}"`;
+        resultCount.innerHTML = ` Nenhum personagem encontrado para "${searchTerm}"`;
     }
 }
 

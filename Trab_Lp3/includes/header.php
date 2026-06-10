@@ -84,15 +84,15 @@
             .then(data => {
                 playlist = data;
                 if (playlist.length > 0) {
-                    status.innerHTML = `📀 ${playlist.length} músicas carregadas`;
+                    status.innerHTML = `${playlist.length} músicas carregadas`;
                     carregarMusica(0);
                 } else {
-                    status.innerHTML = '❌ Nenhuma música encontrada';
+                    status.innerHTML = 'Nenhuma música encontrada';
                 }
             })
             .catch(error => {
                 console.error('Erro ao carregar playlist:', error);
-                status.innerHTML = '❌ Erro ao carregar músicas';
+                status.innerHTML = 'Erro ao carregar músicas';
             });
     }
     

@@ -149,9 +149,9 @@ require_once __DIR__ . '/../includes/header.php';
 <?php endif; ?>
 
 <div class="profile-tabs">
-  <a href="?aba=perfil" class="tab <?= $aba_ativa === 'perfil' ? 'tab-ativa' : '' ?>">📸 Perfil</a>
-  <a href="?aba=conta" class="tab <?= $aba_ativa === 'conta' ? 'tab-ativa' : '' ?>">👤 Dados da Conta</a>
-  <a href="?aba=senha" class="tab <?= $aba_ativa === 'senha' ? 'tab-ativa' : '' ?>">🔒 Alterar Senha</a>
+  <a href="?aba=perfil" class="tab <?= $aba_ativa === 'perfil' ? 'tab-ativa' : '' ?>">Perfil</a>
+  <a href="?aba=conta" class="tab <?= $aba_ativa === 'conta' ? 'tab-ativa' : '' ?>">Dados da Conta</a>
+  <a href="?aba=senha" class="tab <?= $aba_ativa === 'senha' ? 'tab-ativa' : '' ?>">Alterar Senha</a>
 </div>
 
 <?php if ($aba_ativa === 'perfil'): ?>
@@ -166,7 +166,7 @@ require_once __DIR__ . '/../includes/header.php';
           <?php if ($usuario->getFotoPerfil() && file_exists(__DIR__ . '/../' . $usuario->getFotoPerfil())): ?>
             <img id="currentImagePreview" src="/Trab_Lp3/<?= $usuario->getFotoPerfil() ?>" class="foto-preview-round">
           <?php else: ?>
-            <div id="currentImagePreview" class="foto-preview-placeholder-round">🎭</div>
+            <div id="currentImagePreview" class="foto-preview-placeholder-round"></div>
           <?php endif; ?>
         </div>
       </div>
