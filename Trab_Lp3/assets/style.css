@@ -1359,40 +1359,63 @@ body.partida_pag {
     padding: 0;
     font-family: Arial, sans-serif;
 }
+#boss_container {
+    position: fixed; /* fica preso na tela */
+    right: 20px;     /* distância da direita */
+    top: 100px;      /* distância do topo */
 
-/* Container de personagens */
+    width: 720px;
+    height: 500px;
+
+    background: rgba(255,255,255,0.8);
+    border-radius: 10px;
+    padding: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
+}
+
+#boss_container img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+}
 #info {
     display: flex;
-    flex-direction: column; /* empilha um embaixo do outro */
-    align-items: flex-start; /* alinha à esquerda */
-    gap: 15px; /* espaço entre personagens */
-    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
 
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    gap: 18px;          /* um pouco mais de espaço */
+    padding: 50px 20px 20px 20px; /* aumenta distância do topo */
 }
-
 /* Bloco de personagem */
 .personagem {
-    width: 250px;
+    width: 290px; /* 250 + ~15% */
+
     background: rgba(255,255,255,0.8);
-    padding: 20px;
+    padding: 23px; /* aumenta proporcionalmente */
+
     border-radius: 8px;
     text-align: center;
+
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.personagem img {
+    width: 115px;  /* 100 + 15% */
+    height: 115px;
 
+    object-fit: cover;
+    display: block;
+    margin-bottom: 10px;
+}
 /* Efeito hover individual */
 .personagem:hover {
     transform: translateX(10px) translateY(-5px) rotate(-3deg)  scale(1.05);
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-/* Imagem do personagem */
-.personagem img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    display: block;
-    margin-bottom: 10px;
 }
 body.deserto {
     background-image: url("../assets/img/wall_deserto.png");
@@ -1400,14 +1423,14 @@ body.deserto {
     background-position: center;
 }
 
-/* Fundo floresta */
+
 body.floresta {
     background-image: url("../assets/img/wall_floresta.png");
     background-size: cover;
     background-position: center;
 }
 
-/* Fundo montanha */
+
 body.montanha {
     background-image: url("../assets/img/wall_montanha.png");
     background-size: cover;
@@ -1434,7 +1457,7 @@ body.montanha {
     z-index: 1000;
 }
 
-/* Cada habilidade dentro do container */
+/* habilidades dos personagens no retangulo*/
 #habilidades-list {
     list-style: none;
     display: flex;
@@ -1450,13 +1473,13 @@ body.montanha {
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     padding: 10px;
-    flex: 1; /* Cada li ocupa espaço igual */
+    flex: 1; 
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
-/* Efeito hover */
+/* Efeito pra mecher quando passa o mouse */
 #habilidades-list li:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-5px);

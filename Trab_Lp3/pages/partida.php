@@ -16,6 +16,12 @@ require_once __DIR__ . '/../includes/auth.php';
     <!-- PERSONAGENS -->
     <div id="info"></div>
 
+    <!-- Boss -->
+    <div id="boss_container">
+        <!-- aqui fazer a logica de aparecer cada foto do boss dependendo de qual tema foi escolhido na partida (obs as imagens estao na pasta bosses com suas habilidades) !-->
+        
+    </div>
+
     <!-- HABILIDADES FIXAS -->
     <div id="habilidades-container">
         <ul id="habilidades-list"></ul>
