@@ -19,7 +19,7 @@ require_once __DIR__ . '/../includes/auth.php';
     <!-- Boss -->
     <div id="boss_container">
         <!-- aqui fazer a logica de aparecer cada foto do boss dependendo de qual tema foi escolhido na partida (obs as imagens estao na pasta bosses com suas habilidades) !-->
-        
+       
     </div>
 
     <!-- HABILIDADES FIXAS -->
@@ -29,6 +29,7 @@ require_once __DIR__ . '/../includes/auth.php';
 
     <script>
         async function iniciarPartida() {
+            //pega os dados q fez no partida_create (pers, dif e local) pra usar
             const partida = JSON.parse(localStorage.getItem("partida"));
 
             if (!partida) {
@@ -38,6 +39,23 @@ require_once __DIR__ . '/../includes/auth.php';
 
             // Aplica classe de fundo
             document.body.classList.add(partida.local);
+            // mostra a fotinha do boss na direita (depende do tema escolhido no partuda_create)
+            const bossContainer = document.getElementById("boss_container");
+
+            if (partida.local === "deserto") {
+                bossContainer.innerHTML =
+                    '<img src="../bosses/deserto/imagem do deserto.png" alt="Boss Deserto">';
+            }
+            else if (partida.local === "floresta") {
+                bossContainer.innerHTML =
+                    '<img src="../bosses/floresta/boss_floresta.png" alt="Boss Floresta">';
+            }
+            else if (partida.local === "montanha") {
+                bossContainer.innerHTML =
+                    '<img src="../bosses/montanha/boss_montanha.png" alt="Boss Montanha">';
+            }
+
+            
 
             try {
                 // Busca personagens via API

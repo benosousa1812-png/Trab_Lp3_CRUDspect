@@ -229,6 +229,15 @@ checkboxes.forEach((checkbox) => {
         }
 
         updateSelectedCharacters();
+
+        <!-- mostra o botao que via pra segunda parte so se tiver 3 personagen  -->
+        const btn = document.querySelector('.but-escolher-dif');
+
+        if (selecionados.length === 3) {
+            btn.style.display = '';
+        } else {
+            btn.style.display = 'none';
+        }
     });
 });
 
@@ -276,8 +285,8 @@ function updateSelectedCharacters() {
 <!-- esconder tabela e barra de pesquisa (segunda parte da crição de partida) -->
   
 
-<div class="but-escolher-dif">
-    <button onclick="segunda_parte()" class="btn-escolher-dif">
+<div class="but-escolher-dif" style="display: none;">
+    <button onclick="segunda_parte()" class="btn-escolher-dif" >
         Próximo
     </button>
 </div>
