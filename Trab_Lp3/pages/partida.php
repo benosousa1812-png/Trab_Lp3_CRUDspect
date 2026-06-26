@@ -66,6 +66,8 @@ let batalha = {
         vidaMax:200
     }
 };
+let ataqueSelecionado = false;
+let danoAtaque = 0;
 
 // CRIA A BARRA DE VIDA
 function criarBarraVida(atual,max,tipo){
@@ -86,6 +88,35 @@ function criarBarraVida(atual,max,tipo){
             </div>
         </div>
     `;
+}
+
+function atualizarVidaBoss(){
+
+    const barraVida = document.querySelector(".vida.boss");
+    const textoVida = document.querySelector(".boss_vida .vida_texto");
+    if (batalha.boss.vida>0)
+    {
+    let porcentagem = 
+    (batalha.boss.vida / batalha.boss.vidaMax) * 100;
+
+    barraVida.style.width = porcentagem + "%";
+
+    textoVida.textContent =
+    `Vida: ${batalha.boss.vida}/${batalha.boss.vidaMax}`;
+    }
+    else
+    {
+        vitoria=1;
+       
+
+    barraVida.style.width = "0%";
+
+    textoVida.textContent =
+    `Vida: ${"0"}/${batalha.boss.vidaMax}`;
+    alert("voce ganhouaawdbiawudbibiabd");
+    }
+    
+
 }
 
 
@@ -171,7 +202,8 @@ async function iniciarPartida(){
                     li.textContent = 
                     `${h.nome} - Tipo: ${h.tipo} - Dano: ${h.dano} - Cura: ${h.cura ?? 0}`;
                     containerHabilidades.appendChild(li);
-                    li.addEventListener("click",()=>{
+                    li.addEventListener("click",(event)=>{
+                        event.stopPropagation();
                         ver_ação(
                             h.nome,
                             h.tipo,
@@ -196,12 +228,118 @@ async function iniciarPartida(){
 
 iniciarPartida();
 
+
+const bossContainer = document.getElementById("boss_container");
+
+
+// QUANDO CLICAR NO BOSS
+bossContainer.addEventListener("click",()=>{
+
+event.stopPropagation();
+
+    if(ataqueSelecionado){
+
+
+        console.log("Atacou o boss");
+
+
+        batalha.boss.vida -= danoAtaque;
+
+
+        console.log(
+            "Vida do boss:",
+            batalha.boss.vida
+        );
+        atualizarVidaBoss();
+
+        // resetar ataque
+        ataqueSelecionado = false;
+
+        danoAtaque = 0;
+
+
+        bossContainer.classList.remove("ataque_ativo");
+
+
+    }
+
+
+});
+
+
+
+
+// CLIQUE FORA CANCELA O ATAQUE
+document.addEventListener("click",(event)=>{
+
+
+    if(!ataqueSelecionado){
+
+        return;
+
+    }
+
+
+
+    if(!event.target.closest("#boss_container")){
+
+
+        console.log("Ataque cancelado");
+
+
+        ataqueSelecionado = false;
+
+
+        danoAtaque = 0;
+
+
+        bossContainer.classList.remove("ataque_ativo");
+
+
+    }
+
+
+});
+
+
+
+
+// ATIVA O MODO DE ATAQUE
+function ativarAtaqueBoss(dano){
+
+
+    ataqueSelecionado = true;
+
+
+    danoAtaque = dano;
+
+
+    bossContainer.classList.add("ataque_ativo");
+
+
+}
+
+
+
+// RECEBE A HABILIDADE CLICADA
 function ver_ação(nome,tipo,dano,cura){
-    console.log("clicou na lista de habilidades");
+
+
     console.log("Nome:",nome);
     console.log("Tipo:",tipo);
     console.log("Dano:",dano);
-    console.log("Cura:",cura);
+
+
+
+    if(tipo === "Ataque"){
+
+
+        ativarAtaqueBoss(dano);
+
+
+    }
+
+
 }
 </script>
 </body>

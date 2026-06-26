@@ -1573,3 +1573,52 @@ body.montanha {
     margin-top:8px;
 
 }
+/*efeito do boss*/
+#boss_container{
+
+    transition: 
+    border 0.5s ease,
+    box-shadow 0.5s ease;
+
+}
+
+
+
+#boss_container.ataque_ativo{
+
+
+    border:5px solid red;
+
+
+    animation:pulsar 0.8s infinite;
+
+
+}
+
+
+
+@keyframes pulsar{
+
+
+0%{
+
+    box-shadow:0 0 10px red;
+
+}
+
+
+50%{
+
+    box-shadow:0 0 50px red;
+
+}
+
+
+100%{
+
+    box-shadow:0 0 10px red;
+
+}
+
+
+}
