@@ -1484,3 +1484,92 @@ body.montanha {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-5px);
 }
+
+
+/* barra d vida*/
+#boss_container{
+    height: auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+
+#boss_container img{
+
+    width:100%;
+    display:block;
+
+}
+
+
+
+.boss_vida{
+
+    width:100%;
+
+}
+
+
+
+
+.barra{
+
+    width:90%;       /* aumenta a barra */
+    height:30px;     /* aumenta a altura */
+
+    background:#333;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    margin:15px auto 0;
+
+}
+
+
+
+
+.vida{
+
+    height:100%;
+
+    transition:width 0.8s ease;
+
+}
+
+
+
+
+.player{
+
+    background:green;
+
+}
+
+
+
+
+.boss{
+
+    background:red;
+
+}
+
+
+
+
+.vida_texto{
+
+    text-align:center;
+
+    color:white;
+
+    font-weight:bold;
+
+    font-size:18px;
+
+    margin-top:8px;
+
+}
