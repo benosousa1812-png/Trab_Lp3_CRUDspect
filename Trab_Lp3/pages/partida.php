@@ -14,10 +14,29 @@ require_once __DIR__ . '/../includes/auth.php';
     <title>Partida RPG</title>
 
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../bosses/bosseshab.js"></script>
 
 </head>
 
 <body class="partida_pag">
+
+<div id="turno_container">
+    Vez do jogadordwwadw
+</div>
+
+<div id="ataque_boss_container">
+
+    <div id="ataque_boss_caixa">
+
+        <button id="fechar_ataque">X</button>
+
+        <h2 id="nome_ataque"></h2>
+
+        <p id="resultado_ataque"></p>
+
+    </div>
+
+</div>
 
 <div id="info"></div>
 
@@ -35,6 +54,7 @@ require_once __DIR__ . '/../includes/auth.php';
 
 // GUARDA A VIDA DA PARTIDA
 let batalha = {
+    turno:"jogador",
     jogadores:[
 
         {
@@ -62,8 +82,8 @@ let batalha = {
     boss:{
         id:"boss",
         nome:"Boss",
-        vida:200,
-        vidaMax:200
+        vida:0,
+        vidaMax:0
     }
 };
 let ataqueSelecionado = false;
@@ -89,7 +109,186 @@ function criarBarraVida(atual,max,tipo){
         </div>
     `;
 }
+function turnoboss(){
 
+    batalha.turno = "boss";
+    atualizar_contai();
+    ataque_do_boss();
+
+
+}
+function ataque_do_boss()
+{
+ let partida = JSON.parse(localStorage.getItem("partida"));
+
+
+    let bossAtual;
+
+
+
+    if(partida.local == "deserto"){
+
+        bossAtual = bosses.deserto;
+
+    }
+
+    else if(partida.local == "floresta"){
+
+        bossAtual = bosses.floresta;
+
+    }
+
+    else{
+
+        bossAtual = bosses.montanha;
+
+    }
+
+
+
+    let habilidade = 
+    bossAtual.habilidades[
+        Math.floor(
+            Math.random() * bossAtual.habilidades.length
+        )
+    ];
+
+
+
+    let resultado = "";
+
+
+
+    if(habilidade.tipo == "ataque_area"){
+
+
+
+        batalha.jogadores.forEach(jogador=>{
+
+
+            jogador.vida -= habilidade.dano;
+
+
+            resultado +=
+            `${jogador.nome} perdeu ${habilidade.dano} de vida<br>`;
+
+
+        });
+
+
+    }
+
+
+
+    else if(habilidade.tipo == "ataque"){
+
+
+
+        let alvo = Math.floor(Math.random()*3);
+
+
+
+        batalha.jogadores[alvo].vida -= habilidade.dano;
+
+
+
+        resultado +=
+        `${batalha.jogadores[alvo].nome} perdeu ${habilidade.dano} de vida`;
+
+
+
+    }
+
+
+
+    mostrar_ataque_boss(
+        habilidade.nome,
+        resultado
+    );
+    atualizarVidaJogadores();
+    verificarDerrota();
+}
+function mostrar_ataque_boss(nome, resultado){
+
+
+    document.getElementById("nome_ataque").innerText =
+    "Boss usou: " + nome;
+
+
+    document.getElementById("resultado_ataque").innerHTML =
+    resultado;
+
+
+    document.getElementById("ataque_boss_container")
+    .style.display = "block";
+
+
+}
+function atualizar_contai(){
+const caixa = document.getElementById("turno_container")
+
+if(batalha.turno == "jogador")
+{
+    caixa.innerText = "vez do jogador";
+
+}
+else{
+    caixa.innerText = "vez do boss";
+}
+
+}
+function atualizarVidaJogadores(){
+
+    const personagens = document.querySelectorAll(".personagem");
+
+
+    batalha.jogadores.forEach((jogador,index)=>{
+
+
+        let personagem = personagens[index];
+
+
+        if(!personagem) return;
+
+
+        let barra = personagem.querySelector(".vida.player");
+
+        let texto = personagem.querySelector(".vida_texto");
+
+
+        let porcentagem = 
+        (jogador.vida / jogador.vidaMax) * 100;
+
+
+        if(porcentagem < 0){
+            porcentagem = 0;
+        }
+
+
+        barra.style.width = porcentagem + "%";
+
+
+        texto.textContent =
+        `Vida: ${jogador.vida}/${jogador.vidaMax}`;
+
+
+
+        // MORREU
+        if(jogador.vida <= 0){
+
+            personagem.style.opacity = "0.4";
+
+            personagem.style.pointerEvents = "none";
+
+            personagem.classList.add("morto");
+
+        }
+
+
+    });
+
+
+}
 function atualizarVidaBoss(){
 
     const barraVida = document.querySelector(".vida.boss");
@@ -113,9 +312,63 @@ function atualizarVidaBoss(){
 
     textoVida.textContent =
     `Vida: ${"0"}/${batalha.boss.vidaMax}`;
-    alert("voce ganhouaawdbiawudbibiabd");
-    }
+
+    mostrar_resultado(
+    "VITÓRIA",
+    "O boss foi derrotado!"
+);
+
+
+setTimeout(()=>{
+
+    window.location.href="../pages/index.php";
+
+},3000);
     
+
+}
+}
+function verificarDerrota(){
+
+
+    let mortos = batalha.jogadores.filter(j=>j.vida <=0);
+
+
+    if(mortos.length == 3){
+
+
+        mostrar_resultado(
+            "DERROTA",
+            "Todos os jogadores foram derrotados!"
+        );
+
+
+        setTimeout(()=>{
+
+            window.location.href="../pages/index.php";
+
+        },3000);
+
+
+    }
+
+
+}
+function mostrar_resultado(titulo,texto){
+
+
+    document.getElementById("nome_ataque").innerText =
+    titulo;
+
+
+    document.getElementById("resultado_ataque").innerHTML =
+    texto;
+
+
+    document
+    .getElementById("ataque_boss_container")
+    .style.display="block";
+
 
 }
 
@@ -123,6 +376,22 @@ function atualizarVidaBoss(){
 async function iniciarPartida(){
 
     const partida = JSON.parse(localStorage.getItem("partida"));
+    if (partida.dificuldade == "Fácil")
+    {
+        batalha.boss.vida = 200;
+        batalha.boss.vidaMax = 200;
+    }
+    else if (partida.dificuldade == "Médio")
+    {
+         batalha.boss.vida = 400;
+        batalha.boss.vidaMax = 400;
+    }
+    else
+    {
+    batalha.boss.vida = 600;
+    batalha.boss.vidaMax = 600;
+    }
+
 
     if(!partida){
         alert("Partida não encontrada!");
@@ -228,16 +497,18 @@ async function iniciarPartida(){
 
 iniciarPartida();
 
+atualizar_contai();
+
 
 const bossContainer = document.getElementById("boss_container");
 
 
 // QUANDO CLICAR NO BOSS
-bossContainer.addEventListener("click",()=>{
+bossContainer.addEventListener("click",(event)=>{
 
-event.stopPropagation();
+    event.stopPropagation();
 
-    if(ataqueSelecionado){
+    if(ataqueSelecionado && batalha.turno == "jogador"){
 
 
         console.log("Atacou o boss");
@@ -245,12 +516,17 @@ event.stopPropagation();
 
         batalha.boss.vida -= danoAtaque;
 
-
         console.log(
             "Vida do boss:",
             batalha.boss.vida
         );
         atualizarVidaBoss();
+        if(batalha.boss.vida <= 0){
+
+            return;
+
+        }
+        turnoboss();
 
         // resetar ataque
         ataqueSelecionado = false;
@@ -262,7 +538,6 @@ event.stopPropagation();
 
 
     }
-
 
 });
 
@@ -341,6 +616,24 @@ function ver_ação(nome,tipo,dano,cura){
 
 
 }
+
+document
+.getElementById("fechar_ataque")
+.addEventListener("click",()=>{
+
+
+    document
+    .getElementById("ataque_boss_container")
+    .style.display="none";
+
+
+    batalha.turno="jogador";
+
+
+    atualizar_contai();
+
+console.log(batalha.jogadores);
+});
 </script>
 </body>
 </html>
