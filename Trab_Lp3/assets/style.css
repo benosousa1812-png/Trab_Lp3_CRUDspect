@@ -1573,52 +1573,30 @@ body.montanha {
     margin-top:8px;
 
 }
-/*efeito do boss*/
-#boss_container{
-
-    transition: 
-    border 0.5s ease,
-    box-shadow 0.5s ease;
-
+/* efeito do boss */
+#boss_container {
+    transition: border 0.5s ease, box-shadow 0.5s ease;
 }
 
-
-
-#boss_container.ataque_ativo{
-
-
-    border:5px solid red;
-
-
-    animation:pulsar 0.8s infinite;
-
-
+#boss_container.ataque_ativo {
+    border: 5px solid red;
+    animation: pulsar 0.8s infinite;
 }
 
-
-
-@keyframes pulsar{
-
-
-0%{
-
-    box-shadow:0 0 10px red;
-
+/* Efeito de CURA selecionada - destaca o boss em azul */
+#boss_container.cura_selecionada {
+    border: 5px solid #00bfff;
+    animation: pulsar_cura 0.8s infinite;
 }
 
-
-50%{
-
-    box-shadow:0 0 50px red;
-
+@keyframes pulsar {
+    0% { box-shadow: 0 0 10px red; }
+    50% { box-shadow: 0 0 50px red; }
+    100% { box-shadow: 0 0 10px red; }
 }
 
-
-100%{
-
-    box-shadow:0 0 10px red;
-
-}
-
-
+@keyframes pulsar_cura {
+    0% { box-shadow: 0 0 10px #00bfff; }
+    50% { box-shadow: 0 0 50px #00bfff; }
+    100% { box-shadow: 0 0 10px #00bfff; }
 }
