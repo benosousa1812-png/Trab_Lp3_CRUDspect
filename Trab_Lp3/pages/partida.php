@@ -40,15 +40,41 @@ require_once __DIR__ . '/../includes/auth.php';
     let curaPendente = null;              // guarda {nome, quantidade} da cura pendente
     let ataqueSelecionado = false;
     let danoAtaque = 0;
+    let BossParalisado = false;
+    let habilidadePrevista = null;
+
 
     // ===================== BATALHA =====================
     let batalha = {
         turno: "jogador",
-        jogadores: [
-            { id: 1, nome: "", vida: 100, vidaMax: 100 },
-            { id: 2, nome: "", vida: 100, vidaMax: 100 },
-            { id: 3, nome: "", vida: 100, vidaMax: 100 }
-        ],
+        jogadores: {
+        id: 1,
+        nome: "",
+        vida: 100,
+        vidaMax: 100,
+        resistencia: 0,
+        regeneracao: 0,
+        bonusPoder: 0
+        intangivel: false
+    },
+    {
+        id: 2,
+        nome: "",
+        vida: 100,
+        vidaMax: 100,
+        resistencia: 0,
+        regeneracao: 0,
+        intangivel: false
+    },
+    {
+        id: 3,
+        nome: "",
+        vida: 100,
+        vidaMax: 100,
+        resistencia: 0,
+        regeneracao: 0,
+        intangivel: false
+    },
         boss: {
             id: "boss",
             nome: "Boss",
@@ -126,6 +152,13 @@ require_once __DIR__ . '/../includes/auth.php';
     }
 
     function turnoboss() {
+        if (bossParalisado) {
+    bossParalisado = false;
+    mostrar_resultado("CONTROLE", "Boss está paralisado e perdeu o turno!");
+    batalha.turno = "jogador";
+    atualizar_contai();
+    return;
+}
         batalha.turno = "boss";
         batalha.jaAgui = [false, false, false]; // reseta para o próximo turno
         atualizar_contai();
@@ -139,7 +172,16 @@ require_once __DIR__ . '/../includes/auth.php';
         else if (partida.local == "floresta") bossAtual = bosses.floresta;
         else bossAtual = bosses.montanha;
 
-        let habilidade = bossAtual.habilidades[Math.floor(Math.random() * bossAtual.habilidades.length)];
+        let habilidade;
+
+    if (habilidadePrevista != null) {
+        habilidade = habilidadePrevista;
+        habilidadePrevista = null;
+    } else {
+        habilidade = bossAtual.habilidades[
+        Math.floor(Math.random() * bossAtual.habilidades.length)
+    ];
+}
         let resultado = "";
 
         if (habilidade.tipo == "ataque_area") {
@@ -148,16 +190,39 @@ require_once __DIR__ . '/../includes/auth.php';
                 resultado += `${jogador.nome} perdeu ${habilidade.dano} de vida<br>`;
             });
         } else if (habilidade.tipo == "ataque") {
-            let alvo = Math.floor(Math.random() * 3);
-            batalha.jogadores[alvo].vida -= habilidade.dano;
-            resultado += `${batalha.jogadores[alvo].nome} perdeu ${habilidade.dano} de vida`;
+
+    let alvosValidos = [];
+
+    batalha.jogadores.forEach((jogador, index) => {
+        if (jogador.vida > 0 && jogador.intangivel == false) {
+            alvosValidos.push(index);
         }
+    });
+
+    if (alvosValidos.length > 0) {
+        let alvo = alvosValidos[Math.floor(Math.random() * alvosValidos.length)];
+
+        let danoFinal = habilidade.dano - batalha.jogadores[alvo].resistencia;
+
+        if (danoFinal < 0) {
+            danoFinal = 0;
+        }
+
+        batalha.jogadores[alvo].vida -= danoFinal;
+
+        resultado += `${batalha.jogadores[alvo].nome} perdeu ${danoFinal} de vida`;
+    }
+}
 
         mostrar_ataque_boss(habilidade.nome, resultado);
         atualizarVidaJogadores();
         verificarDerrota();
 
-        // Depois do ataque do boss, volta o turno para o jogador
+        aplicarRegeneracao();
+
+        batalha.jogadores.forEach(jogador => {
+    jogador.intangivel = false;
+    });
         batalha.turno = "jogador";
         batalha.jaAgui = [false, false, false];
         atualizar_contai();
@@ -288,6 +353,19 @@ require_once __DIR__ . '/../includes/auth.php';
         return true;
     }
 
+    function aplicarRegeneracao() {
+    batalha.jogadores.forEach(jogador => {
+        if (jogador.regeneracao > 0 && jogador.vida > 0) {
+            jogador.vida += jogador.regeneracao;
+
+            if (jogador.vida > jogador.vidaMax) {
+                jogador.vida = jogador.vidaMax;
+            }
+        }
+    });
+
+    atualizarVidaJogadores();
+}
     // ===================== FUNÇÕES DE ATAQUE =====================
     function ativarAtaqueBoss(dano) {
         ataqueSelecionado = true;
@@ -338,6 +416,52 @@ require_once __DIR__ . '/../includes/auth.php';
             ativarAtaqueBoss(dano);
         }
 
+        if (tipo === "Controle" || tipo === "controle") {
+
+        if (nome === "Presságio") {
+            let partida = JSON.parse(localStorage.getItem("partida"));
+            let bossAtual;
+
+        if (partida.local == "deserto") bossAtual = bosses.deserto;
+        else if (partida.local == "floresta") bossAtual = bosses.floresta;
+        else bossAtual = bosses.montanha;
+
+    habilidadePrevista =
+        bossAtual.habilidades[
+            Math.floor(Math.random() * bossAtual.habilidades.length)
+        ];
+
+    mostrar_resultado(
+        "PRESSÁGIO",
+        "Próximo ataque do boss: " + habilidadePrevista.nome
+    );
+}
+    if (nome === "Paralisação Temporal") {
+        bossParalisado = true;
+
+        mostrar_resultado(
+            "CONTROLE",
+            "Boss será paralisado no próximo turno"
+        );
+    }
+    if (nome === "Passo Etéreo") {
+        batalha.jogadores[jogadorSelecionado].intangivel = true;
+
+        mostrar_resultado(
+        "CONTROLE",
+        batalha.jogadores[jogadorSelecionado].nome + " ficou intangível!"
+    );
+}
+    batalha.jaAgui[jogadorSelecionado] = true;
+    atualizarVidaJogadores();
+    atualizar_contai();
+
+    if (batalha.jaAgui.every(v => v === true)) {
+        setTimeout(() => turnoboss(), 500);
+    }
+
+    return;
+}
         // ---- BUFF (futuro) ----
         if (tipo === "Buff" || tipo === "buff") {
             alert("Buff ainda não implementado!");
@@ -394,6 +518,19 @@ require_once __DIR__ . '/../includes/auth.php';
             personagens.forEach((p, index) => {
                 const jogador = batalha.jogadores[index];
                 jogador.nome = p.nome;
+                if (p.habilidades.some(h => h.nome === "Pulmões de Ferro")) {
+                    jogador.resistencia = 15;
+}
+
+                if (p.habilidades.some(h => h.nome === "Regeneração Natural")) {
+                    jogador.regeneracao = 10;
+}
+
+                if (p.habilidades.some(h => h.nome === "Aura Nobre")) {
+                    jogador.vidaMax += 20;
+                    jogador.vida += 20;
+                    jogador.bonusPoder = 10;
+}
 
                 const div = document.createElement("div");
                 div.className = "personagem";
@@ -502,7 +639,8 @@ require_once __DIR__ . '/../includes/auth.php';
         e.stopPropagation();
         if (ataqueSelecionado && batalha.turno === "jogador") {
             // O ataque já foi contabilizado (jaAgui já foi marcado)
-            batalha.boss.vida -= danoAtaque;
+            let danoFinal = danoAtaque + batalha.jogadores[jogadorSelecionado].bonusPoder;
+            batalha.boss.vida -= danoFinal;
             atualizarVidaBoss();
             if (batalha.boss.vida <= 0) return;
 
