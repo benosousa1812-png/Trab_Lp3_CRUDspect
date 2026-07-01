@@ -34,17 +34,16 @@ require_once __DIR__ . '/../includes/auth.php';
 </div>
 
 <script>
-    // ===================== VARIÁVEIS GLOBAIS =====================
-    let jogadorSelecionado = -1;          // índice do personagem selecionado para escolher habilidade
-    let modoSelecaoAlvo = false;          // true quando estamos escolhendo alvo da cura
-    let curaPendente = null;              // guarda {nome, quantidade} da cura pendente
+    let jogadorSelecionado = -1;
+    let modoSelecaoAlvo = false;
+    let curaPendente = null; 
     let ataqueSelecionado = false;
     let danoAtaque = 0;
     let BossParalisado = false;
+    let protetorAtivo = null;
     let habilidadePrevista = null;
 
 
-    // ===================== BATALHA =====================
     let batalha = {
         turno: "jogador",
         jogadores: {
@@ -81,10 +80,10 @@ require_once __DIR__ . '/../includes/auth.php';
             vida: 0,
             vidaMax: 0
         },
-        jaAgui: [false, false, false]   // controle de quem já agiu no turno atual
+        jaAgui: [false, false, false]
     };
 
-    // ===================== FUNÇÕES AUXILIARES =====================
+
     function criarBarraVida(atual, max, tipo) {
         let pct = (atual / max) * 100;
         return `
@@ -110,7 +109,7 @@ require_once __DIR__ . '/../includes/auth.php';
                 personagem.style.opacity = "0.3";
                 personagem.style.pointerEvents = "none";
                 personagem.classList.add("morto");
-                batalha.jaAgui[index] = true; // morto conta como já agiu para não travar
+                batalha.jaAgui[index] = true;
             }
         });
         // Atualiza visual de quem já agiu
@@ -201,6 +200,14 @@ require_once __DIR__ . '/../includes/auth.php';
 
     if (alvosValidos.length > 0) {
         let alvo = alvosValidos[Math.floor(Math.random() * alvosValidos.length)];
+            if (
+        protetorAtivo !== null &&
+        protetorAtivo !== alvo &&
+        batalha.jogadores[protetorAtivo].vida > 0
+    ) {
+        resultado += "Cobertura Protetora ativou!<br>";
+        alvo = protetorAtivo;
+    }
 
         let danoFinal = habilidade.dano - batalha.jogadores[alvo].resistencia;
 
@@ -223,6 +230,8 @@ require_once __DIR__ . '/../includes/auth.php';
         batalha.jogadores.forEach(jogador => {
     jogador.intangivel = false;
     });
+
+        protetorAtivo= null;
         batalha.turno = "jogador";
         batalha.jaAgui = [false, false, false];
         atualizar_contai();
@@ -417,6 +426,10 @@ require_once __DIR__ . '/../includes/auth.php';
         }
 
         if (tipo === "Controle" || tipo === "controle") {
+            if (nome === "Cobertura Protetora") {
+                protetorAtivo = jogadorSelecionado;
+                mostrar_resultado("CONTROLE",batalha.jogadores[jogadorSelecionado].nome + " protegerá a equipe");
+}
 
         if (nome === "Presságio") {
             let partida = JSON.parse(localStorage.getItem("partida"));
