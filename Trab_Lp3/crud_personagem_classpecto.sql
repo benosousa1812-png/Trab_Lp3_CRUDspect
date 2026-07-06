@@ -243,13 +243,7 @@ CREATE TABLE `personagem` (
 --
 
 INSERT INTO `personagem` (`id`, `nome`, `classe`, `aspecto`, `usuario_id`, `imagem`) VALUES
-(30, 'Lohan Leonardo monteiro ramos', 'Cavaleiro(a)', 'Respiração', 1, 'uploads/6a231ef225a42.webp'),
-(31, 'pedrin', 'Escudeiro(a)', 'Luz', 1, 'uploads/6a259c89628f4.webp'),
-(32, 'joao', 'Bruxo(a)', 'Respiração', 1, 'uploads/6a259c9c61dbd.png'),
-(33, 'dwadwad', 'Escudeiro(a)', 'Respiração', 1, 'uploads/6a259caaed974.webp'),
-(34, 'pedrinooo', 'Cavaleiro(a)', 'Sangue', 1, 'uploads/6a25faee39f1d.jpg');
 
--- --------------------------------------------------------
 
 --
 -- Estrutura para tabela `personagem_habilidade`
@@ -266,27 +260,12 @@ CREATE TABLE `personagem_habilidade` (
 --
 
 INSERT INTO `personagem_habilidade` (`id`, `personagem_id`, `habilidade_id`) VALUES
-(1, 30, 44),
-(2, 30, 43),
-(3, 30, 2),
-(4, 31, 5),
-(5, 31, 57),
-(6, 31, 4),
-(7, 32, 26),
-(8, 32, 44),
-(9, 32, 45),
-(10, 33, 44),
-(11, 33, 5),
-(12, 33, 43),
-(13, 34, 3),
-(14, 34, 2),
-(15, 34, 1);
 
--- --------------------------------------------------------
 
---
+
+
 -- Estrutura para tabela `usuario`
---
+
 
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
