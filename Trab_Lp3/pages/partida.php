@@ -432,10 +432,8 @@ require_once __DIR__ . '/../includes/auth.php';
                 alert("O boss já foi derrotado!");
                 return;
             }
-            // Marca como já agiu antes de ativar ataque (o ataque será executado ao clicar no boss)
-            batalha.jaAgui[jogadorSelecionado] = true;
-            atualizarVidaJogadores();
-            atualizar_contai();
+            
+            
             ativarAtaqueBoss(dano+ batalha.bonusAtaque);
         }
 
@@ -655,6 +653,11 @@ require_once __DIR__ . '/../includes/auth.php';
             // O ataque já foi contabilizado (jaAgui já foi marcado)
             batalha.boss.vida -= danoAtaque;
             atualizarVidaBoss();
+            // vai contar a ação do personagen so se clicar no container do boss, se clicar fora ele cancela o ataque
+            batalha.jaAgui[jogadorSelecionado] = true;
+            atualizarVidaJogadores();
+            atualizar_contai();
+
             if (batalha.boss.vida <= 0) return;
 
             ataqueSelecionado = false;
