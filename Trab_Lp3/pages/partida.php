@@ -161,8 +161,15 @@ require_once __DIR__ . '/../includes/auth.php';
 
         if (habilidade.tipo == "ataque_area") {
             batalha.jogadores.forEach(jogador => {
-                jogador.vida -= habilidade.dano - batalha.reducaoAtaqueBoss;
-                resultado += `${jogador.nome} perdeu ${habilidade.dano} de vida<br>`;
+                let danoFinal = habilidade.dano - batalha.reducaoAtaqueBoss;
+
+                if(danoFinal < 0){
+                danoFinal = 0;
+                }
+
+                jogador.vida -= danoFinal;
+
+                resultado += `${jogador.nome} perdeu ${danoFinal} de vida<br>`;
             });
         } else if (habilidade.tipo == "ataque") {
             let alvo = Math.floor(Math.random() * 3);
@@ -254,23 +261,30 @@ require_once __DIR__ . '/../includes/auth.php';
 
     function aplicarBuff(nome){
 
-    batalha.bonusAtaque += 10;
+        batalha.bonusAtaque += 10;
 
-    batalha.jaAgui[jogadorSelecionado] = true;
+        if (batalha.bonusAtaque > 50) {
+            batalha.bonusAtaque = 50;
+        }
 
-    atualizarVidaJogadores();
-    atualizar_contai();
+        batalha.jaAgui[jogadorSelecionado] = true;
 
-    alert(nome + " aumentou o ataque da equipe!");
+        atualizarVidaJogadores();
+        atualizar_contai();
 
-    if(batalha.jaAgui.every(v => v === true)){
+        alert(nome + " aumentou o ataque da equipe!");
+
+        if(batalha.jaAgui.every(v => v === true)){
         setTimeout(() => turnoboss(), 500);
-    }
+        }
 }
 
     function aplicarDebuff(nome){
 
         batalha.reducaoAtaqueBoss += 10;
+        if (batalha.reducaoAtaqueBoss > 50) {
+            batalha.reducaoAtaqueBoss = 50;
+        }
 
         batalha.jaAgui[jogadorSelecionado] = true;
 
@@ -287,6 +301,9 @@ require_once __DIR__ . '/../includes/auth.php';
     function aplicarPassiva(nome){
 
         batalha.bonusCura += 10;
+        if (batalha.bonusCura > 50) {
+        batalha.bonusCura = 50;
+        }
 
         alert(nome + " aumentou a cura recebida!");
 
@@ -294,17 +311,26 @@ require_once __DIR__ . '/../includes/auth.php';
 
     function aplicarControle(nome){
 
+        let chance = Math.random();
+
+        if(chance <= 0.5){
+
         batalha.bossControlado = true;
+
+        alert(nome + " funcionou! O boss perdeu o próximo turno.");
+        } 
+        else {
+
+        alert(nome + " falhou! O boss resistiu ao controle.");
+        }
 
         batalha.jaAgui[jogadorSelecionado] = true;
 
         atualizarVidaJogadores();
         atualizar_contai();
 
-        alert(nome + " impediu o boss de agir!");
-
         if(batalha.jaAgui.every(v => v === true)){
-            setTimeout(() => turnoboss(), 500);
+        setTimeout(() => turnoboss(), 500);
         }
 
 }
@@ -435,7 +461,13 @@ require_once __DIR__ . '/../includes/auth.php';
         if (tipo === "Passiva" || tipo === "passiva") {
 
             aplicarPassiva(nome);
+            batalha.jaAgui[jogadorSelecionado] = true;
+            atualizarVidaJogadores();
+            atualizar_contai();
 
+            if (batalha.jaAgui.every(v => v === true)) {
+                setTimeout(() => turnoboss(), 500);
+            }
             return;
         }
     }
