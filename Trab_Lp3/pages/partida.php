@@ -44,6 +44,11 @@ require_once __DIR__ . '/../includes/auth.php';
     // ===================== BATALHA =====================
     let batalha = {
         turno: "jogador",
+        bossControlado: false,
+        bonusAtaque: 0,
+        bonusCura: 0,
+        reducaoAtaqueBoss: 0,
+
         jogadores: [
             { id: 1, nome: "", vida: 100, vidaMax: 100 },
             { id: 2, nome: "", vida: 100, vidaMax: 100 },
@@ -133,6 +138,18 @@ require_once __DIR__ . '/../includes/auth.php';
     }
 
     function ataque_do_boss() {
+        if(batalha.bossControlado){
+            alert("O boss está sob controle e perdeu o turno!");
+
+            batalha.bossControlado = false;
+
+            batalha.turno = "jogador";
+            batalha.jaAgui = [false, false, false];
+
+            atualizar_contai();
+            return;
+
+}
         let partida = JSON.parse(localStorage.getItem("partida"));
         let bossAtual;
         if (partida.local == "deserto") bossAtual = bosses.deserto;
@@ -144,7 +161,7 @@ require_once __DIR__ . '/../includes/auth.php';
 
         if (habilidade.tipo == "ataque_area") {
             batalha.jogadores.forEach(jogador => {
-                jogador.vida -= habilidade.dano;
+                jogador.vida -= habilidade.dano - batalha.reducaoAtaqueBoss;
                 resultado += `${jogador.nome} perdeu ${habilidade.dano} de vida<br>`;
             });
         } else if (habilidade.tipo == "ataque") {
@@ -235,13 +252,70 @@ require_once __DIR__ . '/../includes/auth.php';
         document.getElementById('habilidades-list').innerHTML = '';
     }
 
+    function aplicarBuff(nome){
+
+    batalha.bonusAtaque += 10;
+
+    batalha.jaAgui[jogadorSelecionado] = true;
+
+    atualizarVidaJogadores();
+    atualizar_contai();
+
+    alert(nome + " aumentou o ataque da equipe!");
+
+    if(batalha.jaAgui.every(v => v === true)){
+        setTimeout(() => turnoboss(), 500);
+    }
+}
+
+    function aplicarDebuff(nome){
+
+        batalha.reducaoAtaqueBoss += 10;
+
+        batalha.jaAgui[jogadorSelecionado] = true;
+
+        atualizarVidaJogadores();
+        atualizar_contai();
+
+        alert(nome + " reduziu o ataque do boss!");
+
+        if(batalha.jaAgui.every(v => v === true)){
+            setTimeout(() => turnoboss(), 500);
+        }
+}
+
+    function aplicarPassiva(nome){
+
+        batalha.bonusCura += 10;
+
+        alert(nome + " aumentou a cura recebida!");
+
+}
+
+    function aplicarControle(nome){
+
+        batalha.bossControlado = true;
+
+        batalha.jaAgui[jogadorSelecionado] = true;
+
+        atualizarVidaJogadores();
+        atualizar_contai();
+
+        alert(nome + " impediu o boss de agir!");
+
+        if(batalha.jaAgui.every(v => v === true)){
+            setTimeout(() => turnoboss(), 500);
+        }
+
+}
+
     function aplicarCuraNoAlvo(index, quantidade) {
         const jogador = batalha.jogadores[index];
         if (!jogador || jogador.vida <= 0) {
             alert("Este personagem está morto!");
             return false;
         }
-        const curaReal = Math.min(quantidade, jogador.vidaMax - jogador.vida);
+        const curaReal = Math.min(quantidade + batalha.bonusCura, jogador.vidaMax - jogador.vida);
         jogador.vida += curaReal;
 
         atualizarVidaJogadores();
@@ -297,6 +371,7 @@ require_once __DIR__ . '/../includes/auth.php';
         document.getElementById('habilidades-list').innerHTML = '<li style="text-align:center;color:#e8e507;font-weight:bold;list-style:none;">Clique no BOSS para atacar!</li>';
     }
 
+
     // ===================== FUNÇÃO PRINCIPAL DE HABILIDADE =====================
     function ver_ação(nome, tipo, dano, cura) {
         if (batalha.turno !== "jogador") {
@@ -335,12 +410,33 @@ require_once __DIR__ . '/../includes/auth.php';
             batalha.jaAgui[jogadorSelecionado] = true;
             atualizarVidaJogadores();
             atualizar_contai();
-            ativarAtaqueBoss(dano);
+            ativarAtaqueBoss(dano+ batalha.bonusAtaque);
         }
 
-        // ---- BUFF (futuro) ----
+        // ---- BUFF ----
         if (tipo === "Buff" || tipo === "buff") {
-            alert("Buff ainda não implementado!");
+            aplicarBuff(nome);
+
+            return;
+        }
+
+        if (tipo === "Debuff" || tipo === "debuff") {
+            aplicarDebuff(nome);
+
+            return;
+        }
+
+        if (tipo === "Controle" || tipo === "controle") {
+
+            aplicarControle(nome);
+
+            return;
+        }
+        if (tipo === "Passiva" || tipo === "passiva") {
+
+            aplicarPassiva(nome);
+
+            return;
         }
     }
 
@@ -394,6 +490,16 @@ require_once __DIR__ . '/../includes/auth.php';
             personagens.forEach((p, index) => {
                 const jogador = batalha.jogadores[index];
                 jogador.nome = p.nome;
+
+                p.habilidades.forEach(h => {
+
+                    if(h.tipo === "Passiva" || h.tipo === "passiva"){
+
+                        batalha.bonusCura += 10;
+
+    }
+
+});
 
                 const div = document.createElement("div");
                 div.className = "personagem";
@@ -453,6 +559,19 @@ require_once __DIR__ . '/../includes/auth.php';
                             icone = "[BUFF] ";
                             cor = "#ffd93d";
                         }
+                         else if (h.tipo === "Debuff" || h.tipo === "debuff") {
+                            icone = "[DEBUFF] ";
+                            cor = "#b388ff";
+                        }
+                        else if (h.tipo === "Controle" || h.tipo === "controle") {
+                            icone = "[CONTROLE] ";
+                            cor = "#4fc3f7";
+                        }
+                         else if (h.tipo === "Passiva" || h.tipo === "passiva") {
+                            icone = "[PASSIVA] ";
+                            cor = "#ff9800";
+                        }
+
                         let texto = icone + h.nome;
                         if (h.dano > 0) texto += ` - Dano: ${h.dano}`;
                         if (h.cura > 0) texto += ` - Cura: ${h.cura}`;
