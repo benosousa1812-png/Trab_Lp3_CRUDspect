@@ -145,7 +145,7 @@ require_once __DIR__ . '/../includes/auth.php';
 
             batalha.turno = "jogador";
             batalha.jaAgui = [false, false, false];
-
+            atualizarVidaJogadores();
             atualizar_contai();
             return;
 
