@@ -31,7 +31,7 @@ CREATE TABLE `habilidades` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `origem` varchar(30) NOT NULL,
-  `tipo` enum('Ataque','Cura','Controle','Passiva') NOT NULL,
+  `tipo` enum('Ataque','Cura','Buff','Debuff','Controle','Passiva') NOT NULL,
   `descricao` text DEFAULT NULL,
   `dano` int(11) DEFAULT 0,
   `cura` int(11) DEFAULT 0,
@@ -44,49 +44,83 @@ CREATE TABLE `habilidades` (
 
 INSERT INTO `habilidades` (`id`, `nome`, `origem`, `tipo`, `descricao`, `dano`, `cura`, `custo_mana`) VALUES
 (1, 'Investida Heroica', 'Cavaleiro(a)', 'Ataque', 'Avança contra o inimigo com toda sua força.', 40, 0, 15),
+(2, 'Muralha de Aço', 'Cavaleiro(a)', 'Buff', 'Aumenta a defesa do usuário.', 0, 0, 20),
 (3, 'Golpe do Guardião', 'Cavaleiro(a)', 'Ataque', 'Golpe poderoso que protege aliados.', 50, 0, 25),
+(4, 'Defesa Leal', 'Escudeiro(a)', 'Buff', 'Aumenta a resistência de um aliado.', 0, 0, 15),
 (5, 'Cobertura Protetora', 'Escudeiro(a)', 'Controle', 'Recebe o dano destinado a um aliado.', 0, 0, 20),
 (6, 'Contra-Ataque', 'Escudeiro(a)', 'Ataque', 'Responde imediatamente após sofrer dano.', 35, 0, 15),
 (7, 'Presságio', 'Vidente', 'Controle', 'Revela a próxima ação do inimigo.', 0, 0, 15),
+(8, 'Visão Distante', 'Vidente', 'Buff', 'Aumenta a precisão da equipe.', 0, 0, 20),
+(9, 'Leitura do Destino', 'Vidente', 'Debuff', 'Reduz a chance crítica dos inimigos.', 0, 0, 25),
 (10, 'Bola Arcana', 'Mago(a)', 'Ataque', 'Projétil mágico concentrado.', 45, 0, 20),
 (11, 'Explosão Mística', 'Mago(a)', 'Ataque', 'Explosão mágica em área.', 60, 0, 35),
+(12, 'Teleporte', 'Mago(a)', 'Controle', 'Reposiciona o usuário no campo.', 0, 0, 20),
 (13, 'Ataque Furtivo', 'Ladrão(a)', 'Ataque', 'Golpe com dano aumentado pelas sombras.', 55, 0, 20),
+(14, 'Roubo Rápido', 'Ladrão(a)', 'Debuff', 'Rouba recursos do alvo.', 20, 0, 15),
+(15, 'Passo Sombrio', 'Ladrão(a)', 'Buff', 'Aumenta evasão temporariamente.', 0, 0, 15),
 (16, 'Golpe Preciso', 'Ladino(a)', 'Ataque', 'Ataque direcionado a pontos vitais.', 50, 0, 20),
 (17, 'Névoa de Engano', 'Ladino(a)', 'Controle', 'Confunde os inimigos.', 0, 0, 25),
 (18, 'Emboscada', 'Ladino(a)', 'Ataque', 'Ataque surpresa devastador.', 65, 0, 30),
 (19, 'Cura Menor', 'Servo(a)', 'Cura', 'Recupera vida de um aliado.', 0, 35, 15),
+(20, 'Benção Protetora', 'Servo(a)', 'Buff', 'Aumenta a defesa mágica.', 0, 0, 20),
 (21, 'Sacrifício Altruísta', 'Servo(a)', 'Cura', 'Transfere parte da própria vida.', 0, 50, 25),
 (22, 'Rajada Celeste', 'Sílfide / Silfo', 'Ataque', 'Ataque baseado em ventos mágicos.', 45, 0, 20),
+(23, 'Dança dos Ventos', 'Sílfide / Silfo', 'Buff', 'Aumenta velocidade e evasão.', 0, 0, 20),
 (24, 'Passo Etéreo', 'Sílfide / Silfo', 'Controle', 'Move-se sem ser alvo por um turno.', 0, 0, 25),
+(25, 'Maldição Sombria', 'Bruxo(a)', 'Debuff', 'Enfraquece o alvo.', 20, 0, 20),
+(26, 'Ritual Profano', 'Bruxo(a)', 'Buff', 'Aumenta o poder mágico.', 0, 0, 25),
 (27, 'Explosão Negra', 'Bruxo(a)', 'Ataque', 'Libera energia destrutiva.', 70, 0, 35),
+(28, 'Despertar do Legado', 'Herdeiro(a)', 'Buff', 'Desperta força ancestral.', 0, 0, 25),
 (29, 'Aura Nobre', 'Herdeiro(a)', 'Passiva', 'Aumenta atributos naturalmente.', 0, 0, 0),
 (30, 'Chamado Ancestral', 'Herdeiro(a)', 'Ataque', 'Invoca o poder dos antepassados.', 55, 0, 30),
+(31, 'Decreto Real', 'Príncipe / Princesa', 'Debuff', 'Reduz atributos dos inimigos.', 0, 0, 20),
 (32, 'Golpe Imperial', 'Príncipe / Princesa', 'Ataque', 'Ataque majestoso e poderoso.', 60, 0, 25),
+(33, 'Inspiração Régia', 'Príncipe / Princesa', 'Buff', 'Fortalece aliados próximos.', 0, 0, 20),
 (34, 'Canção de Cura', 'Bardo(a)', 'Cura', 'Melodia que recupera vida.', 0, 40, 20),
+(35, 'Melodia Inspiradora', 'Bardo(a)', 'Buff', 'Aumenta ataque dos aliados.', 0, 0, 20),
+(36, 'Nota Disruptiva', 'Bardo(a)', 'Debuff', 'Desorganiza os inimigos.', 15, 0, 15),
+(37, 'Ordem Absoluta', 'Lorde', 'Controle', 'Força um alvo a obedecer.', 0, 0, 30),
+(38, 'Domínio do Campo', 'Lorde', 'Buff', 'Melhora toda a equipe.', 0, 0, 25),
 (39, 'Comando Supremo', 'Lorde', 'Ataque', 'Ataque esmagador de autoridade.', 65, 0, 30),
+(40, 'Inspiração Divina', 'Musa', 'Buff', 'Aumenta vários atributos.', 0, 0, 25),
+(41, 'Encanto Harmônico', 'Musa', 'Controle', 'Encanta e distrai inimigos.', 0, 0, 20),
 (42, 'Sinfonia da Alma', 'Musa', 'Cura', 'Recupera vida de todos os aliados.', 0, 60, 35),
 (43, 'Fôlego Revigorante', 'Respiração', 'Cura', 'Recupera energia e vida.', 0, 25, 10),
 (44, 'Pulmões de Ferro', 'Respiração', 'Passiva', 'Aumenta resistência.', 0, 0, 0),
+(45, 'Respiração Perfeita', 'Respiração', 'Buff', 'Melhora todos os atributos temporariamente.', 0, 0, 20),
 (46, 'Transfusão Vital', 'Sangue', 'Cura', 'Rouba vida do alvo.', 25, 25, 20),
+(47, 'Ritual Carmesim', 'Sangue', 'Buff', 'Aumenta poder através do sangue.', 0, 0, 25),
 (48, 'Corrente Sanguínea', 'Sangue', 'Ataque', 'Manipula sangue como arma.', 50, 0, 30),
 (49, 'Florescimento', 'Vida', 'Cura', 'Grande recuperação de vida.', 0, 50, 25),
 (50, 'Regeneração Natural', 'Vida', 'Passiva', 'Recupera vida por turno.', 0, 0, 0),
 (51, 'Toque Vital', 'Vida', 'Cura', 'Cura instantânea.', 0, 35, 15),
 (52, 'Colapso', 'Ruína', 'Ataque', 'Destrói a estrutura do alvo.', 55, 0, 25),
 (53, 'Desintegração', 'Ruína', 'Ataque', 'Dano mágico devastador.', 75, 0, 40),
+(54, 'Queda Inevitável', 'Ruína', 'Debuff', 'Reduz defesa drasticamente.', 0, 0, 25),
 (55, 'Raio Purificador', 'Luz', 'Ataque', 'Ataque de luz concentrada.', 50, 0, 20),
+(56, 'Revelação', 'Luz', 'Controle', 'Revela inimigos ocultos.', 0, 0, 15),
 (57, 'Aurora Sagrada', 'Luz', 'Cura', 'Recupera vida da equipe.', 0, 45, 25),
 (58, 'Anulação', 'Vazio', 'Controle', 'Cancela um efeito ativo.', 0, 0, 25),
+(59, 'Névoa do Nada', 'Vazio', 'Debuff', 'Reduz precisão dos inimigos.', 0, 0, 20),
 (60, 'Buraco Abissal', 'Vazio', 'Ataque', 'Consome energia do alvo.', 60, 0, 30),
+(61, 'Aceleração', 'Tempo', 'Buff', 'Aumenta velocidade.', 0, 0, 20),
 (62, 'Retrocesso', 'Tempo', 'Cura', 'Recupera vida perdida recentemente.', 0, 30, 30),
 (63, 'Paralisação Temporal', 'Tempo', 'Controle', 'Impede ações por um turno.', 10, 0, 35),
+(64, 'Dobra Dimensional', 'Espaço', 'Controle', 'Reposiciona alvos.', 0, 0, 20),
+(65, 'Teleporte Supremo', 'Espaço', 'Buff', 'Movimentação instantânea.', 0, 0, 15),
 (66, 'Fenda Espacial', 'Espaço', 'Ataque', 'Corta o espaço diante do alvo.', 55, 0, 25),
 (67, 'Leitura Mental', 'Mente', 'Controle', 'Descobre intenções do alvo.', 0, 0, 15),
+(68, 'Confusão Psíquica', 'Mente', 'Debuff', 'Confunde o inimigo.', 15, 0, 20),
+(69, 'Controle Mental', 'Mente', 'Controle', 'Assume controle temporário.', 0, 0, 35),
+(70, 'Empatia Profunda', 'Coração', 'Buff', 'Fortalece aliados emocionalmente.', 0, 0, 20),
 (71, 'Golpe da Alma', 'Coração', 'Ataque', 'Atinge diretamente a alma.', 50, 0, 25),
 (72, 'Laço Espiritual', 'Coração', 'Cura', 'Compartilha vitalidade.', 0, 40, 20),
+(73, 'Fúria Crescente', 'Odio', 'Buff', 'Aumenta dano conforme sofre ataques.', 0, 0, 20),
 (74, 'Vingança Implacável', 'Odio', 'Ataque', 'Golpe mais forte contra quem causou dano.', 60, 0, 25),
 (75, 'Ira Devastadora', 'Odio', 'Ataque', 'Explosão de ódio concentrado.', 75, 0, 35),
 (76, 'Milagre', 'Esperança', 'Cura', 'Recupera grande quantidade de vida.', 0, 60, 35),
+(77, 'Determinação', 'Esperança', 'Buff', 'Aumenta resistência e ataque.', 0, 0, 20),
+(78, 'Chama da Esperança', 'Esperança', 'Passiva', 'Mantém o usuário firme em situações críticas.', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -243,7 +277,13 @@ CREATE TABLE `personagem` (
 --
 
 INSERT INTO `personagem` (`id`, `nome`, `classe`, `aspecto`, `usuario_id`, `imagem`) VALUES
+(30, 'Lohan Leonardo monteiro ramos', 'Cavaleiro(a)', 'Respiração', 1, 'uploads/6a231ef225a42.webp'),
+(31, 'pedrin', 'Escudeiro(a)', 'Luz', 1, 'uploads/6a259c89628f4.webp'),
+(32, 'joao', 'Bruxo(a)', 'Respiração', 1, 'uploads/6a259c9c61dbd.png'),
+(33, 'dwadwad', 'Escudeiro(a)', 'Respiração', 1, 'uploads/6a259caaed974.webp'),
+(34, 'pedrinooo', 'Cavaleiro(a)', 'Sangue', 1, 'uploads/6a25faee39f1d.jpg');
 
+-- --------------------------------------------------------
 
 --
 -- Estrutura para tabela `personagem_habilidade`
@@ -260,12 +300,27 @@ CREATE TABLE `personagem_habilidade` (
 --
 
 INSERT INTO `personagem_habilidade` (`id`, `personagem_id`, `habilidade_id`) VALUES
+(1, 30, 44),
+(2, 30, 43),
+(3, 30, 2),
+(4, 31, 5),
+(5, 31, 57),
+(6, 31, 4),
+(7, 32, 26),
+(8, 32, 44),
+(9, 32, 45),
+(10, 33, 44),
+(11, 33, 5),
+(12, 33, 43),
+(13, 34, 3),
+(14, 34, 2),
+(15, 34, 1);
 
+-- --------------------------------------------------------
 
-
-
+--
 -- Estrutura para tabela `usuario`
-
+--
 
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,

@@ -34,56 +34,31 @@ require_once __DIR__ . '/../includes/auth.php';
 </div>
 
 <script>
-    let jogadorSelecionado = -1;
-    let modoSelecaoAlvo = false;
-    let curaPendente = null; 
+    // ===================== VARIÁVEIS GLOBAIS =====================
+    let jogadorSelecionado = -1;          // índice do personagem selecionado para escolher habilidade
+    let modoSelecaoAlvo = false;          // true quando estamos escolhendo alvo da cura
+    let curaPendente = null;              // guarda {nome, quantidade} da cura pendente
     let ataqueSelecionado = false;
     let danoAtaque = 0;
-    let BossParalisado = false;
-    let protetorAtivo = null;
-    let habilidadePrevista = null;
 
-
+    // ===================== BATALHA =====================
     let batalha = {
         turno: "jogador",
-        jogadores: {
-        id: 1,
-        nome: "",
-        vida: 100,
-        vidaMax: 100,
-        resistencia: 0,
-        regeneracao: 0,
-        bonusPoder: 0
-        intangivel: false
-    },
-    {
-        id: 2,
-        nome: "",
-        vida: 100,
-        vidaMax: 100,
-        resistencia: 0,
-        regeneracao: 0,
-        intangivel: false
-    },
-    {
-        id: 3,
-        nome: "",
-        vida: 100,
-        vidaMax: 100,
-        resistencia: 0,
-        regeneracao: 0,
-        intangivel: false
-    },
+        jogadores: [
+            { id: 1, nome: "", vida: 100, vidaMax: 100 },
+            { id: 2, nome: "", vida: 100, vidaMax: 100 },
+            { id: 3, nome: "", vida: 100, vidaMax: 100 }
+        ],
         boss: {
             id: "boss",
             nome: "Boss",
             vida: 0,
             vidaMax: 0
         },
-        jaAgui: [false, false, false]
+        jaAgui: [false, false, false]   // controle de quem já agiu no turno atual
     };
 
-
+    // ===================== FUNÇÕES AUXILIARES =====================
     function criarBarraVida(atual, max, tipo) {
         let pct = (atual / max) * 100;
         return `
@@ -109,10 +84,10 @@ require_once __DIR__ . '/../includes/auth.php';
                 personagem.style.opacity = "0.3";
                 personagem.style.pointerEvents = "none";
                 personagem.classList.add("morto");
-                batalha.jaAgui[index] = true;
+                batalha.jaAgui[index] = true; // morto conta como já agiu para não travar
             }
         });
-  
+        // Atualiza visual de quem já agiu
         personagens.forEach((div, i) => {
             if (batalha.jaAgui[i] && batalha.jogadores[i].vida > 0) {
                 div.style.opacity = "0.6";
@@ -151,15 +126,8 @@ require_once __DIR__ . '/../includes/auth.php';
     }
 
     function turnoboss() {
-        if (bossParalisado) {
-    bossParalisado = false;
-    mostrar_resultado("CONTROLE", "Boss está paralisado e perdeu o turno!");
-    batalha.turno = "jogador";
-    atualizar_contai();
-    return;
-}
         batalha.turno = "boss";
-        batalha.jaAgui = [false, false, false];
+        batalha.jaAgui = [false, false, false]; // reseta para o próximo turno
         atualizar_contai();
         ataque_do_boss();
     }
@@ -171,16 +139,7 @@ require_once __DIR__ . '/../includes/auth.php';
         else if (partida.local == "floresta") bossAtual = bosses.floresta;
         else bossAtual = bosses.montanha;
 
-        let habilidade;
-
-    if (habilidadePrevista != null) {
-        habilidade = habilidadePrevista;
-        habilidadePrevista = null;
-    } else {
-        habilidade = bossAtual.habilidades[
-        Math.floor(Math.random() * bossAtual.habilidades.length)
-    ];
-}
+        let habilidade = bossAtual.habilidades[Math.floor(Math.random() * bossAtual.habilidades.length)];
         let resultado = "";
 
         if (habilidade.tipo == "ataque_area") {
@@ -189,53 +148,20 @@ require_once __DIR__ . '/../includes/auth.php';
                 resultado += `${jogador.nome} perdeu ${habilidade.dano} de vida<br>`;
             });
         } else if (habilidade.tipo == "ataque") {
-
-    let alvosValidos = [];
-
-    batalha.jogadores.forEach((jogador, index) => {
-        if (jogador.vida > 0 && jogador.intangivel == false) {
-            alvosValidos.push(index);
+            let alvo = Math.floor(Math.random() * 3);
+            batalha.jogadores[alvo].vida -= habilidade.dano;
+            resultado += `${batalha.jogadores[alvo].nome} perdeu ${habilidade.dano} de vida`;
         }
-    });
-
-    if (alvosValidos.length > 0) {
-        let alvo = alvosValidos[Math.floor(Math.random() * alvosValidos.length)];
-            if (
-        protetorAtivo !== null &&
-        protetorAtivo !== alvo &&
-        batalha.jogadores[protetorAtivo].vida > 0
-    ) {
-        resultado += "Cobertura Protetora ativou!<br>";
-        alvo = protetorAtivo;
-    }
-
-        let danoFinal = habilidade.dano - batalha.jogadores[alvo].resistencia;
-
-        if (danoFinal < 0) {
-            danoFinal = 0;
-        }
-
-        batalha.jogadores[alvo].vida -= danoFinal;
-
-        resultado += `${batalha.jogadores[alvo].nome} perdeu ${danoFinal} de vida`;
-    }
-}
 
         mostrar_ataque_boss(habilidade.nome, resultado);
         atualizarVidaJogadores();
         verificarDerrota();
 
-        aplicarRegeneracao();
-
-        batalha.jogadores.forEach(jogador => {
-    jogador.intangivel = false;
-    });
-
-        protetorAtivo= null;
+        // Depois do ataque do boss, volta o turno para o jogador
         batalha.turno = "jogador";
         batalha.jaAgui = [false, false, false];
         atualizar_contai();
-  
+        // Limpa seleção de personagem
         jogadorSelecionado = -1;
         document.querySelectorAll('.personagem').forEach(el => el.style.border = '');
         document.getElementById('habilidades-list').innerHTML = '';
@@ -261,7 +187,7 @@ require_once __DIR__ . '/../includes/auth.php';
         document.getElementById("ataque_boss_container").style.display = "block";
     }
 
-
+    // ===================== FUNÇÕES DE CURA E SELEÇÃO DE ALVO =====================
     function iniciarSelecaoAlvo(nomeHabilidade, quantidadeCura) {
         modoSelecaoAlvo = true;
         curaPendente = { nome: nomeHabilidade, cura: quantidadeCura };
@@ -326,7 +252,7 @@ require_once __DIR__ . '/../includes/auth.php';
             setTimeout(() => divs[index].style.border = '', 1000);
         }
 
-
+        // Limpa modo de seleção
         modoSelecaoAlvo = false;
         const nomeCura = curaPendente.nome;
         curaPendente = null;
@@ -348,34 +274,21 @@ require_once __DIR__ . '/../includes/auth.php';
         `;
         setTimeout(() => container.innerHTML = '', 2000);
 
-  
+        // Marca o personagem que usou a cura como já agiu
         if (jogadorSelecionado !== -1) {
             batalha.jaAgui[jogadorSelecionado] = true;
             atualizarVidaJogadores();
             atualizar_contai();
         }
 
-
+        // Verifica se todos já agiram
         if (batalha.jaAgui.every(v => v === true)) {
             setTimeout(() => turnoboss(), 500);
         }
         return true;
     }
 
-    function aplicarRegeneracao() {
-    batalha.jogadores.forEach(jogador => {
-        if (jogador.regeneracao > 0 && jogador.vida > 0) {
-            jogador.vida += jogador.regeneracao;
-
-            if (jogador.vida > jogador.vidaMax) {
-                jogador.vida = jogador.vidaMax;
-            }
-        }
-    });
-
-    atualizarVidaJogadores();
-}
-
+    // ===================== FUNÇÕES DE ATAQUE =====================
     function ativarAtaqueBoss(dano) {
         ataqueSelecionado = true;
         danoAtaque = dano;
@@ -384,7 +297,7 @@ require_once __DIR__ . '/../includes/auth.php';
         document.getElementById('habilidades-list').innerHTML = '<li style="text-align:center;color:#e8e507;font-weight:bold;list-style:none;">Clique no BOSS para atacar!</li>';
     }
 
-
+    // ===================== FUNÇÃO PRINCIPAL DE HABILIDADE =====================
     function ver_ação(nome, tipo, dano, cura) {
         if (batalha.turno !== "jogador") {
             alert("Aguarde o turno do boss!");
@@ -396,13 +309,13 @@ require_once __DIR__ . '/../includes/auth.php';
             return;
         }
 
-
+        // Verifica se o personagem já agiu neste turno
         if (batalha.jaAgui[jogadorSelecionado]) {
             alert("Este personagem já agiu neste turno!");
             return;
         }
 
-
+        // ---- CURA ----
         if (tipo === "Cura" || tipo === "cura") {
             if (!cura || cura <= 0) {
                 alert("Esta habilidade não tem cura!");
@@ -412,74 +325,26 @@ require_once __DIR__ . '/../includes/auth.php';
             return;
         }
 
-
+        // ---- ATAQUE ----
         if (tipo === "Ataque" || tipo === "ataque") {
             if (batalha.boss.vida <= 0) {
                 alert("O boss já foi derrotado!");
                 return;
             }
-
+            // Marca como já agiu antes de ativar ataque (o ataque será executado ao clicar no boss)
             batalha.jaAgui[jogadorSelecionado] = true;
             atualizarVidaJogadores();
             atualizar_contai();
             ativarAtaqueBoss(dano);
         }
 
-        if (tipo === "Controle" || tipo === "controle") {
-            if (nome === "Cobertura Protetora") {
-                protetorAtivo = jogadorSelecionado;
-                mostrar_resultado("CONTROLE",batalha.jogadores[jogadorSelecionado].nome + " protegerá a equipe");
-}
-
-        if (nome === "Presságio") {
-            let partida = JSON.parse(localStorage.getItem("partida"));
-            let bossAtual;
-
-        if (partida.local == "deserto") bossAtual = bosses.deserto;
-        else if (partida.local == "floresta") bossAtual = bosses.floresta;
-        else bossAtual = bosses.montanha;
-
-    habilidadePrevista =
-        bossAtual.habilidades[
-            Math.floor(Math.random() * bossAtual.habilidades.length)
-        ];
-
-    mostrar_resultado(
-        "PRESSÁGIO",
-        "Próximo ataque do boss: " + habilidadePrevista.nome
-    );
-}
-    if (nome === "Paralisação Temporal") {
-        bossParalisado = true;
-
-        mostrar_resultado(
-            "CONTROLE",
-            "Boss será paralisado no próximo turno"
-        );
-    }
-    if (nome === "Passo Etéreo") {
-        batalha.jogadores[jogadorSelecionado].intangivel = true;
-
-        mostrar_resultado(
-        "CONTROLE",
-        batalha.jogadores[jogadorSelecionado].nome + " ficou intangível!"
-    );
-}
-    batalha.jaAgui[jogadorSelecionado] = true;
-    atualizarVidaJogadores();
-    atualizar_contai();
-
-    if (batalha.jaAgui.every(v => v === true)) {
-        setTimeout(() => turnoboss(), 500);
+        // ---- BUFF (futuro) ----
+        if (tipo === "Buff" || tipo === "buff") {
+            alert("Buff ainda não implementado!");
+        }
     }
 
-    return;
-}
-
-
-    }
-
-
+    // ===================== INICIAR PARTIDA =====================
     async function iniciarPartida() {
         const partida = JSON.parse(localStorage.getItem("partida"));
         if (!partida) {
@@ -529,19 +394,6 @@ require_once __DIR__ . '/../includes/auth.php';
             personagens.forEach((p, index) => {
                 const jogador = batalha.jogadores[index];
                 jogador.nome = p.nome;
-                if (p.habilidades.some(h => h.nome === "Pulmões de Ferro")) {
-                    jogador.resistencia = 15;
-}
-
-                if (p.habilidades.some(h => h.nome === "Regeneração Natural")) {
-                    jogador.regeneracao = 10;
-}
-
-                if (p.habilidades.some(h => h.nome === "Aura Nobre")) {
-                    jogador.vidaMax += 20;
-                    jogador.vida += 20;
-                    jogador.bonusPoder = 10;
-}
 
                 const div = document.createElement("div");
                 div.className = "personagem";
@@ -597,7 +449,9 @@ require_once __DIR__ . '/../includes/auth.php';
                         } else if (h.tipo === "Ataque" || h.tipo === "ataque") {
                             icone = "[ATAQUE] ";
                             cor = "#ff6b6b";
-
+                        } else if (h.tipo === "Buff" || h.tipo === "buff") {
+                            icone = "[BUFF] ";
+                            cor = "#ffd93d";
                         }
                         let texto = icone + h.nome;
                         if (h.dano > 0) texto += ` - Dano: ${h.dano}`;
@@ -648,8 +502,7 @@ require_once __DIR__ . '/../includes/auth.php';
         e.stopPropagation();
         if (ataqueSelecionado && batalha.turno === "jogador") {
             // O ataque já foi contabilizado (jaAgui já foi marcado)
-            let danoFinal = danoAtaque + batalha.jogadores[jogadorSelecionado].bonusPoder;
-            batalha.boss.vida -= danoFinal;
+            batalha.boss.vida -= danoAtaque;
             atualizarVidaBoss();
             if (batalha.boss.vida <= 0) return;
 
